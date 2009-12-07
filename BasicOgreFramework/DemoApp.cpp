@@ -50,19 +50,16 @@ void DemoApp::setupDemoScene()
 	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1", "fish.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2", Vector3(0.0f, 0.0f, 100.0f));
 	m_pCubeNode->attachObject(m_pCubeEntity);
-
-	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
-	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
-	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
-	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
-	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
+	
+	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
 
 	//Find all AABB
 	vector<int> boxValues;
 	vector<vector<int>> boxPositions;
-
-	play.playSoundWithEcho(0, 1, boxValues, boxPositions);
-
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -121,7 +118,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		 //do something
 		play.playSound(2,1);
 	}
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W))
+	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_H))
 	{
 		 //do something
 		play.playSound(1,1);

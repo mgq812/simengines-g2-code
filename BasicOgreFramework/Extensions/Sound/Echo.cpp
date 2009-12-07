@@ -1,12 +1,9 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include "Echo.h"
+#include "math.h"
 
-//The method for doing the echo calculation.
-//volume: The beginning volume of the sound
-//boundingBoxes: The list of the bounding boxes in the scene
-//soundPosition: The position of the sound source
-EchoProperties Echo::calculateEcho(int volume, vector<AxisAlignedBox> boundingBoxes, Ogre::Vector3 soundPosition)
+EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vector<int>> boxPositions , float soundPosition[3])
 {
 	//-----Initialization of used variables-----
 	//--The delay of the echo--
@@ -16,11 +13,8 @@ EchoProperties Echo::calculateEcho(int volume, vector<AxisAlignedBox> boundingBo
 	int tRA = 0;
 
 	//--Distance vector between sound source and boxes for calculations and the actual distance--
-	Ogre::Vector3 distanceVector;
+	float distanceVector[3];
 	int distance = 0;
-
-	//--Temp vector for holding boxes--
-	vector<AxisAlignedBox> tempBoxes;
 
 	//--List of distances for calculating the delay--
 	vector<int> distances;
@@ -30,52 +24,54 @@ EchoProperties Echo::calculateEcho(int volume, vector<AxisAlignedBox> boundingBo
 	//-----Methods for determine what boxes that should be used-----
 
 	//--Remove objects that are too far away to consider--
-	for(unsigned int i = 0; i < boundingBoxes.size(); i++)
+	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
-		distanceVector = Ogre::Vector3(boundingBoxes[i].getCenter().x, boundingBoxes[i].getCenter().y, boundingBoxes[i].getCenter().z);
-		distanceVector.x -= soundPosition.x;
-		distanceVector.y -= soundPosition.y;
-		distanceVector.z -= soundPosition.z;
-		distance = distanceVector.length();
-		
+		distanceVector[0] = boxPositions[i][0];
+		distanceVector[1] = boxPositions[i][1];
+		distanceVector[2] = boxPositions[i][2];
+		distanceVector[0] -= soundPosition[0];
+		distanceVector[1] -= soundPosition[1];
+		distanceVector[2] -= soundPosition[2];
+		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
 		//If close enough, save the boxes
-		if(distance < volume*1000)
-			tempBoxes.push_back(boundingBoxes[i]);
-	}
+		if(distance > volume*1000)
+		{
+			boxValues.erase(boxValues.begin() + i);
+			boxPositions.erase(boxPositions.begin() + i);
+		}
 
-	//Make new list and clear old list
-	boundingBoxes = tempBoxes;
-	tempBoxes.clear();
+	}
 
 	//--Remove occluded boxes--
 
+
 	//--Remove boxes that are too close--
-	for(unsigned int i = 0; i < boundingBoxes.size(); i++)
+	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
-		distanceVector = Ogre::Vector3(boundingBoxes[i].getCenter().x, boundingBoxes[i].getCenter().y, boundingBoxes[i].getCenter().z);
-		distanceVector.x -= soundPosition.x;
-		distanceVector.y -= soundPosition.y;
-		distanceVector.z -= soundPosition.z;
-		distance = distanceVector.length();
-		
-		//If far away enough, save the boxes
-		if(distance > 75)
-			tempBoxes.push_back(boundingBoxes[i]);
-	}
-	
-	//Make new list and clear old list
-	boundingBoxes = tempBoxes;
-	tempBoxes.clear();
+		distanceVector[0] = boxPositions[i][0];
+		distanceVector[1] = boxPositions[i][1];
+		distanceVector[2] = boxPositions[i][2];
+		distanceVector[0] -= soundPosition[0];
+		distanceVector[1] -= soundPosition[1];
+		distanceVector[2] -= soundPosition[2];
+		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
 
+		//If close enough, save the boxes
+		if(distance < 75)
+		{
+			boxValues.erase(boxValues.begin() + i);
+			boxPositions.erase(boxPositions.begin() + i);
+		}
+	}
 
 	//-----Calculations of areas, echo, distance delay and return-----
 
 	//--Calculate the total reflecting area--
-	for(unsigned int i = 0; i < boundingBoxes.size(); i++)
+	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
-		tRA += boundingBoxes[i].volume();
+		tRA += boxValues[i];
 	}
 
 	//--Scale sound after the total reflacting area--
@@ -87,14 +83,16 @@ EchoProperties Echo::calculateEcho(int volume, vector<AxisAlignedBox> boundingBo
 	//--Calculate the delay of the sound--
 	//TEMP
 	delay = 500;
-	/*for(int i = 0; i < boundingBoxes.size(); i++)
+	/*for(int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
-		distanceVector = Vector3(boundingBoxes[i].getCenter().x, boundingBoxes[i].getCenter().y, boundingBoxes[i].getCenter().z);
-		distanceVector.x -= soundPosition.x;
-		distanceVector.y -= soundPosition.y;
-		distanceVector.z -= soundPosition.z;
-		distance = distanceVector.length();
+		distanceVector[0] = boxPositions[i][0];
+		distanceVector[1] = boxPositions[i][1];
+		distanceVector[2] = boxPositions[i][2];
+		distanceVector[0] -= soundPosition[0];
+		distanceVector[1] -= soundPosition[1];
+		distanceVector[2] -= soundPosition[2];
+		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
 		
 		//Add the distance to the list
 		distances.push_back(distance);

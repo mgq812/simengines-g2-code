@@ -150,9 +150,8 @@ int Soundplayer::playSound(int index, float volume)
 }
 
 //A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play
-int Soundplayer::playSoundWithEcho(int index, float volume, vector<AxisAlignedBox> boundingBoxes)
+int Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>> boxPositions)
 {
-
     alutInit(NULL, NULL);
     alGetError();
 
@@ -169,7 +168,8 @@ int Soundplayer::playSoundWithEcho(int index, float volume, vector<AxisAlignedBo
     alSourcePlay(source[index]);
 
 	//Calculate echo
-	EchoProperties echoProperties = Echo::calculateEcho(volume, boundingBoxes, Ogre::Vector3(sourcePosX[index], sourcePosY[index], sourcePosZ[index]));
+	float in[3] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
+	EchoProperties echoProperties = Echo::calculateEcho(volume, boxValues, boxPositions, in);
 	
 	//Change volume and wait
 	float newVolume = echoProperties.getVolume();

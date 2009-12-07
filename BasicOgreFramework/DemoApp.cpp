@@ -4,8 +4,10 @@
 
 #include <OgreLight.h>
 #include <OgreWindowEventUtilities.h>
-
+#include "math.h"
 //|||||||||||||||||||||||||||||||||||||||||||||||
+
+
 
 DemoApp::DemoApp()
 {
@@ -41,18 +43,26 @@ void DemoApp::setupDemoScene()
 	OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
 
 	OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
-	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("Cube", "ogrehead.mesh");
+	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "ogrehead.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode");
 	m_pCubeNode->attachObject(m_pCubeEntity);
 	
-	play.addSound("C:\\Users\\Jocke\\Documents\\Work\\SVN\\BasicOgreFramework\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
-	play.addSound("C:\\Users\\Jocke\\Documents\\Work\\SVN\\BasicOgreFramework\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
-	play.addSound("C:\\Users\\Jocke\\Documents\\Work\\SVN\\BasicOgreFramework\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
-	vector<AxisAlignedBox> a;
-	play.playSoundWithEcho(0,1, a);
-	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("Cube2", "fish.mesh");
+	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1", "fish.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2", Vector3(0.0f, 0.0f, 100.0f));
 	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
+	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
+	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
+	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
+	play.addSound("C:\\Alle\\SVN\\BasicOgreFramework\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
+
+	//Find all AABB
+	vector<int> boxValues;
+	vector<vector<int>> boxPositions;
+
+	play.playSoundWithEcho(0, 1, boxValues, boxPositions);
+
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

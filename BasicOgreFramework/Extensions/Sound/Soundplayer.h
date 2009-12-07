@@ -34,7 +34,7 @@ class Soundplayer : public Ogre::AxisAlignedBox
 		void setSourcePosition(int index, float x, float y, float z);
 
 		int playSound(int index, float volume);
-		int playSoundWithEcho(int index, float volume, vector<Ogre::AxisAlignedBox> boundingBoxes);
+		int playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>>);
 
 	private:
 		ALboolean loadData(int index, float volume);

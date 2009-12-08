@@ -77,9 +77,11 @@ void DemoApp::runDemo()
 	{
 		if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isClosed())m_bShutdown = true;
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-		Ogre::WindowEventUtilities::messagePump();
-#endif	
+		#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+				Ogre::WindowEventUtilities::messagePump();
+		#endif
+		
+		//The main loop
 		if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
 		{
 			startTime = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU();
@@ -91,6 +93,24 @@ void DemoApp::runDemo()
 			OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
 		
 			timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
+
+			//Movements
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W))
+			{
+				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0, 0, -0.05, Node::TS_LOCAL);
+			}
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A))
+			{
+				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(-0.05, 0, 0, Node::TS_LOCAL);
+			}
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S))
+			{
+				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0, 0, 0.05, Node::TS_LOCAL);
+			}
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D))
+			{
+				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0.05, 0, 0, Node::TS_LOCAL);
+			}
 		}
 		else
 		{
@@ -110,18 +130,22 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_F))
 	{
-		 //do something
 		play.playSound(0,1);
 	}
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_G))
 	{
-		 //do something
 		play.playSound(2,1);
 	}
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_H))
 	{
-		 //do something
 		play.playSound(1,1);
+	}
+	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_T))
+	{
+		if(OgreFramework::getSingletonPtr()->m_pSceneMgr->getEntity("0")->isVisible())
+			OgreFramework::getSingletonPtr()->m_pSceneMgr->getEntity("0")->setVisible(false);
+		else
+			OgreFramework::getSingletonPtr()->m_pSceneMgr->getEntity("0")->setVisible(true);
 	}
 
 	return true;

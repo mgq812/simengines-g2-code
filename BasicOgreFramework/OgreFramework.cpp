@@ -198,8 +198,12 @@ bool OgreFramework::keyReleased(const OIS::KeyEvent &keyEventRef)
 
 bool OgreFramework::mouseMoved(const OIS::MouseEvent &evt)
 {
-	//m_pCamera->yaw(Degree(evt.state.X.rel * -0.1));
-	//m_pCamera->pitch(Degree(evt.state.Y.rel * -0.1));
+	//m_TranslateVector.x += m_pMouse->getMouseState().relX * 0.1;
+	//m_pCamera->yaw(Degree(m_pMouse->getMouseState().relX * 0.1));
+	//m_pCamera->pitch(Degree(m_pMouse->getMouseState().relY * 0.1));
+	//m_pCamera->pitch(Degree(-m_pMouse->getMouseState().relX * 0.1));
+	//WTF?
+	//m_pCamera->yaw(Degree(-m_pMouse->getMouseState().relY * 0.1));
 	
 	return true;
 }
@@ -279,7 +283,7 @@ void OgreFramework::moveCamera()
 
 void OgreFramework::getInput()
 {
-	if(m_pKeyboard->isKeyDown(OIS::KC_A))
+	/*if(m_pKeyboard->isKeyDown(OIS::KC_A))
 	{
 		m_TranslateVector.x = -m_MoveScale;
 	}
@@ -297,7 +301,7 @@ void OgreFramework::getInput()
 	if(m_pKeyboard->isKeyDown(OIS::KC_S))
 	{
 		m_TranslateVector.z = m_MoveScale;
-	}
+	}*/
 
 	if(m_pKeyboard->isKeyDown(OIS::KC_LEFT))
 	{

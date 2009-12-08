@@ -25,6 +25,7 @@ private:
 	void runDemo();
 	
 	Soundplayer play;
+
 	Ogre::SceneNode*			m_pCubeNode;
 	Ogre::Entity*				m_pCubeEntity;
 

@@ -54,7 +54,7 @@ void OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 	m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7, 0.7, 0.7));
 	
 	m_pCamera = m_pSceneMgr->createCamera("Camera");
-	m_pCamera->setPosition(Vector3(0, 60, 60));
+	m_pCamera->setPosition(Vector3(60, 60, 60));
 	m_pCamera->lookAt(Vector3(0,0,0));
 	m_pCamera->setNearClipDistance(1);
 
@@ -283,7 +283,7 @@ void OgreFramework::moveCamera()
 
 void OgreFramework::getInput()
 {
-	/*if(m_pKeyboard->isKeyDown(OIS::KC_A))
+	if(m_pKeyboard->isKeyDown(OIS::KC_A))
 	{
 		m_TranslateVector.x = -m_MoveScale;
 	}
@@ -301,7 +301,7 @@ void OgreFramework::getInput()
 	if(m_pKeyboard->isKeyDown(OIS::KC_S))
 	{
 		m_TranslateVector.z = m_MoveScale;
-	}*/
+	}
 
 	if(m_pKeyboard->isKeyDown(OIS::KC_LEFT))
 	{

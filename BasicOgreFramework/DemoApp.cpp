@@ -51,9 +51,10 @@ void DemoApp::setupDemoScene()
 	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1", "fish.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2", Vector3(0.0f, 0.0f, 100.0f));
 	m_pCubeNode->attachObject(m_pCubeEntity);
-	
+
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\Worry.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);

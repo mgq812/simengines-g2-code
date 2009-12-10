@@ -1,0 +1,67 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson201_Revolute_Joints", "Lesson201_Revolute_Joints.vcproj", "{92328C43-4447-0F94-2980-C5FA88543302}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson202_Joint_Springs_and_Motors", "Lesson202_Joint_Springs_and_Motors.vcproj", "{252C7486-A112-3858-6950-3F06C0C06C1B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson203_Spherical_Joints", "Lesson203_Spherical_Joints.vcproj", "{D94A25E7-2103-98BC-119F-DDD9FB79C77B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson204_Prismatic_Joints", "Lesson204_Prismatic_Joints.vcproj", "{EB49639F-64A1-5BE0-E902-DAF5B3A53650}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson205_Cylindrical_Fixed_Joints", "Lesson205_Cylindrical_Fixed_Joints.vcproj", "{FD35D9B2-AF62-F714-E7A3-6ADC8D1A74BF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson206_Point_on_Line_Joints", "Lesson206_Point_on_Line_Joints.vcproj", "{6EB94106-57B0-C1BF-7E2C-EFC0EF9BF8D6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson207_Point_in_Plane_Joints", "Lesson207_Point_in_Plane_Joints.vcproj", "{D1D5A448-58B8-E044-9130-BA40C720A580}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson208_Pulley_Joints", "Lesson208_Pulley_Joints.vcproj", "{BE039CDF-44A6-D84C-C578-77241160D366}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson209_Distance_Joints", "Lesson209_Distance_Joints.vcproj", "{6F336648-B5F0-CA4E-2D53-322820DAF824}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson210_6DOF_Joints", "Lesson210_6DOF_Joints.vcproj", "{4BE57786-A0E8-0B97-D66C-C3FEE6B9BA45}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson211_6DOF_Joint_Limits_Springs", "Lesson211_6DOF_Joint_Limits_Springs.vcproj", "{EF420A39-F469-D160-146F-4207C42EADF8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson212_Joint_Limit", "Lesson212_Joint_Limit.vcproj", "{CADD441A-0532-D610-C082-932427B47A14}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson213_6DOF_Motion_Controller", "Lesson213_6DOF_Motion_Controller.vcproj", "{D0E6CAEC-9724-918E-28E0-69FCE9663B50}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson214_Breakable_Joints", "Lesson214_Breakable_Joints.vcproj", "{B94AE7A0-4900-4ED6-2580-3E2092651014}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson215_6DOF_Linear_Driver", "Lesson215_6DOF_Linear_Driver.vcproj", "{FF80E863-1BAC-B020-2FC4-899A04F065C0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson216_6DOF_Angular_Driver", "Lesson216_6DOF_Angular_Driver.vcproj", "{6F9A6139-0846-A096-08C4-848E579E0531}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+EndGlobal

@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson1101_SoftBodyCube", "Lesson1101_SoftBodyCube.vcproj", "{3F12125B-8E51-FF96-8500-5EFFD796E86A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson1102_PalmTree", "Lesson1102_PalmTree.vcproj", "{B1BE7B61-E256-69D0-1D93-571DB84C979E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson1103_BunnyScene", "Lesson1103_BunnyScene.vcproj", "{92E39C63-B044-BAD0-6D08-A782E530E4B2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson1104_SelfCollision", "Lesson1104_SelfCollision.vcproj", "{CF190758-3500-6EE6-9BB4-5030C2A3E9CF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson1105_SoftWheelCar", "Lesson1105_SoftWheelCar.vcproj", "{411035FB-FAC4-331F-5991-8D0351640E51}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson1106_Tearing", "Lesson1106_Tearing.vcproj", "{65A82AD1-87C3-054C-DDF6-7A5F7D1AAF40}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+EndGlobal

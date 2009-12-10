@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson501_Debug_Renderer", "Lesson501_Debug_Renderer.vcproj", "{E61B9D58-DC30-7654-7D76-FFD0836E55C0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson502_Visual_Remote_Debugger", "Lesson502_Visual_Remote_Debugger.vcproj", "{2DFAF8D8-82A0-B8A0-B094-64C88EA85822}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson503_Core_Dump", "Lesson503_Core_Dump.vcproj", "{E9BEF444-97BC-3190-BA90-90485E709040}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson504_Scene_Export", "Lesson504_Scene_Export.vcproj", "{3BEF5B13-F6C8-83C4-3602-4D5C569C15F4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson505_Asset_Export", "Lesson505_Asset_Export.vcproj", "{4EEF7D45-EAA1-114F-EEAC-D99039603632}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+EndGlobal

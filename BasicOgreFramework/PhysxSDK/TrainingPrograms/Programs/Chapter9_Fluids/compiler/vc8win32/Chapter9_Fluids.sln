@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson901_Fluid_Creation", "Lesson901_Fluid_Creation.vcproj", "{F51DC475-20EC-18FC-0DB3-07C231BC71AB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson902_Fluid_Emitters", "Lesson902_Fluid_Emitters.vcproj", "{0E1CC3D2-1A22-275F-4526-1880BABABDA2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson903_Fluid_and_Rigid_Bodies", "Lesson903_Fluid_and_Rigid_Bodies.vcproj", "{F8FCF1ED-1D5D-DA99-DF98-75FFB655DE60}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson904_Fluid_and_Drain", "Lesson904_Fluid_and_Drain.vcproj", "{433C2EC3-5CE7-201C-9AE0-B7CC2144E546}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson905_Fluid_Events", "Lesson905_Fluid_Events.vcproj", "{39F361CE-6B3A-0F29-3AA3-DE026EBDFCF2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson906_Fluid_UserData", "Lesson906_Fluid_UserData.vcproj", "{DE2579EB-77A3-255B-ABC0-07A2611433DE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+EndGlobal

@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson601_Forcefield_Creation", "Lesson601_Forcefield_Creation.vcproj", "{F19B9B19-2221-1C61-5C6F-AE96D625D89F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson602_Forcefield_Coordinate", "Lesson602_Forcefield_Coordinate.vcproj", "{C5D28574-CC48-80A7-5ADF-ACF4561031E4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson603_Forcefield_Kernels", "Lesson603_Forcefield_Kernels.vcproj", "{927DE736-8886-1778-C972-22B078074B12}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson604_Forcefield_Scaling", "Lesson604_Forcefield_Scaling.vcproj", "{8080AD3A-DE20-45B5-3980-807ED12A4D80}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+EndGlobal

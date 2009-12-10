@@ -1,0 +1,39 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson301_Actor_Pair_Filtering", "Lesson301_Actor_Pair_Filtering.vcproj", "{4EB76CCD-1350-5B80-5B9A-1ED4E7944E52}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson302_Memory_Allocator", "Lesson302_Memory_Allocator.vcproj", "{E14BE995-3B1F-98BE-2C15-7AE5FC58B2A0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson303_Contact_Report", "Lesson303_Contact_Report.vcproj", "{101B3147-BB06-C686-7110-D8425AE98050}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson304_Trigger_Report", "Lesson304_Trigger_Report.vcproj", "{1919716E-375C-CB06-8DF7-B28A85442BA9}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson305_Raycast_Report", "Lesson305_Raycast_Report.vcproj", "{1D16871A-D808-15B5-B654-18ECEC0EA90B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson306_Entity_Report", "Lesson306_Entity_Report.vcproj", "{C4033579-0927-A0E5-4674-AA7BAFD1B5B4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson307_Notify", "Lesson307_Notify.vcproj", "{E68799E6-137A-A4AA-AD14-F6126D15F1EE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson308_Output_Stream", "Lesson308_Output_Stream.vcproj", "{CA0878EF-6D65-A700-83A6-DE576D586AEC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lesson309_Scheduler", "Lesson309_Scheduler.vcproj", "{0EB40901-2929-1BA6-2CA8-5B9A878EFA26}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+EndGlobal

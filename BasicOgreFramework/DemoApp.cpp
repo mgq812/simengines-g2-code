@@ -142,7 +142,36 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_F))
 	{
-		play.playSound(0,1);
+		vector<int> boxValues;
+		vector<vector<int>> boxPositions;
+		vector<SceneNode*> allSceneNodes;
+		vector<MovableObject*> entities;
+		Ogre::SceneNode::ChildNodeIterator cNI = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->getChildIterator();
+		while(cNI.hasMoreElements())
+		{
+			allSceneNodes.push_back(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode(cNI.getNext()->getName()));
+		}
+		for(int i = 0; i < allSceneNodes.size(); i++)
+		{
+			Ogre::SceneNode::ObjectIterator cOI = allSceneNodes[i]->getAttachedObjectIterator();
+			while(cOI.hasMoreElements())
+			{
+				entities.push_back(cOI.getNext());
+			}
+		}
+		for(int y = 0; y < entities.size(); y++)
+		{
+			boxValues.push_back(entities[y]->getBoundingBox().volume());
+			
+			vector<int> in;
+			in.push_back(entities[y]->getParentSceneNode()->getPosition().x);
+			in.push_back(entities[y]->getParentSceneNode()->getPosition().y);
+			in.push_back(entities[y]->getParentSceneNode()->getPosition().z);
+			boxPositions.push_back(in);
+		}
+
+		play.playSoundWithEcho(0, 1, boxValues, boxPositions);
+
 	}
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_G))
 	{

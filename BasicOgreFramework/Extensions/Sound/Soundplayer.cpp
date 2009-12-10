@@ -120,6 +120,7 @@ ALboolean Soundplayer::loadData(int index, float volume)
     alSourcefv(source[index], AL_VELOCITY, sourceVelIn);
     alSourcei (source[index], AL_LOOPING,  loop);
     alSourcef (source[index], AL_GAIN,     volume);
+	alSourcef(source[index], AL_REFERENCE_DISTANCE, 20.0f);
 
 	 // Make an error check
     if (alGetError() == AL_NO_ERROR)
@@ -142,6 +143,7 @@ int Soundplayer::playSound(int index, float volume)
 	alListenerfv(AL_POSITION,    listenerPos);
 	alListenerfv(AL_VELOCITY,    listenerVel);
 	alListenerfv(AL_ORIENTATION, listenerOri);
+
 
 	//Play the sound
     alSourcePlay(source[index]);

@@ -21,6 +21,9 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	int amountOfBoxes;
 	int meanDistance;
 
+	//--Starting volume--
+	int sVolume = volume;
+
 	//-----Methods for determine what boxes that should be used-----
 
 	//--Remove objects that are too far away to consider--
@@ -102,10 +105,13 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	//--Simulate soundloss due to distance--
 	reduce = ((float)meanDistance*0.0006);
 	volume -= reduce;
+
+	//--Fix lower than 0 volume bugg and stop too high echos
 	if(volume < 0.0f)
 		volume = 0.0f;
-	if(volume > 1.0f)
-		volume = 0.8f;
+	if(volume > sVolume)
+		volume = sVolume;
+
 	//--Create and return an EchoProperties object--
 	EchoProperties eP = EchoProperties(volume, delay);
 	return eP;

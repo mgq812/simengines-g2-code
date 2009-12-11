@@ -10,8 +10,7 @@ using namespace Ogre;
 
 template<> OgreFramework* Ogre::Singleton<OgreFramework>::ms_Singleton = 0;
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Set some default values
 OgreFramework::OgreFramework()
 {
 	m_MoveSpeed			= 0.1;
@@ -36,28 +35,32 @@ OgreFramework::OgreFramework()
 	m_pInfoOverlay		= 0;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Initialize everyhing
 void OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener, OIS::MouseListener *pMouseListener)
 {
+	//To be able to write to the log
 	Ogre::LogManager* logMgr = new Ogre::LogManager();
 	
 	m_pLog = Ogre::LogManager::getSingleton().createLog("OgreLogfile.log", true, true, false);
 	m_pLog->setDebugOutputEnabled(true);
 	
+	//The root
 	m_pRoot = new Ogre::Root();
 
 	m_pRoot->showConfigDialog();
 	m_pRenderWnd = m_pRoot->initialise(true, wndTitle);
 
+	//The scene manager with some light
 	m_pSceneMgr = m_pRoot->createSceneManager(ST_GENERIC, "SceneManager");
 	m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7, 0.7, 0.7));
 	
+	//Set up the camera
 	m_pCamera = m_pSceneMgr->createCamera("Camera");
-	m_pCamera->setPosition(Vector3(60, 60, 60));
+	m_pCamera->setPosition(Vector3(0, 60, 60));
 	m_pCamera->lookAt(Vector3(0,0,0));
 	m_pCamera->setNearClipDistance(1);
 
+	//Viewport and backgroundcolor
 	m_pViewport = m_pRenderWnd->addViewport(m_pCamera);
 	m_pViewport->setBackgroundColour(ColourValue(0.8, 0.7, 0.6, 1.0));
 
@@ -65,6 +68,7 @@ void OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 	
 	m_pViewport->setCamera(m_pCamera);
 
+	//Create input devices
 	unsigned long hWnd = 0;
     OIS::ParamList paramList;
     m_pRenderWnd->getCustomAttribute("WINDOW", &hWnd);
@@ -89,6 +93,7 @@ void OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 	else
 		m_pMouse->setEventCallback(pMouseListener);
 
+	//Load resources
 	Ogre::String secName, typeName, archName;
 	Ogre::ConfigFile cf;
     cf.load("resources.cfg");
@@ -109,17 +114,19 @@ void OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
+	//Create the timer
 	m_pTimer = new Ogre::Timer();
 	m_pTimer->reset();
 	
+	//Create the debug overlay
 	m_pDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
 	m_pDebugOverlay->show();
 
+	//Activate the renderer
 	m_pRenderWnd->setActive(true);
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Clean up
 OgreFramework::~OgreFramework()
 {
 	if(m_pInputMgr)
@@ -132,18 +139,19 @@ OgreFramework::~OgreFramework()
 	delete m_pRoot;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Key pressed handeler
 bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
 {
 	m_pLog->logMessage("OgreFramework::keyPressed");
 	
+	//Esc to end the program
 	if(m_pKeyboard->isKeyDown(OIS::KC_ESCAPE))
 	{
 			m_bShutDownOgre = true;
 			return true;
 	}
 
+	//Printscreen to take printscreens
 	if(m_pKeyboard->isKeyDown(OIS::KC_SYSRQ))
 	{
 		std::ostringstream ss;
@@ -152,6 +160,7 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
 		return true;
 	}
 
+	//M to change polygon mode
 	if(m_pKeyboard->isKeyDown(OIS::KC_M))
 	{
 		static int mode = 0;
@@ -173,6 +182,7 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
 		}
 	}
 
+	//O to hide the debug overlay
 	if(m_pKeyboard->isKeyDown(OIS::KC_O))
 	{
 		if(m_pDebugOverlay)
@@ -187,43 +197,37 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Key released handeler
 bool OgreFramework::keyReleased(const OIS::KeyEvent &keyEventRef)
 {
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Mouse moved handeler
 bool OgreFramework::mouseMoved(const OIS::MouseEvent &evt)
 {
 	//m_TranslateVector.x += m_pMouse->getMouseState().relX * 0.1;
 	//m_pCamera->yaw(Degree(m_pMouse->getMouseState().relX * 0.1));
 	//m_pCamera->pitch(Degree(m_pMouse->getMouseState().relY * 0.1));
 	//m_pCamera->pitch(Degree(-m_pMouse->getMouseState().relX * 0.1));
-	//WTF?
 	//m_pCamera->yaw(Degree(-m_pMouse->getMouseState().relY * 0.1));
 	
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Mouse pressed handeler
 bool OgreFramework::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 {
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Mouse released handeler
 bool OgreFramework::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 {
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//OgreFramework update method
 void OgreFramework::updateOgre(double timeSinceLastFrame)
 {
 	m_MoveScale = m_MoveSpeed   * timeSinceLastFrame;
@@ -237,8 +241,7 @@ void OgreFramework::updateOgre(double timeSinceLastFrame)
 	updateStats();
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Update the status window
 void OgreFramework::updateStats() 
 { 
 	static String currFps = "Current FPS: "; 
@@ -271,16 +274,14 @@ void OgreFramework::updateStats()
 	guiDbg->setCaption("");
 } 
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Change camera position, if shift is hold move it tenfold
 void OgreFramework::moveCamera()
 {
 	if(m_pKeyboard->isKeyDown(OIS::KC_LSHIFT)) m_pCamera->moveRelative(m_TranslateVector);
 	m_pCamera->moveRelative(m_TranslateVector / 10);
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Check keyboard input and translate accordingly
 void OgreFramework::getInput()
 {
 	if(m_pKeyboard->isKeyDown(OIS::KC_A))

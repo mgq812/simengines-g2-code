@@ -18,14 +18,12 @@
 
 using namespace std;
 
-//A class to be instancified in order to add and play sounds from
-
 class Soundplayer
 {
 	public:	
 		Soundplayer();
 
-		void addSound(ALbyte* fN, float soundPositionX, float soudnPositionY, float soundPositionZ, float soundVelocityX, float soundVelocityY, float soundVelocityZ);
+		void addSound(ALbyte* fN, float soundPositionX, float soundPositionY, float soundPositionZ, float soundVelocityX, float soundVelocityY, float soundVelocityZ);
 		void setListenerPosition(float x, float y, float z);
 		void setListenerVelocity(float x, float y, float z);
 		void setListenerOrientation(float a, float b, float c, float d, float e, float f);	
@@ -35,7 +33,7 @@ class Soundplayer
 		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>>);
 
 	private:
-		ALboolean loadData(int index, float volume);
+		void loadData(int index, float volume);
 		
 		// Sound sources positions and velocities
 		vector<ALfloat> sourcePosX;
@@ -60,24 +58,5 @@ class Soundplayer
 		ALfloat listenerOri[6];
 };
 
-//Echo thread
-class EchoThread 
-{
-public:
-	EchoThread(int index, float volume, float delay, Soundplayer* sP);
-
-	// The entry point for a thread
-	void operator()();
-	
-private:
-	float delay;
-	float volume;
-	int index;
-	Soundplayer* sP;
-};
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 #endif
-
-//|||||||||||||||||||||||||||||||||||||||||||||||

@@ -50,7 +50,7 @@ void Soundplayer::setListenerPosition(float x, float y, float z)
 	listenerPos[2] = z;
 
 	//Update the listener position
-	alListenerfv(AL_POSITION,    listenerPos);
+	alListenerfv(AL_POSITION, listenerPos);
 }
 //A method for updating the listeners velocity. The input is three coordinates for a velocity vector. 
 void Soundplayer::setListenerVelocity(float x, float y, float z)
@@ -61,7 +61,7 @@ void Soundplayer::setListenerVelocity(float x, float y, float z)
 	listenerVel[2] = z;
 
 	//Update the listener velocity
-	alListenerfv(AL_VELOCITY,    listenerVel);
+	alListenerfv(AL_VELOCITY, listenerVel);
 }
 //A method for updating the listeners orientation. The input is six floats for the orientation. 
 void Soundplayer::setListenerOrientation(float a, float b, float c, float d, float e, float f)
@@ -87,7 +87,7 @@ void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 }
 
 //A method for loading sound data before playing it. The input is an index for what sound to load.
-ALboolean Soundplayer::loadData(int index, float volume)
+void Soundplayer::loadData(int index, float volume)
 {
     //Data holders
 	ALvoid* data;
@@ -96,25 +96,22 @@ ALboolean Soundplayer::loadData(int index, float volume)
     ALenum format;
 	ALboolean loop;
 
-	//Load wav data into a buffer
+	//Generate buffer and load wav data into it
     alGenBuffers(1, &buffer[index]);
-    if (alGetError() != AL_NO_ERROR)
-        return AL_FALSE;
 	alutLoadWAVFile(fileNames[index], &format, &data, &size, &freq, &loop);
     alBufferData(buffer[index], format, data, size, freq);
+
+	//Unload wav data
     alutUnloadWAV(format, data, size, freq);
 
-	//Bind buffer to a source
+	//Generate a source
 	alGenSources(1, &source[index]);
-
-    if (alGetError() != AL_NO_ERROR)
-        return AL_FALSE;
 
 	//Indata
 	ALfloat sourcePosIn[] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
 	ALfloat sourceVelIn[] = { sourceVelX[index], sourceVelY[index], sourceVelZ[index] };
 
-	//Setting sound data
+	//Setting sound data and binding buffer to source
 	alSourcei (source[index], AL_BUFFER,   buffer[index]);
     alSourcef (source[index], AL_PITCH,    1.0f);
 	alSourcefv(source[index], AL_POSITION, sourcePosIn);
@@ -122,34 +119,27 @@ ALboolean Soundplayer::loadData(int index, float volume)
     alSourcei (source[index], AL_LOOPING,  loop);
     alSourcef (source[index], AL_GAIN,     volume);
 	alSourcef(source[index], AL_REFERENCE_DISTANCE, 20.0f);
-	 // Make an error check
-    if (alGetError() == AL_NO_ERROR)
-        return AL_TRUE;
-
-    return AL_FALSE;
 }
 //A method that plays a sound that is decided by the input, which is an integer for what sound to play
 void Soundplayer::playSound(int index, float volume)
 {
-
+	//Initialize alut
     alutInit(NULL, NULL);
-    alGetError();
 
-	// Load the wav data.
+	// Load the wav data
 	loadData(index, volume);
-
 
 	//Set listener values
 	alListenerfv(AL_POSITION,    listenerPos);
 	alListenerfv(AL_VELOCITY,    listenerVel);
 	alListenerfv(AL_ORIENTATION, listenerOri);
 
-
 	//Play the sound
     alSourcePlay(source[index]);
 }
 
-struct MyMagicStruct
+//A struct for passing parameters into the ThreadPlayEcho method through a new thread created by the CreateThread() method
+struct ThreadParameterPassingStruct
 {
 	int i;
 	float v;
@@ -157,22 +147,28 @@ struct MyMagicStruct
 	Soundplayer* s;
 };
 
-DWORD WINAPI ThreadTwo(LPVOID lparam)
+//The method to be run by the new thread in order to play the echo. The parameter is cast into the right type(ThreadParameterPassingStruct)
+DWORD WINAPI ThreadPlayEcho(LPVOID lparam)
 {
-	MyMagicStruct ob = *(MyMagicStruct*)lparam;
-	Sleep(ob.d);
-	ob.s->playSound(ob.i, ob.v);
+	//Cast parameter into struct
+	ThreadParameterPassingStruct param = *(ThreadParameterPassingStruct*)lparam;
+	
+	//Sleep for the delay time
+	Sleep(param.d);
+	
+	//Play the echo sound and return
+	param.s->playSound(param.i, param.v);
 	return 0;
 }
 
 //A struct needed for sending many parameters into the thread
-MyMagicStruct ma;
+ThreadParameterPassingStruct tPPS;
 
 //A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play
 void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>> boxPositions)
 {
+	//Initialize alut
     alutInit(NULL, NULL);
-    alGetError();
 
 	// Load the wav data.
     loadData(index, volume);
@@ -193,15 +189,19 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValu
 	float newVolume = echoProperties.getVolume();
 	float delay = echoProperties.getDelay();
 	
-	ma.i = index;
-	ma.v = newVolume;
-	ma.d = delay;
-	ma.s = this;
+	//Put parameters in the struct made for passing parameters into the thread
+	tPPS.i = index;
+	tPPS.v = newVolume;
+	tPPS.d = delay;
+	tPPS.s = this;
 
-	HANDLE hThread[1];
-	DWORD dwID[1];
-	//release the threads. Remember, ThreadOne is our main thread
-	hThread[0] = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadTwo,&ma,0,&dwID[0]);
+	//Create the thread handle
+	HANDLE thread;
 
-	CloseHandle(hThread[0]);
+	//Create and start a new thread, running the ThreadPlayEcho method, taking a voidpointer to a ThreadParameterPassingStruct as input
+	//This thread plays the echo of the sound after a certain time decided by the Echo class's calculation
+	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadPlayEcho,&tPPS,0,0);
+	
+	//Release the thread
+	CloseHandle(thread);
 }

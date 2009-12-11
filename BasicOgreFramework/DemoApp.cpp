@@ -138,6 +138,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_F))
 	{
+		//Find all entities and send their needed input into the playSoundWithEcho() method
 		vector<int> boxValues;
 		vector<vector<int>> boxPositions;
 		vector<SceneNode*> allSceneNodes;

@@ -40,7 +40,6 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 			boxValues.erase(boxValues.begin() + i);
 			boxPositions.erase(boxPositions.begin() + i);
 		}
-
 	}
 
 	//--Remove boxes that are too close--
@@ -97,7 +96,7 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 		meanDistance += distances[i];
 	meanDistance /= amountOfBoxes;
 	
-	//Scale the delay after the distance
+	//--Scale the delay after the distance--
 	delay = meanDistance*2;
 
 	//--Create and return an EchoProperties object--

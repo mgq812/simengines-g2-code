@@ -1,39 +1,39 @@
-01:00:58: Creating resource group General
-01:00:58: Creating resource group Internal
-01:00:58: Creating resource group Autodetect
-01:00:58: SceneManagerFactory for type 'DefaultSceneManager' registered.
-01:00:58: Registering ResourceManager for type Material
-01:00:58: Registering ResourceManager for type Mesh
-01:00:58: Registering ResourceManager for type Skeleton
-01:00:58: MovableObjectFactory for type 'ParticleSystem' registered.
-01:00:58: OverlayElementFactory for type Panel registered.
-01:00:58: OverlayElementFactory for type BorderPanel registered.
-01:00:58: OverlayElementFactory for type TextArea registered.
-01:00:58: Registering ResourceManager for type Font
-01:00:58: ArchiveFactory for archive type FileSystem registered.
-01:00:58: ArchiveFactory for archive type Zip registered.
-01:00:58: FreeImage version: 3.10.0
-01:00:58: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
-01:00:58: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2
-01:00:58: DDS codec registering
-01:00:58: Registering ResourceManager for type HighLevelGpuProgram
-01:00:58: Registering ResourceManager for type Compositor
-01:00:58: MovableObjectFactory for type 'Entity' registered.
-01:00:58: MovableObjectFactory for type 'Light' registered.
-01:00:58: MovableObjectFactory for type 'BillboardSet' registered.
-01:00:58: MovableObjectFactory for type 'ManualObject' registered.
-01:00:58: MovableObjectFactory for type 'BillboardChain' registered.
-01:00:58: MovableObjectFactory for type 'RibbonTrail' registered.
-01:00:58: OGRE EXCEPTION(6:FileNotFoundException): 'plugins.cfg' file not found! in ConfigFile::load at ..\src\OgreConfigFile.cpp (line 84)
-01:00:58: plugins.cfg not found, automatic plugin loading disabled.
-01:00:58: *-*-* OGRE Initialising
-01:00:58: *-*-* Version 1.6.1 (Shoggoth)
-01:00:58: OGRE EXCEPTION(6:FileNotFoundException): 'ogre.cfg' file not found! in ConfigFile::load at ..\src\OgreConfigFile.cpp (line 84)
-01:01:02: OGRE EXCEPTION(1:InvalidStateException): Cannot initialise - no render system has been selected. in Root::initialise at ..\src\OgreRoot.cpp (line 510)
-01:01:02: *-*-* OGRE Shutdown
-01:01:02: Unregistering ResourceManager for type Compositor
-01:01:02: Unregistering ResourceManager for type Font
-01:01:02: Unregistering ResourceManager for type Skeleton
-01:01:02: Unregistering ResourceManager for type Mesh
-01:01:02: Unregistering ResourceManager for type HighLevelGpuProgram
-01:01:02: Unregistering ResourceManager for type Material
+15:09:34: Creating resource group General
+15:09:34: Creating resource group Internal
+15:09:34: Creating resource group Autodetect
+15:09:34: SceneManagerFactory for type 'DefaultSceneManager' registered.
+15:09:34: Registering ResourceManager for type Material
+15:09:34: Registering ResourceManager for type Mesh
+15:09:34: Registering ResourceManager for type Skeleton
+15:09:34: MovableObjectFactory for type 'ParticleSystem' registered.
+15:09:34: OverlayElementFactory for type Panel registered.
+15:09:34: OverlayElementFactory for type BorderPanel registered.
+15:09:34: OverlayElementFactory for type TextArea registered.
+15:09:34: Registering ResourceManager for type Font
+15:09:34: ArchiveFactory for archive type FileSystem registered.
+15:09:34: ArchiveFactory for archive type Zip registered.
+15:09:34: FreeImage version: 3.10.0
+15:09:34: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
+15:09:34: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2
+15:09:34: DDS codec registering
+15:09:34: Registering ResourceManager for type HighLevelGpuProgram
+15:09:34: Registering ResourceManager for type Compositor
+15:09:34: MovableObjectFactory for type 'Entity' registered.
+15:09:34: MovableObjectFactory for type 'Light' registered.
+15:09:34: MovableObjectFactory for type 'BillboardSet' registered.
+15:09:34: MovableObjectFactory for type 'ManualObject' registered.
+15:09:34: MovableObjectFactory for type 'BillboardChain' registered.
+15:09:34: MovableObjectFactory for type 'RibbonTrail' registered.
+15:09:34: OGRE EXCEPTION(6:FileNotFoundException): 'plugins.cfg' file not found! in ConfigFile::load at ..\src\OgreConfigFile.cpp (line 84)
+15:09:34: plugins.cfg not found, automatic plugin loading disabled.
+15:09:34: *-*-* OGRE Initialising
+15:09:34: *-*-* Version 1.6.4 (Shoggoth)
+15:09:34: OGRE EXCEPTION(6:FileNotFoundException): 'ogre.cfg' file not found! in ConfigFile::load at ..\src\OgreConfigFile.cpp (line 84)
+15:09:41: OGRE EXCEPTION(1:InvalidStateException): Cannot initialise - no render system has been selected. in Root::initialise at ..\src\OgreRoot.cpp (line 510)
+15:09:41: *-*-* OGRE Shutdown
+15:09:41: Unregistering ResourceManager for type Compositor
+15:09:41: Unregistering ResourceManager for type Font
+15:09:41: Unregistering ResourceManager for type Skeleton
+15:09:41: Unregistering ResourceManager for type Mesh
+15:09:41: Unregistering ResourceManager for type HighLevelGpuProgram
+15:09:41: Unregistering ResourceManager for type Material

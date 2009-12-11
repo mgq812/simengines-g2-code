@@ -40,6 +40,7 @@ void DemoApp::startDemo()
 //|||||||||||||||||||||||||||||||||||||||||||||||
 void DemoApp::setupDemoScene()
 {
+	vector<vector<AstarNode*>> graphMap = Astar::GenerateGraphMap(1);
 	OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
 	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setWorldGeometry("terrain.cfg");
 

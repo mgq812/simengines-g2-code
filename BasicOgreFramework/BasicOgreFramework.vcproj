@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
+				AdditionalIncludeDirectories="..\svn;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -180,6 +180,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Extensions\AI\Astar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DemoApp.cpp"
 				>
 			</File>
@@ -189,6 +193,10 @@
 			</File>
 			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Extensions\AI\Node.cpp"
 				>
 			</File>
 			<File
@@ -205,6 +213,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Extensions\AI\Astar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Extensions\AI\AstarNode.h"
+				>
+			</File>
 			<File
 				RelativePath=".\DemoApp.hpp"
 				>

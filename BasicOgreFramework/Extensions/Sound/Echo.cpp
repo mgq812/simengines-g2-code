@@ -71,8 +71,10 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	}
 
 	//--Scale volume after how much reflection there is--
-	volume -= ((float)tRV/1000000);
-
+	if(tRV > 1000000.0f)
+		tRV = 1000000.0f;
+	float reduce = (1.0f -((float)tRV/1000000));
+	volume -= reduce;
 
 	//--Calculate the delay of the sound--
 	for(int i = 0; i < boxValues.size(); i++)
@@ -98,7 +100,10 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	delay = meanDistance*1.5;
 
 	//--Simulate soundloss due to distance--
-	volume -= ((float)meanDistance*0.0006);
+	reduce = ((float)meanDistance*0.0006);
+	volume -= reduce;
+	if(volume < 0.0f)
+		volume = 0.0f;
 
 	//--Create and return an EchoProperties object--
 	EchoProperties eP = EchoProperties(volume, delay);

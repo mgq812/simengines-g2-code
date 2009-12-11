@@ -47,13 +47,14 @@ void DemoApp::setupDemoScene()
 	OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
 
 	//Creating the ground	
-	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2", "models\\woodpallet.mesh");
-	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3");
-	m_pCubeNode->attachObject(m_pCubeEntity);
-	m_pCubeNode->setScale(Vector3(100.0f, 1.0f, 100.0f));
+	//m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2", "models\\ninja.mesh");
+	//m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3");
+	//m_pCubeNode->attachObject(m_pCubeEntity);
+	//m_pCubeNode->setScale(Vector3(100.0f, 1.0f, 100.0f));
 
 	//Creating the character
-	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "models\\ogrehead.mesh");
+	//m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "models\\ogrehead.mesh");
+	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "ogrehead.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode", Vector3(100.0f, 0.0f, 200));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 	

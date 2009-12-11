@@ -104,7 +104,8 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	volume -= reduce;
 	if(volume < 0.0f)
 		volume = 0.0f;
-
+	if(volume > 1.0f)
+		volume = 0.8f;
 	//--Create and return an EchoProperties object--
 	EchoProperties eP = EchoProperties(volume, delay);
 	return eP;

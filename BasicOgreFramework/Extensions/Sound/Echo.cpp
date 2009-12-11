@@ -3,14 +3,14 @@
 #include "Echo.h"
 #include "math.h"
 
-EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vector<int>> boxPositions , float soundPosition[3])
+EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<int>> boxPositions , float soundPosition[3])
 {
 	//-----Initialization of used variables-----
 	//--The delay of the echo--
 	int delay = 0;
 
-	//--The total reflecting area--
-	int tRA = 0;
+	//--The total reflecting value--
+	int tRV = 0;
 
 	//--Distance vector between sound source and boxes for calculations and the actual distance--
 	float distanceVector[3];
@@ -64,17 +64,15 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 
 	//-----Calculations of areas, echo, distance delay and return-----
 
-	//--Calculate the total reflecting area--
+	//--Calculate the total reflecting value--
 	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
-		tRA += boxValues[i];
+		tRV += boxValues[i];
 	}
 
-	//--Scale sound after the total reflacting area--
-	
-	//TEMP
-	tRA = 1000;
-	volume *= tRA*0.001;
+	//--Scale volume after how much reflection there is--
+	volume -= ((float)tRV/1000000);
+
 
 	//--Calculate the delay of the sound--
 	for(int i = 0; i < boxValues.size(); i++)
@@ -97,7 +95,10 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 	meanDistance /= amountOfBoxes;
 	
 	//--Scale the delay after the distance--
-	delay = meanDistance*2;
+	delay = meanDistance*1.5;
+
+	//--Simulate soundloss due to distance--
+	volume -= ((float)meanDistance*0.0006);
 
 	//--Create and return an EchoProperties object--
 	EchoProperties eP = EchoProperties(volume, delay);

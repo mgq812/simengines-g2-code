@@ -112,13 +112,13 @@ void Soundplayer::loadData(int index, float volume)
 	ALfloat sourceVelIn[] = { sourceVelX[index], sourceVelY[index], sourceVelZ[index] };
 
 	//Setting sound data and binding buffer to source
-	alSourcei (source[index], AL_BUFFER,   buffer[index]);
-    alSourcef (source[index], AL_PITCH,    1.0f);
+	alSourcei (source[index], AL_BUFFER, buffer[index]);
+    alSourcef (source[index], AL_PITCH, 1.0f);
 	alSourcefv(source[index], AL_POSITION, sourcePosIn);
     alSourcefv(source[index], AL_VELOCITY, sourceVelIn);
-    alSourcei (source[index], AL_LOOPING,  loop);
-    alSourcef (source[index], AL_GAIN,     volume);
-	alSourcef(source[index], AL_REFERENCE_DISTANCE, 20.0f);
+    alSourcei (source[index], AL_LOOPING, loop);
+    alSourcef (source[index], AL_GAIN, volume);
+	alSourcef(source[index], AL_REFERENCE_DISTANCE, 40.0f);
 }
 //A method that plays a sound that is decided by the input, which is an integer for what sound to play
 void Soundplayer::playSound(int index, float volume)

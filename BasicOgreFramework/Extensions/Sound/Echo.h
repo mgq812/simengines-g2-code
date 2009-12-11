@@ -14,7 +14,7 @@ using namespace std;
 class Echo
 {
 	public:	
-		static EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vector<int>> boxPositions, float soundPosition[3]);
+		static EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<int>> boxPositions, float soundPosition[3]);
 };
 //|||||||||||||||||||||||||||||||||||||||||||||||
 

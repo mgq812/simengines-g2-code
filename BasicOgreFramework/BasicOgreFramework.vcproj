@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\svn;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
+				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -137,9 +137,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib OIS.lib OIS_static.lib CEGUIBase.lib OgreGUIRenderer.lib ALut.lib OpenAL32.lib"
+				AdditionalDependencies="OgreMain.lib OIS.lib OIS_static.lib CEGUIBase.lib OgreGUIRenderer.lib ALut.lib OpenAL32.lib NxOgre.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\BasicOgreFramework\OpenAL\libs\Win32;..\BasicOgreFramework\OIS\libs\VC8;..\BasicOgreFramework\OgreSDK\lib;..\BasicOgreFramework\boost_1_40\lib"
+				AdditionalLibraryDirectories="..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\OpenAL\libs\Win32;..\BasicOgreFramework\OIS\libs\VC8;..\BasicOgreFramework\OgreSDK\lib;..\BasicOgreFramework\boost_1_40\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"

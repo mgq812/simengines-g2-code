@@ -5,7 +5,6 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-#include <OgreAxisAlignedBox.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <al.h>
@@ -16,13 +15,12 @@
 #include <vector>
 #include <Echo.h>
 #include <iostream>
-#include <boost/thread/thread.hpp>
 
 using namespace std;
 
 //A class to be instancified in order to add and play sounds from
 
-class Soundplayer : public Ogre::AxisAlignedBox
+class Soundplayer
 {
 	public:	
 		Soundplayer();
@@ -33,8 +31,8 @@ class Soundplayer : public Ogre::AxisAlignedBox
 		void setListenerOrientation(float a, float b, float c, float d, float e, float f);	
 		void setSourcePosition(int index, float x, float y, float z);
 
-		int playSound(int index, float volume);
-		int playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>>);
+		void playSound(int index, float volume);
+		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>>);
 
 	private:
 		ALboolean loadData(int index, float volume);

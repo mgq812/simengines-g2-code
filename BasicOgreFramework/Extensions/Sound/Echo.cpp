@@ -18,7 +18,7 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 
 	//--List of distances for calculating the delay--
 	vector<int> distances;
-	int amounOfBoxes;
+	int amountOfBoxes;
 	int meanDistance;
 
 	//-----Methods for determine what boxes that should be used-----
@@ -35,16 +35,13 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 		distanceVector[2] -= soundPosition[2];
 		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
 		//If close enough, save the boxes
-		if(distance > volume*1000)
+		if(distance > volume*750)
 		{
 			boxValues.erase(boxValues.begin() + i);
 			boxPositions.erase(boxPositions.begin() + i);
 		}
 
 	}
-
-	//--Remove occluded boxes--
-
 
 	//--Remove boxes that are too close--
 	for(unsigned int i = 0; i < boxValues.size(); i++)
@@ -81,9 +78,7 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 	volume *= tRA*0.001;
 
 	//--Calculate the delay of the sound--
-	//TEMP
-	delay = 500;
-	/*for(int i = 0; i < boxValues.size(); i++)
+	for(int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
 		distanceVector[0] = boxPositions[i][0];
@@ -92,17 +87,18 @@ EchoProperties Echo::calculateEcho(int volume, vector<int> boxValues, vector<vec
 		distanceVector[0] -= soundPosition[0];
 		distanceVector[1] -= soundPosition[1];
 		distanceVector[2] -= soundPosition[2];
-		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
 		
 		//Add the distance to the list
-		distances.push_back(distance);
+		distances.push_back(sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2)));
 	}
+	//Calculate the mean distance
 	amountOfBoxes = distances.size();
 	for(int i = 0; i < amountOfBoxes; i++)
 		meanDistance += distances[i];
 	meanDistance /= amountOfBoxes;
-
-	*/
+	
+	//Scale the delay after the distance
+	delay = meanDistance*2;
 
 	//--Create and return an EchoProperties object--
 	EchoProperties eP = EchoProperties(volume, delay);

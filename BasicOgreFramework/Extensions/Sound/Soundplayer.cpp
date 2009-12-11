@@ -1,6 +1,7 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include "Soundplayer.h"
+#include "windows.h"
 
 //Soundplayer constructor for setting default listener values
 Soundplayer::Soundplayer()
@@ -121,7 +122,6 @@ ALboolean Soundplayer::loadData(int index, float volume)
     alSourcei (source[index], AL_LOOPING,  loop);
     alSourcef (source[index], AL_GAIN,     volume);
 	alSourcef(source[index], AL_REFERENCE_DISTANCE, 20.0f);
-
 	 // Make an error check
     if (alGetError() == AL_NO_ERROR)
         return AL_TRUE;
@@ -129,15 +129,15 @@ ALboolean Soundplayer::loadData(int index, float volume)
     return AL_FALSE;
 }
 //A method that plays a sound that is decided by the input, which is an integer for what sound to play
-int Soundplayer::playSound(int index, float volume)
+void Soundplayer::playSound(int index, float volume)
 {
 
     alutInit(NULL, NULL);
     alGetError();
 
-	  // Load the wav data.
-    if (loadData(index, volume) == AL_FALSE)
-        return -1;
+	// Load the wav data.
+	loadData(index, volume);
+
 
 	//Set listener values
 	alListenerfv(AL_POSITION,    listenerPos);
@@ -147,19 +147,35 @@ int Soundplayer::playSound(int index, float volume)
 
 	//Play the sound
     alSourcePlay(source[index]);
-	
-	return 1;
 }
 
+struct MyMagicStruct
+{
+	int i;
+	float v;
+	float d;
+	Soundplayer* s;
+};
+
+DWORD WINAPI ThreadTwo(LPVOID lparam)
+{
+	MyMagicStruct ob = *(MyMagicStruct*)lparam;
+	Sleep(ob.d);
+	ob.s->playSound(ob.i, ob.v);
+	return 0;
+}
+
+//A struct needed for sending many parameters into the thread
+MyMagicStruct ma;
+
 //A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play
-int Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>> boxPositions)
+void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>> boxPositions)
 {
     alutInit(NULL, NULL);
     alGetError();
 
-	  // Load the wav data.
-    if (loadData(index, volume) == AL_FALSE)
-        return -1;
+	// Load the wav data.
+    loadData(index, volume);
 
 	//Set listener values
 	alListenerfv(AL_POSITION,    listenerPos);
@@ -173,27 +189,19 @@ int Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValue
 	float in[3] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
 	EchoProperties echoProperties = Echo::calculateEcho(volume, boxValues, boxPositions, in);
 	
-	//Change volume and wait
+	//Change volume and waiting time
 	float newVolume = echoProperties.getVolume();
 	float delay = echoProperties.getDelay();
+	
+	ma.i = index;
+	ma.v = newVolume;
+	ma.d = delay;
+	ma.s = this;
 
-	//Start an echo thread
-	boost::thread echoThread(EchoThread(index, newVolume, delay, this));
-	echoThread.join();
+	HANDLE hThread[1];
+	DWORD dwID[1];
+	//release the threads. Remember, ThreadOne is our main thread
+	hThread[0] = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadTwo,&ma,0,&dwID[0]);
 
-	return 1;
-}
-
-//The constructor of the EchoThread
-EchoThread::EchoThread(int index, float volume, float delay, Soundplayer* sP)
-{
-		this->index = index;
-		this->volume = volume;
-		this->sP = sP;
-		this->delay = delay;
-}
-void EchoThread::operator ()()
-{
-		boost::this_thread::sleep(boost::posix_time::milliseconds(delay));
-		sP->playSound(index, volume);
+	CloseHandle(hThread[0]);
 }

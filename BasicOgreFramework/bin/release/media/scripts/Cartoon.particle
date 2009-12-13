@@ -18,8 +18,7 @@ particle_system Cartoon/SnowFall
         direction       0 -1 0
         velocity_min    20
         velocity_max    130
-        colour_range_start  0 0 0
-        colour_range_end    1 1 1
+        colour		    1 1 1
     }
 
     // Gravity

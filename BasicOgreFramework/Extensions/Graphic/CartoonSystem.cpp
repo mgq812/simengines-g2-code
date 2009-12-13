@@ -44,7 +44,7 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeSky()
 	{
-		cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky");
+		//cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky");
 	}
 
 	void CartoonSystem::makeSun()

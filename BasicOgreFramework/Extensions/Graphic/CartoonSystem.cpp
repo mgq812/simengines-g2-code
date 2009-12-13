@@ -17,6 +17,7 @@ namespace CartoonCaelum {
 		for (int k=0; k<8; k++) {
 			snowNode[k] = cSceneMgr->getRootSceneNode()->createChildSceneNode();
 		}
+		hasWindVector = false;
 		timer = new Real(0.0);
 		setupResources();
 		loadResources();
@@ -56,8 +57,8 @@ namespace CartoonCaelum {
 	void CartoonSystem::makeWeather()
 	{
 		for (int k=0; k<2; k++) {
-			snowNode[k]->attachObject(
-				cSceneMgr->createParticleSystem("snowSystem"+k, "Cartoon/SnowFall"));
+			snowPS[k] = cSceneMgr->createParticleSystem("snowSystem"+k, "Cartoon/SnowFall");
+			snowNode[k]->attachObject(snowPS[k]);
 		}
 	}
 
@@ -116,6 +117,21 @@ namespace CartoonCaelum {
 	{
 		Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
         ResourceGroupManager::getSingleton().initialiseResourceGroup("Cartoon");
+	}
+	void CartoonSystem::setWindVector(Vector3 wind) 
+	{
+		for (int k=0; k<8; k++) 
+		{
+			if (hasWindVector) 
+			{
+				snowPS[k]->removeAffector(snowPS[k]->getNumAffectors()-1);
+			}
+			snowPS[k]->addAffector("LinearForce");
+			snowPS[k]->getAffector(snowPS[k]->getNumAffectors()-1)->setParameter("force_vector", StringConverter::toString(wind.x)
+				+" "+StringConverter::toString(wind.y)+" "+StringConverter::toString(wind.z));
+			snowPS[k]->getAffector(snowPS[k]->getNumAffectors()-1)->setParameter("force_application", "add");
+			hasWindVector = true;
+		}
 	}
 
 }

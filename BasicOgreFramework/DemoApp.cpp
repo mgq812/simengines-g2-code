@@ -54,7 +54,10 @@ void DemoApp::setupDemoScene()
 	mScene = mWorld->createScene(sceneDesc);*/
 
 	//The sky system
-	CartoonCaelum::CartoonSystem* cartoon = new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
+	CartoonCaelum::CartoonSystem* cartoon = 
+		new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, 
+		OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
+	cartoon->setWindVector(Ogre::Vector3(50,0,0));
 	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
 
 

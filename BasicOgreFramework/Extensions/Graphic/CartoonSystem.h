@@ -24,6 +24,10 @@ namespace CartoonCaelum {
 
 		Ogre::SceneNode *snowNode[8];
 
+		Ogre::ParticleSystem *snowPS[8];
+
+		bool hasWindVector;
+
 		virtual bool frameStarted (const Ogre::FrameEvent &e);
 
 		void updateComponents(Ogre::Real timeSinceLastFrame);
@@ -51,6 +55,8 @@ namespace CartoonCaelum {
 		void setupResources();
 
 		void loadResources();
+
+		void setWindVector(Ogre::Vector3 wind);
 			
 	};
 

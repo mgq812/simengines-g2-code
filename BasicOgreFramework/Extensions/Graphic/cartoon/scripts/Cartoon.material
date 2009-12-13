@@ -1,0 +1,154 @@
+
+material Cartoon/WeirdSky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				cubic_texture weirdsky.jpg separateUV
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Cartoon/YellowSky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				cubic_texture yellowsky.jpg separateUV
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Cartoon/EveningSky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				cubic_texture eveningsky.jpg separateUV
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+material Cartoon/NightSky
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture nightsky.jpg
+				scroll_anim 0.15 0
+			}
+		}
+	}
+}
+
+material Cartoon/Sun
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture comic_sun.png
+			}
+		}
+	}
+}
+
+material Cartoon/SleepyFace
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			texture_unit
+			{
+				texture sleepy_face.png
+			}
+		}
+	}
+}
+
+material Cartoon/HappyFace
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			texture_unit
+			{
+				texture happy_face.png
+			}
+		}
+	}
+}
+
+material Cartoon/SnowFlake
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+			texture_unit
+			{
+				texture snowflake.png
+			}
+		}
+	}
+}
+
+material Cartoon/SkyDome
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture ohyay.jpg
+				scroll_anim 0.15 0
+			}
+		}
+	}
+}

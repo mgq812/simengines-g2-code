@@ -30,7 +30,7 @@ class Soundplayer
 		void setSourcePosition(int index, float x, float y, float z);
 
 		void playSound(int index, float volume);
-		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>>);
+		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPosition);
 
 	private:
 		void loadData(int index, float volume);

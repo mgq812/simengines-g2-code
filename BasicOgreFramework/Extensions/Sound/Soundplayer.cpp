@@ -143,7 +143,7 @@ struct ThreadParameterPassingStruct
 {
 	int i;
 	float v;
-	float d;
+	int d;
 	Soundplayer* s;
 };
 
@@ -154,7 +154,7 @@ DWORD WINAPI ThreadPlayEcho(LPVOID lparam)
 	ThreadParameterPassingStruct param = *(ThreadParameterPassingStruct*)lparam;
 	
 	//Sleep for the delay time
-	Sleep(param.d);
+	Sleep((DWORD)param.d);
 	
 	//Play the echo sound and return
 	param.s->playSound(param.i, param.v);
@@ -165,7 +165,7 @@ DWORD WINAPI ThreadPlayEcho(LPVOID lparam)
 ThreadParameterPassingStruct tPPS;
 
 //A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play
-void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<int>> boxPositions)
+void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPositions)
 {
 	//Initialize alut
     alutInit(NULL, NULL);
@@ -187,7 +187,7 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValu
 	
 	//Change volume and waiting time
 	float newVolume = echoProperties.getVolume();
-	float delay = echoProperties.getDelay();
+	int delay = echoProperties.getDelay();
 	
 	//Put parameters in the struct made for passing parameters into the thread
 	tPPS.i = index;

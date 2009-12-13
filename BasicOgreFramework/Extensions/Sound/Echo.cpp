@@ -3,26 +3,26 @@
 #include "Echo.h"
 #include "math.h"
 
-EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<int>> boxPositions , float soundPosition[3])
+EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<float>> boxPositions , float soundPosition[3])
 {
 	//-----Initialization of used variables-----
 	//--The delay of the echo--
 	int delay = 0;
 
 	//--The total reflecting value--
-	int tRV = 0;
+	float tRV = 0;
 
 	//--Distance vector between sound source and boxes for calculations and the actual distance--
 	float distanceVector[3];
-	int distance = 0;
+	float distance = 0;
 
 	//--List of distances for calculating the delay--
-	vector<int> distances;
+	vector<float> distances;
 	int amountOfBoxes;
-	int meanDistance;
+	float meanDistance = 0;
 
 	//--Starting volume--
-	int sVolume = volume;
+	float sVolume = volume;
 
 	//-----Methods for determine what boxes that should be used-----
 
@@ -36,7 +36,7 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 		distanceVector[0] -= soundPosition[0];
 		distanceVector[1] -= soundPosition[1];
 		distanceVector[2] -= soundPosition[2];
-		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
+		distance = (float)sqrt(pow((double)distanceVector[0], 2) + pow((double)distanceVector[1], 2) + pow((double)distanceVector[2], 2));
 		//If close enough, save the boxes
 		if(distance > volume*750)
 		{
@@ -49,9 +49,9 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
-		distanceVector[0] = boxPositions[i][0];
-		distanceVector[1] = boxPositions[i][1];
-		distanceVector[2] = boxPositions[i][2];
+		distanceVector[0] = (float)boxPositions[i][0];
+		distanceVector[1] = (float)boxPositions[i][1];
+		distanceVector[2] = (float)boxPositions[i][2];
 		distanceVector[0] -= soundPosition[0];
 		distanceVector[1] -= soundPosition[1];
 		distanceVector[2] -= soundPosition[2];
@@ -80,7 +80,7 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	volume -= reduce;
 
 	//--Calculate the delay of the sound--
-	for(int i = 0; i < boxValues.size(); i++)
+	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
 		distanceVector[0] = boxPositions[i][0];
@@ -91,19 +91,19 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 		distanceVector[2] -= soundPosition[2];
 		
 		//Add the distance to the list
-		distances.push_back(sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2)));
+		distances.push_back((float)sqrt(pow((double)distanceVector[0], 2) + pow((double)distanceVector[1], 2) + pow((double)distanceVector[2], 2)));
 	}
 	//Calculate the mean distance
-	amountOfBoxes = distances.size();
+	amountOfBoxes = (int)distances.size();
 	for(int i = 0; i < amountOfBoxes; i++)
 		meanDistance += distances[i];
 	meanDistance /= amountOfBoxes;
 	
 	//--Scale the delay after the distance--
-	delay = meanDistance*1.5;
+	delay = (int)(meanDistance*1.5);
 
 	//--Simulate soundloss due to distance--
-	reduce = ((float)meanDistance*0.0006);
+	reduce = (float)(meanDistance*0.0006);
 	volume -= reduce;
 
 	//--Fix lower than 0 volume bugg and stop too high echos

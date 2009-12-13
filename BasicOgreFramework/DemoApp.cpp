@@ -5,6 +5,7 @@
 #include <OgreLight.h>
 #include <OgreWindowEventUtilities.h>
 #include "math.h"
+#include "CartoonSystem.h"
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 
@@ -39,9 +40,15 @@ void DemoApp::startDemo()
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 void DemoApp::setupDemoScene()
-{
+{		
+	//The sky system
+	CartoonCaelum::CartoonSystem* cartoon = new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
+	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
+
+
 	vector<vector<AstarNode*>> graphMap = Astar::GenerateGraphMap(1);
-	OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
+	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
 	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setWorldGeometry("terrain.cfg");
 
 	//Create light
@@ -52,7 +59,7 @@ void DemoApp::setupDemoScene()
 	//m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3");
 	//m_pCubeNode->attachObject(m_pCubeEntity);
 	//m_pCubeNode->setScale(Vector3(100.0f, 1.0f, 100.0f));
-
+	
 	//Creating the character
 	//m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "models\\ogrehead.mesh");
 	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "ogrehead.mesh");

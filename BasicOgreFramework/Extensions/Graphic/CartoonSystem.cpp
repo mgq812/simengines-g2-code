@@ -44,12 +44,12 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeSky()
 	{
-		cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky");
+		//cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky");
 	}
 
 	void CartoonSystem::makeSun()
 	{
-		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 5500, new Radian(*(new Degree(0))));
+		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 1000, new Radian(*(new Degree(0))));
 		cSun->setMood("Cartoon/SleepyFace");
 	}
 
@@ -114,6 +114,7 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::loadResources()
 	{
+		Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
         ResourceGroupManager::getSingleton().initialiseResourceGroup("Cartoon");
 	}
 

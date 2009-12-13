@@ -23,7 +23,8 @@ public:
 private:
 	void setupDemoScene();
 	void runDemo();
-	
+
+	//The soundplayer
 	Soundplayer play;
 
 	Ogre::SceneNode*			m_pCubeNode;

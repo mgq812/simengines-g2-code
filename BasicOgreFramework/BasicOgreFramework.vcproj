@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\rendersystems\ogre;..\BasicOgreFramework\PhysxSDK\SDKs\PhysXLoader;..\BasicOgreFramework\PhysxSDK\SDKs\Physics;..\BasicOgreFramework\PhysxSDK\SDKs\Foundation;..\BasicOgreFramework\PhysxSDK\SDKs\Cooking;..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\Graphic;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
+				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\rendersystems\ogre;..\BasicOgreFramework\PhysxSDK\SDKs\PhysXLoader\include;..\BasicOgreFramework\PhysxSDK\SDKs\Physics\include;..\BasicOgreFramework\PhysxSDK\SDKs\Foundation\include;..\BasicOgreFramework\PhysxSDK\SDKs\Cooking\include;..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\Graphic;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes;..\BasicOgreFramework\Extensions\Physic"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -218,6 +218,10 @@
 			<Filter
 				Name="Physic"
 				>
+				<File
+					RelativePath=".\Extensions\Physic\ProjectileCannon.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Graphic"
@@ -296,6 +300,10 @@
 			<Filter
 				Name="Physic"
 				>
+				<File
+					RelativePath=".\Extensions\Physic\ProjectileCannon.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

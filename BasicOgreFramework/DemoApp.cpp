@@ -5,10 +5,11 @@
 #include <OgreLight.h>
 #include <OgreWindowEventUtilities.h>
 #include "math.h"
-#include "CartoonSystem.h"
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 
+int ID;
+ProjectileCannon* cannon; 
 
 DemoApp::DemoApp()
 {
@@ -41,18 +42,65 @@ void DemoApp::startDemo()
 //|||||||||||||||||||||||||||||||||||||||||||||||
 void DemoApp::setupDemoScene()
 {
-		
-	NxOgre::World* mWorld;
-	NxOgre::Scene* mScene;
-	OGRE3DRenderSystem* mRenderSystem;
-	//mWorld = NxOgre::World::createWorld();
-	/*
+	NxOgre::World*		mWorld;
+	NxOgre::Scene*		mScene;
+	NxOgre::TimeController*	mTimeController;
+	OGRE3DRenderSystem*	mRenderSystem;
+	mWorld = NxOgre::World::createWorld();
+	
 	NxOgre::SceneDescription sceneDesc;
 	sceneDesc.mGravity = NxOgre::Vec3(0, -9.8f, 0);
 	sceneDesc.mName = "BloodyMessTutorial2";
 
-	mScene = mWorld->createScene(sceneDesc);*/
+	mScene = mWorld->createScene(sceneDesc);
 
+		
+	mRenderSystem = new OGRE3DRenderSystem(mScene);
+
+	mTimeController = NxOgre::TimeController::getSingleton();
+	//create a plane
+	mScene->createSceneGeometry(new NxOgre::PlaneGeometry(0, NxOgre::Vec3(0, 1, 0)));
+
+	MovablePlane *plane = new MovablePlane("Plane");
+	plane->d = 0;
+	plane->normal = Vector3::UNIT_Y;
+	Ogre::MeshManager::getSingleton().createPlane("PlaneMesh", 
+		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
+		*plane, 120, 120, 1, 1, true, 1, 3, 3, Vector3::UNIT_Z);
+	Entity *planeEnt = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("PlaneEntity", "PlaneMesh");
+	planeEnt->setMaterialName("Examples/GrassFloor");
+
+	Ogre::SceneNode* mPlaneNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+	mPlaneNode->attachObject(planeEnt);
+	mPlaneNode->scale(100, 100, 100);
+
+	// Add objects
+	//mKB = mRenderSystem->createKinematicBody(new NxOgre::Box(12,1,12), NxOgre::Vec3(0, 12, 0), "cube.mesh");
+	OGRE3DBody* gCube;
+	float x_c, y_c, x_old, y_old;
+	float aMod = 0;
+	float sMod = 0;
+	float step = 0;
+	float dist; 
+	x_old = 100;
+	y_old = 100;
+	for(int cnt = 1; cnt < 200; cnt++) {
+		aMod = 3;
+		sMod = 6;
+		step = (2*3.14/200)*cnt  ;
+		x_c =  aMod*(sMod*cos(step) + cos(sMod*(float)step));
+		y_c =  aMod*(sMod*sin(step) + sin(sMod*(float)step));
+		dist = sqrt(pow(x_c - x_old, 2) + pow(y_c - y_old, 2));
+		if(dist > 2.1) {
+			gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 14, y_c), "cube.1m.mesh");
+			gCube->setMass(2);
+			x_old = x_c;
+			y_old = y_c;
+		}
+	}
+	cannon = new ProjectileCannon(mRenderSystem, OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
+	ID = cannon->addLauncher(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
+	
 	//The sky system
 	CartoonCaelum::CartoonSystem* cartoon = 
 		new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, 
@@ -74,13 +122,13 @@ void DemoApp::setupDemoScene()
 	//m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3");
 	//m_pCubeNode->attachObject(m_pCubeEntity);
 	//m_pCubeNode->setScale(Vector3(100.0f, 1.0f, 100.0f));
-	
+
 	//Creating the character
 	//m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "models\\ogrehead.mesh");
 	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "ogrehead.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode", Vector3(100.0f, 0.0f, 200));
 	m_pCubeNode->attachObject(m_pCubeEntity);
-	
+
 	//Creating a fish
 	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1", "fish.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2", Vector3(0.0f, 0.0f, 500));
@@ -116,8 +164,10 @@ void DemoApp::runDemo()
 		//The main loop
 		if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
 		{
+
+			NxOgre::TimeController::getSingleton()->advance(timeSinceLastFrame/1000);
 			startTime = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU();
-					
+			cannon->purge(timeSinceLastFrame/1000);
 			OgreFramework::getSingletonPtr()->m_pKeyboard->capture();
 			OgreFramework::getSingletonPtr()->m_pMouse->capture();
 
@@ -125,10 +175,14 @@ void DemoApp::runDemo()
 			OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
 		
 			timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
-
 			play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
 
 			//Movements
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)) {
+				cannon->aimCannon(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), ID);
+				cannon->moveCannon(OgreFramework::getSingletonPtr()->m_pCamera->getPosition(), ID);
+				cannon->fireFastShell(ID);
+			}
 			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W))
 			{
 				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0, 0, -0.1*timeSinceLastFrame, Node::TS_LOCAL);

@@ -1,10 +1,3 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-#ifndef OGRE_SOUND_H
-#define OGRE_SOUND_H
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include <conio.h>
 #include <stdlib.h>
 #include <al.h>
@@ -57,6 +50,3 @@ class Soundplayer
 		ALfloat listenerVel[3];
 		ALfloat listenerOri[6];
 };
-
-
-#endif

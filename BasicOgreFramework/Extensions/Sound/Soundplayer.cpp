@@ -1,5 +1,3 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #include "Soundplayer.h"
 #include "windows.h"
 
@@ -78,7 +76,7 @@ void Soundplayer::setListenerOrientation(float a, float b, float c, float d, flo
 	alListenerfv(AL_ORIENTATION, listenerOri);
 }
 
-//A method for moving a sound source's position in the room. The input is the index of the sound, and it's new room coordinates. (The first added sound is of index 0, the second of index 2 and so on)
+//A method for moving a sound source's position in the room. The input is the index of the sound, and it's new room coordinates.
 void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 {
 	sourcePosX[index] = x;
@@ -120,7 +118,7 @@ void Soundplayer::loadData(int index, float volume)
     alSourcef (source[index], AL_GAIN, volume);
 	alSourcef(source[index], AL_REFERENCE_DISTANCE, 40.0f);
 }
-//A method that plays a sound that is decided by the input, which is an integer for what sound to play
+//A method that plays a sound that is decided by the index. Also sets the volume after the volume input.
 void Soundplayer::playSound(int index, float volume)
 {
 	//Initialize alut
@@ -130,8 +128,8 @@ void Soundplayer::playSound(int index, float volume)
 	loadData(index, volume);
 
 	//Set listener values
-	alListenerfv(AL_POSITION,    listenerPos);
-	alListenerfv(AL_VELOCITY,    listenerVel);
+	alListenerfv(AL_POSITION, listenerPos);
+	alListenerfv(AL_VELOCITY, listenerVel);
 	alListenerfv(AL_ORIENTATION, listenerOri);
 
 	//Play the sound
@@ -164,13 +162,13 @@ DWORD WINAPI ThreadPlayEcho(LPVOID lparam)
 //A struct needed for sending many parameters into the thread
 ThreadParameterPassingStruct tPPS;
 
-//A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play
+//A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play, an volume for the volume, values of other objects in the room and positions of those objects
 void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPositions)
 {
 	//Initialize alut
     alutInit(NULL, NULL);
 
-	// Load the wav data.
+	// Load the wav data
     loadData(index, volume);
 
 	//Set listener values

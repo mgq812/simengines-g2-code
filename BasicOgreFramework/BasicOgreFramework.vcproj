@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
+				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\Graphic;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -180,15 +180,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Extensions\AI\Astar.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\DemoApp.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Extensions\Sound\Echo.cpp"
 				>
 			</File>
 			<File
@@ -196,17 +188,53 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Extensions\AI\Node.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OgreFramework.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Extensions\Sound\Soundplayer.cpp"
+			<Filter
+				Name="Sound"
 				>
-			</File>
+				<File
+					RelativePath=".\Extensions\Sound\Echo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Sound\Soundplayer.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="AI"
+				>
+				<File
+					RelativePath=".\Extensions\AI\Astar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\AI\Node.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Physic"
+				>
+			</Filter>
+			<Filter
+				Name="Graphic"
+				>
+				<File
+					RelativePath=".\Extensions\Graphic\CartoonSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\InternalUtilities.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\Sun.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header files"
@@ -214,33 +242,61 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Extensions\AI\Astar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Extensions\AI\AstarNode.h"
-				>
-			</File>
-			<File
 				RelativePath=".\DemoApp.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Extensions\Sound\Echo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Extensions\Sound\EchoProperties.h"
 				>
 			</File>
 			<File
 				RelativePath=".\OgreFramework.hpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Extensions\Sound\Soundplayer.h"
+			<Filter
+				Name="AI"
 				>
-			</File>
+				<File
+					RelativePath=".\Extensions\AI\Astar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\AI\AstarNode.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Sound"
+				>
+				<File
+					RelativePath=".\Extensions\Sound\Echo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Sound\EchoProperties.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Sound\Soundplayer.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Graphic"
+				>
+				<File
+					RelativePath=".\Extensions\Graphic\CartoonSystem.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\InternalUtilities.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\Sun.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Physic"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource files"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="BasicOgreFramework"
 	ProjectGUID="{5FD70F02-412B-4CDE-902B-02CBEC5B5D9A}"
 	RootNamespace="BasicOgreFramework"
@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\Graphic;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
+				AdditionalIncludeDirectories="..\BasicOgreFramework\NXOgre\rendersystems\ogre;..\BasicOgreFramework\PhysxSDK\SDKs\PhysXLoader;..\BasicOgreFramework\PhysxSDK\SDKs\Physics;..\BasicOgreFramework\PhysxSDK\SDKs\Foundation;..\BasicOgreFramework\PhysxSDK\SDKs\Cooking;..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\Extensions\Graphic;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\OIS\includes"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -137,9 +137,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib OIS.lib OIS_static.lib CEGUIBase.lib OgreGUIRenderer.lib ALut.lib OpenAL32.lib NxOgre.lib"
+				AdditionalDependencies="OgreMain.lib OIS.lib OIS_static.lib CEGUIBase.lib OgreGUIRenderer.lib ALut.lib OpenAL32.lib NxOgre.lib PhysXLoader.lib NxCooking.lib NxOgreOGRE3D.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\OpenAL\libs\Win32;..\BasicOgreFramework\OIS\libs\VC8;..\BasicOgreFramework\OgreSDK\lib;..\BasicOgreFramework\boost_1_40\lib"
+				AdditionalLibraryDirectories="..\BasicOgreFramework\PhysxSDK\SDKs\lib\Win32;..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\OpenAL\libs\Win32;..\BasicOgreFramework\OIS\libs\VC8;..\BasicOgreFramework\OgreSDK\lib;..\BasicOgreFramework\boost_1_40\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"

@@ -16,7 +16,7 @@ public:
 	~DemoApp();
 
 	void startDemo();
-	
+
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);
 	bool keyReleased(const OIS::KeyEvent &keyEventRef);
 

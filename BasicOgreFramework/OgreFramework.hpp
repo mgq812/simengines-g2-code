@@ -29,6 +29,8 @@ using namespace Ogre;
 #include <Astar.h>
 #include <AstarNode.h>
 #include <CartoonSystem.h>
+#include <NxOgre.h>
+#include <NxOgreOGRE3D.h>
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 

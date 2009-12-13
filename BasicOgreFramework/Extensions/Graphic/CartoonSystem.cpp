@@ -44,18 +44,18 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeSky()
 	{
-		//cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky");
+		cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky");
 	}
 
 	void CartoonSystem::makeSun()
 	{
-		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 1000, new Radian(*(new Degree(0))));
+		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 5500, new Radian(*(new Degree(0))));
 		cSun->setMood("Cartoon/SleepyFace");
 	}
 
 	void CartoonSystem::makeWeather()
 	{
-		for (int k=0; k<8; k++) {
+		for (int k=0; k<2; k++) {
 			snowNode[k]->attachObject(
 				cSceneMgr->createParticleSystem("snowSystem"+k, "Cartoon/SnowFall"));
 		}

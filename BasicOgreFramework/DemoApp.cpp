@@ -40,7 +40,19 @@ void DemoApp::startDemo()
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 void DemoApp::setupDemoScene()
-{		
+{
+		
+	NxOgre::World* mWorld;
+	NxOgre::Scene* mScene;
+	OGRE3DRenderSystem* mRenderSystem;
+	//mWorld = NxOgre::World::createWorld();
+	/*
+	NxOgre::SceneDescription sceneDesc;
+	sceneDesc.mGravity = NxOgre::Vec3(0, -9.8f, 0);
+	sceneDesc.mName = "BloodyMessTutorial2";
+
+	mScene = mWorld->createScene(sceneDesc);*/
+
 	//The sky system
 	CartoonCaelum::CartoonSystem* cartoon = new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
 	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
@@ -159,7 +171,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	{
 		//Find all entities and send their needed input into the playSoundWithEcho() method
 		vector<int> boxValues;
-		vector<vector<int>> boxPositions;
+		vector<vector<float>> boxPositions;
 		vector<SceneNode*> allSceneNodes;
 		vector<MovableObject*> entities;
 		Ogre::SceneNode::ChildNodeIterator cNI = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->getChildIterator();
@@ -179,7 +191,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		{
 			boxValues.push_back(entities[y]->getBoundingBox().volume());
 			
-			vector<int> in;
+			vector<float> in;
 			in.push_back(entities[y]->getParentSceneNode()->getPosition().x);
 			in.push_back(entities[y]->getParentSceneNode()->getPosition().y);
 			in.push_back(entities[y]->getParentSceneNode()->getPosition().z);

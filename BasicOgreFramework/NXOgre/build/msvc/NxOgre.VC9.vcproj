@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="NxOgre"
 	ProjectGUID="{A633A666-D959-4D20-B2D4-6C2239FE48EB}"
 	RootNamespace="NxOgre"
@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="source/;../../source/;..\..\..\PhysxSDK/SDKs/Physics/include;..\..\..\PhysxSDK\SDKs\Foundation/include;..\..\..\PhysxSDK/SDKs/Cooking/include;..\..\..\PhysxSDK/SDKs/PhysXLoader/include;../../dependencies"
+				AdditionalIncludeDirectories="source/;../../source/;&quot;$(PHYSX_DIR)/SDKs/Physics/include&quot;;&quot;$(PHYSX_DIR)/SDKs/Foundation/include&quot;;&quot;$(PHYSX_DIR)/SDKs/Cooking/include&quot;;&quot;$(PHYSX_DIR)/SDKs/PhysXLoader/include&quot;;../../dependencies"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;NXOGRE_DEBUG;NXOGRE_SDK;NXOGRE_OPTIONS_DYNAMIC_LIBRARY;NXOGRE_OPTIONS_USE_LOG;NXOGRE_MEMORY_DEBUGGER_USEFILE;NXOGRE_MEMORY_DEBUGGER_FILE=&quot;NxOgreLeaks.txt&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -68,7 +68,7 @@
 				AdditionalDependencies="PhysXLoader.lib NxCooking.lib"
 				OutputFile="$(OutDir)\NxOgre_Debug.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\..\PhysxSDK\SDKs\lib\win32;..\..\..\PhysxSDK\SDKs\Physics\lib\win32\Release;..\..\..\PhysxSDK\SDKs\Cooking\lib\win32\Release"
+				AdditionalLibraryDirectories="&quot;$(PHYSX_DIR)\SDKs\lib\win32&quot;;&quot;$(PHYSX_DIR)\SDKs\Physics\lib\win32\Release&quot;;&quot;$(PHYSX_DIR)\SDKs\Cooking\lib\win32\Release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -96,7 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir &quot;$(SolutionDir)..\..\sdk&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre_Debug.dll&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre_Debug.lib&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;&#x0D;&#x0A;mkdir &quot;$(SolutionDir)..\..\sdk\bml&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\dependencies\bml\*.h&quot; &quot;$(SolutionDir)..\..\sdk\bml\&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
+				CommandLine="mkdir &quot;$(SolutionDir)..\..\sdk&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre_Debug.dll&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre_Debug.lib&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;&#x0D;&#x0A;mkdir &quot;$(SolutionDir)..\..\sdk\bml&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\dependencies\bml\*.h&quot; &quot;$(SolutionDir)..\..\sdk\bml\&quot;&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\sdk\NxOgre_Debug.dll&quot; &quot;$(SolutionDir)..\..\..\BloodyCake\application\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\sdk\NxOgre_Debug.dll&quot; &quot;$(SolutionDir)..\..\..\BloodyFlour\application\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="source/;../../source/;..\..\..\PhysxSDK/SDKs/Physics/include;..\..\..\PhysxSDK/SDKs/Foundation/include;..\..\..\PhysxSDK/SDKs/Cooking/include;..\..\..\PhysxSDK/SDKs/PhysXLoader/include;../../dependencies"
+				AdditionalIncludeDirectories="source/;../../source/;&quot;$(PHYSX_DIR)/SDKs/Physics/include&quot;;&quot;$(PHYSX_DIR)/SDKs/Foundation/include&quot;;&quot;$(PHYSX_DIR)/SDKs/Cooking/include&quot;;&quot;$(PHYSX_DIR)/SDKs/PhysXLoader/include&quot;;../../dependencies"
 				PreprocessorDefinitions="WIN32;_NDEBUG;_WINDOWS;_USRDLL;NXOGRE_SDK;NXOGRE_OPTIONS_DYNAMIC_LIBRARY"
 				RuntimeLibrary="2"
 				FloatingPointModel="2"
@@ -148,7 +148,7 @@
 				AdditionalDependencies="PhysXLoader.lib NxCooking.lib"
 				OutputFile="$(OutDir)\NxOgre.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\PhysxSDK\SDKs\lib\win32;..\..\..\PhysxSDK\SDKs\Physics\lib\win32\Release;..\..\..\PhysxSDK\SDKs\Cooking\lib\win32\Release"
+				AdditionalLibraryDirectories="&quot;$(PHYSX_DIR)\SDKs\lib\win32&quot;;&quot;$(PHYSX_DIR)\SDKs\Physics\lib\win32\Release&quot;;&quot;$(PHYSX_DIR)\SDKs\Cooking\lib\win32\Release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -177,7 +177,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir &quot;$(SolutionDir)..\..\sdk&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre.dll&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre.lib&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;&#x0D;&#x0A;mkdir &quot;$(SolutionDir)..\..\sdk\bml&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\dependencies\bml\*.h&quot; &quot;$(SolutionDir)..\..\sdk\bml\&quot;&#x0D;&#x0A;&#x0D;&#x0A;&#x0D;&#x0A;"
+				CommandLine="mkdir &quot;$(SolutionDir)..\..\sdk&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre.dll&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(TargetDir)NxOgre.lib&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)source\NxOgre*.h&quot; &quot;$(SolutionDir)..\..\sdk\&quot;&#x0D;&#x0A;&#x0D;&#x0A;mkdir &quot;$(SolutionDir)..\..\sdk\bml&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\dependencies\bml\*.h&quot; &quot;$(SolutionDir)..\..\sdk\bml\&quot;&#x0D;&#x0A;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\sdk\NxOgre.dll&quot; &quot;$(SolutionDir)..\..\..\BloodyCake\application\&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\sdk\NxOgre.dll&quot; &quot;$(SolutionDir)..\..\..\BloodyFlour\application\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration

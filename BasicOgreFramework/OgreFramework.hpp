@@ -24,10 +24,11 @@ using namespace Ogre;
 #include <OISKeyboard.h>
 #include <OISMouse.h>
 
-//extensions
+//Extensions
 #include <Soundplayer.h>
 #include <Astar.h>
 #include <AstarNode.h>
+#include <CartoonSystem.h>
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 

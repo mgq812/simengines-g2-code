@@ -124,8 +124,10 @@ material Cartoon/SnowFlake
 	{
 		pass
 		{
-			//lighting off
-			scene_blend alpha_blend
+			emissive 1 1 1
+			lighting off
+			scene_blend src_alpha one_minus_src_alpha
+			alpha_rejection greater_equal 200
 			depth_write off
 			texture_unit
 			{

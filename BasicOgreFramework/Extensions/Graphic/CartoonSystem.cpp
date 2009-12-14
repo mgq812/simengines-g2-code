@@ -56,7 +56,7 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeWeather()
 	{
-		for (int k=0; k<2; k++) {
+		for (int k=0; k<8; k++) {
 			snowPS[k] = cSceneMgr->createParticleSystem("snowSystem"+k, "Cartoon/SnowFall");
 			snowNode[k]->attachObject(snowPS[k]);
 		}
@@ -74,7 +74,7 @@ namespace CartoonCaelum {
 		snowNode[4]->translate(-40,100,0);
 		snowNode[5]->translate(-60,100,0);
 		snowNode[6]->translate(60,100,0);
-		snowNode[7]->translate(0,50,0);
+		snowNode[7]->translate(0,100,0);
 	}
 
 	void CartoonSystem::updateSky()

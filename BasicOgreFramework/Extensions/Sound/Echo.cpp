@@ -103,14 +103,11 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	delay = (int)(meanDistance*1.5);
 
 	//--Simulate soundloss due to distance--
-	reduce = (float)(meanDistance*0.0006);
+	reduce = (float)(meanDistance*0.0008);
 	volume -= reduce;
-
-	//--Modify bad values
+	//If distance too far and volume negative, make it zero
 	if(volume < 0.0f)
 		volume = 0.0f;
-	if(volume > (sVolume - 0.15f))
-		volume = (sVolume - 0.15f);
 
 	//--Create and return an EchoProperties object--
 	EchoProperties eP = EchoProperties(volume, delay);

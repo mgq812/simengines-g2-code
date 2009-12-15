@@ -26,7 +26,7 @@ private:
 
 	//The soundplayer
 	Soundplayer play;
-
+	OGRE3DBody* mCharacter;
 	Ogre::SceneNode*			m_pCubeNode;
 	Ogre::Entity*				m_pCubeEntity;
 

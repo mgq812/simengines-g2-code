@@ -43,7 +43,7 @@ protected:
 	NxForceField* gForceField;
 	//internal values
 	int pSize, cnt, grenadeLife, launcherForce;
-	Ogre::Real projectileLife;
+	Ogre::Real projectileLife, explosionLife;
 	//projectile values
 	NxOgre::Vec3 dir;
 	NxOgre::Vec3 pos;

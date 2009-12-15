@@ -281,26 +281,6 @@ void OgreFramework::moveCamera()
 //Check keyboard input and translate accordingly
 void OgreFramework::getInput()
 {
-	if(m_pKeyboard->isKeyDown(OIS::KC_A))
-	{
-		m_TranslateVector.x = -m_MoveScale;
-	}
-
-	if(m_pKeyboard->isKeyDown(OIS::KC_D))
-	{
-		m_TranslateVector.x = m_MoveScale;
-	}
-
-	if(m_pKeyboard->isKeyDown(OIS::KC_W))
-	{
-		m_TranslateVector.z = -m_MoveScale;
-	}
-
-	if(m_pKeyboard->isKeyDown(OIS::KC_S))
-	{
-		m_TranslateVector.z = m_MoveScale;
-	}
-
 	if(m_pKeyboard->isKeyDown(OIS::KC_LEFT))
 	{
 		m_pCamera->yaw(m_RotScale);

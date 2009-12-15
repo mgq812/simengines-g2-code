@@ -68,6 +68,7 @@ ProjectileCannon::ProjectileCannon(OGRE3DRenderSystem* extRenderSystem, NxOgre::
 	explosionHolder = nScene->createActor(actorDesc);
 	explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
 	cnt = 0;
+	explosionLife = 0;
 	grenadeLife = 3;
 	launcherForce = 1000;
 
@@ -128,10 +129,10 @@ void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
 	NxMat33 m;
 	m.zero();
 	lKernelDesc.positionMultiplier = m;
-	lKernelDesc.noise = NxVec3(1,1,15); //adds a random noise on the forces to make the objects a little more chaotic
+	lKernelDesc.noise = NxVec3(1,15,1); //adds a random noise on the forces to make the objects a little more chaotic
 
 	//Set target velocity along the radius to 20
-	lKernelDesc.velocityTarget = NxVec3(20,0,0);
+	lKernelDesc.velocityTarget = NxVec3(50,0,0);
 	m.diagonal(NxVec3(1,0,0)); //Acts with a force relative to the current velocity to reach the
 	//target velocities. 0 means that those components won't be affected
 	lKernelDesc.velocityMultiplier = m;
@@ -186,14 +187,14 @@ void ProjectileCannon::explode(int i) {
 void ProjectileCannon::purge(Ogre::Real evtTime) {
 
 	if(exploSpawned) {
-		cnt++;
-		if(cnt > 10) {
+		explosionLife += evtTime;
+		if(cnt > 200) {
 			m_inclusionShape->isSphere()->setRadius(0.1f);
 	//		m_excludeShape->isSphere()->setRadius(0.2f);
 			gForceField->removeShapeGroup(*m_inclusionGroup);
 			exploSpawned = false;
 			//explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
-			cnt = 0;
+			explosionLife = 0;
 		}
 	}
 

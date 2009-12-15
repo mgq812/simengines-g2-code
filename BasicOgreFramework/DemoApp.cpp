@@ -57,13 +57,12 @@ void DemoApp::setupDemoScene()
 	// Set some physical scene values
 	mScene->getMaterial(0)->setStaticFriction(0.5);
 	mScene->getMaterial(0)->setDynamicFriction(0.5);
-	mScene->getMaterial(0)->setRestitution(0.1);
-
+	mScene->getMaterial(0)->setRestitution(0);
 	mRenderSystem = new OGRE3DRenderSystem(mScene);
-
 	mTimeController = NxOgre::TimeController::getSingleton();
 	//create a plane
 	mScene->createSceneGeometry(new NxOgre::PlaneGeometry(0, NxOgre::Vec3(0, 1, 0)));
+	
 
 	MovablePlane *plane = new MovablePlane("Plane");
 	plane->d = 0;
@@ -119,23 +118,22 @@ void DemoApp::setupDemoScene()
 	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setWorldGeometry("terrain.cfg");
 
 	//Create light
-	OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
+	OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(15,60,15);
+	OgreFramework::getSingletonPtr()->m_pSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_ADDITIVE);
+	
 
-	//Creating the ground	
-	//m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2", "models\\ninja.mesh");
-	//m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3");
-	//m_pCubeNode->attachObject(m_pCubeEntity);
-	//m_pCubeNode->setScale(Vector3(100.0f, 1.0f, 100.0f));
-
-	//Creating the character
-	//m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "models\\ogrehead.mesh");
+	//Creating the character	
+	mCharacter = mRenderSystem->createBody(new NxOgre::Box(10,10,10), NxOgre::Vec3(0,20,0), "fish.mesh");
+	mCharacter->setMass(80);
+	mCharacter->getEntity()->setVisible(false);
+	//create ze ogrehead
 	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "ogrehead.mesh");
 	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode", Vector3(100.0f, 0.0f, 200));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 
 	//Creating a fish
-	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1", "fish.mesh");
-	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2", Vector3(0.0f, 0.0f, 500));
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1","fish.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,500));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
@@ -154,7 +152,7 @@ void DemoApp::runDemo()
 	
 	double timeSinceLastFrame = 0;
 	double startTime = 0;
-
+	double timeSinceLastAction = 0;
 	OgreFramework::getSingletonPtr()->m_pRenderWnd->resetStatistics();
 	
 	while(!m_bShutdown && !OgreFramework::getSingletonPtr()->isOgreToBeShutDown()) 
@@ -168,7 +166,7 @@ void DemoApp::runDemo()
 		//The main loop
 		if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
 		{
-
+			
 			NxOgre::TimeController::getSingleton()->advance(timeSinceLastFrame/1000);
 			startTime = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU();
 			cannon->purge(timeSinceLastFrame/1000);
@@ -177,31 +175,52 @@ void DemoApp::runDemo()
 
 			OgreFramework::getSingletonPtr()->updateOgre(timeSinceLastFrame);
 			OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
-		
+			NxOgre::Vec3 moveTo = NxVec3(0,0,0);
 			timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
 			play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
-
+			timeSinceLastAction += timeSinceLastFrame;
+			OgreFramework::getSingletonPtr()->m_pCamera->setPosition(mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
 			//Movements
-			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)) {
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_Q)) {
+				mCharacter->addForce(NxOgre::Vec3(0,10,0), NxOgre::Enums::ForceMode_Impulse);
+			}
+			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200) {
 				cannon->aimCannon(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), ID);
 				cannon->moveCannon(OgreFramework::getSingletonPtr()->m_pCamera->getPosition(), ID);
 				cannon->fireFastShell(ID);
+				timeSinceLastAction = 0;
 			}
 			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W))
 			{
-				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0, 0, -0.1*timeSinceLastFrame, Node::TS_LOCAL);
+				//OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0, 0, -0.1*timeSinceLastFrame, Node::TS_LOCAL);
+				moveTo.x = mCharacter->getGlobalPosition().x + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+				moveTo.y = mCharacter->getGlobalPosition().y;// + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().y / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())/10;
+				//move
+				moveTo.z = mCharacter->getGlobalPosition().z + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+				mCharacter->setGlobalPosition(moveTo);
 			}
 			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A))
-			{
-				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(-0.1*timeSinceLastFrame, 0, 0, Node::TS_LOCAL);
+			{				
+				moveTo.x = mCharacter->getGlobalPosition().x + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+				moveTo.y = mCharacter->getGlobalPosition().y;// + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().y / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())/10;
+				moveTo.z = mCharacter->getGlobalPosition().z + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+
+				mCharacter->setGlobalPosition(moveTo);
 			}
 			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S))
 			{
 				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0, 0, 0.1*timeSinceLastFrame, Node::TS_LOCAL);
+				moveTo.x = mCharacter->getGlobalPosition().x - (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+				moveTo.y = mCharacter->getGlobalPosition().y;
+				moveTo.z = mCharacter->getGlobalPosition().z - (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+				
+				mCharacter->setGlobalPosition(moveTo);
+				//mCharacter->setGlobalPosition(mCharacter->getGlobalPosition() + NxOgre::Vec3(0, 0 , 0.1f));
 			}
 			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D))
 			{
 				OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->translate(0.1*timeSinceLastFrame, 0, 0, Node::TS_LOCAL);
+				mCharacter->setGlobalPosition(mCharacter->getGlobalPosition() + NxOgre::Vec3(0.1f, 0, 0));
 			}
 			if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_Z))
 			{

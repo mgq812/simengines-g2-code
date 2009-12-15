@@ -54,7 +54,11 @@ void DemoApp::setupDemoScene()
 
 	mScene = mWorld->createScene(sceneDesc);
 
-		
+	// Set some physical scene values
+	mScene->getMaterial(0)->setStaticFriction(0.5);
+	mScene->getMaterial(0)->setDynamicFriction(0.5);
+	mScene->getMaterial(0)->setRestitution(0.1);
+
 	mRenderSystem = new OGRE3DRenderSystem(mScene);
 
 	mTimeController = NxOgre::TimeController::getSingleton();
@@ -105,7 +109,7 @@ void DemoApp::setupDemoScene()
 	CartoonCaelum::CartoonSystem* cartoon = 
 		new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, 
 		OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
-	cartoon->setWindVector(Ogre::Vector3(50,0,0));
+	//cartoon->setWindVector(Ogre::Vector3(50,0,0));
 	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
 
 

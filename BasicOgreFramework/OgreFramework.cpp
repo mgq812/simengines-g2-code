@@ -206,12 +206,9 @@ bool OgreFramework::keyReleased(const OIS::KeyEvent &keyEventRef)
 //Mouse moved handeler
 bool OgreFramework::mouseMoved(const OIS::MouseEvent &evt)
 {
-	//m_TranslateVector.x += m_pMouse->getMouseState().relX * 0.1;
-	//m_pCamera->yaw(Degree(m_pMouse->getMouseState().relX * 0.1));
-	//m_pCamera->pitch(Degree(m_pMouse->getMouseState().relY * 0.1));
-	//m_pCamera->pitch(Degree(-m_pMouse->getMouseState().relX * 0.1));
-	//m_pCamera->yaw(Degree(-m_pMouse->getMouseState().relY * 0.1));
-	
+	m_pCamera->yaw(Degree(m_pMouse->getMouseState().X.rel * -0.1));
+	m_pCamera->pitch(Degree(m_pMouse->getMouseState().Y.rel * -0.1));
+
 	return true;
 }
 

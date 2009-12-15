@@ -16,6 +16,8 @@ public:
 	~DemoApp();
 
 	void startDemo();
+	
+	
 
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);
 	bool keyReleased(const OIS::KeyEvent &keyEventRef);
@@ -23,12 +25,17 @@ public:
 private:
 	void setupDemoScene();
 	void runDemo();
+	void handlePhysics();
 
 	//The soundplayer
 	Soundplayer play;
 	OGRE3DBody* mCharacter;
 	Ogre::SceneNode*			m_pCubeNode;
 	Ogre::Entity*				m_pCubeEntity;
+
+	double timeSinceLastFrame;
+	double startTime;
+	double timeSinceLastAction;
 
 	bool						m_bShutdown;
 };

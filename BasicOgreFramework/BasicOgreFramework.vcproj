@@ -216,7 +216,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Physic"
+				Name="Physics"
 				>
 				<File
 					RelativePath=".\Extensions\Physic\ProjectileCannon.cpp"
@@ -298,7 +298,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Physic"
+				Name="Physics"
 				>
 				<File
 					RelativePath=".\Extensions\Physic\ProjectileCannon.h"

@@ -31,3 +31,7 @@
  PhysXLoader.lib
  NxCooking.lib
  NxOgreOGRE3D.lib
+
+ Debugging - Working Directory
+ ..\BasicOgreFramework\bin\release
+ 

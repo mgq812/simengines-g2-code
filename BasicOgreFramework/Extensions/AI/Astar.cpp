@@ -1,3 +1,7 @@
+                                                                     
+                                                                     
+                                                                     
+                                             
 #include "Astar.h"
 vector<vector<AstarNode*>> Astar::GenerateGraphMap(int size){
 	//Creating x,y variables and a vector that contains vectors with nodes to represent a 2d field.
@@ -54,6 +58,13 @@ vector<vector<AstarNode*>> Astar::GenerateGraphMap(int size){
 		}
 	}
 	return graphMap;
+}
+
+COORD Astar::convertAstarToOgreCoords(COORD coord, int ogreSize, int astarSize){
+	COORD ogreCoords;
+	ogreCoords.X = -ogreSize/2 + 2*coord.X*ogreSize/astarSize;
+	ogreCoords.Y = ogreSize/2 - 2*coord.Y*ogreSize/astarSize;
+	return ogreCoords;
 }
 
 int Astar::CalculateManhattan(AstarNode node,AstarNode* endNode, vector<vector<AstarNode*>> graphMap){

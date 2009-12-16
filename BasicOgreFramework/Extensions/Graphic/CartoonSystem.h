@@ -35,9 +35,9 @@ namespace CartoonCaelum {
 
 		void removeSnow();
 
-		void setRainDensity(int emissionRate);
+		void setRainDensity(int density);
 
-		void setSnowDensity(int emissionRate);
+		void setSnowDensity(int density);
 
 		void setRainVelocity(int min, int max);
 

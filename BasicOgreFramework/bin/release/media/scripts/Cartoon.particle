@@ -14,7 +14,7 @@ particle_system Cartoon/SnowFall
 		position 		0 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -27,7 +27,7 @@ particle_system Cartoon/SnowFall
 		position 		20 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -40,7 +40,7 @@ particle_system Cartoon/SnowFall
 		position 		40 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -53,7 +53,7 @@ particle_system Cartoon/SnowFall
 		position 		-20 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -66,7 +66,7 @@ particle_system Cartoon/SnowFall
 		position 		-40 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -79,7 +79,7 @@ particle_system Cartoon/SnowFall
 		position 		-60 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -92,7 +92,7 @@ particle_system Cartoon/SnowFall
 		position 		60 100 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         vvelocity_min   20
         velocity_max    50
@@ -105,7 +105,7 @@ particle_system Cartoon/SnowFall
 		position 		0 50 0
         angle           100
         emission_rate   50
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
@@ -137,7 +137,7 @@ particle_system Cartoon/RainFall
 		position 		0 100 0
         angle           20
         emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -150,7 +150,7 @@ particle_system Cartoon/RainFall
 		position 		20 100 0
         angle           20        
 		emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -163,7 +163,7 @@ particle_system Cartoon/RainFall
 		position 		40 100 0
         angle           20
         emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -176,7 +176,7 @@ particle_system Cartoon/RainFall
 		position 		-20 100 0
         angle           20
         emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -189,7 +189,7 @@ particle_system Cartoon/RainFall
 		position 		-40 100 0
         angle           20
         emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -202,7 +202,7 @@ particle_system Cartoon/RainFall
 		position 		-60 100 0
         angle           20
         emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -215,7 +215,7 @@ particle_system Cartoon/RainFall
 		position 		60 100 0
         angle           20        
 		emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40
@@ -228,7 +228,7 @@ particle_system Cartoon/RainFall
 		position 		0 50 0
         angle           20
         emission_rate   100
-        time_to_live    10
+        time_to_live    5
         direction       0 -1 0
         velocity_min    20
         velocity_max    40

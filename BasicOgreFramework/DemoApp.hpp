@@ -52,6 +52,9 @@ private:
 	//The Soundplayer
 	Soundplayer play;
 
+	//The Cartoon System
+	CartoonCaelum::CartoonSystem* cartoon;
+
 	//The Physics components
 	NxOgre::World*		mWorld;
 	NxOgre::Scene*		mScene;

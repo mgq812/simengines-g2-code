@@ -57,11 +57,13 @@ void DemoApp::setupDemoScene()
 	
 
 	//The sky system
-	CartoonCaelum::CartoonSystem* cartoon = new CartoonCaelum::CartoonSystem(root, sceneMgr, camera);
-	cartoon->addSnow();
+	cartoon = new CartoonCaelum::CartoonSystem(root, sceneMgr, camera);
+	//cartoon->addSnow();
 	cartoon->addWindVector(Vector3(20, 0, 0));
-	cartoon->setSnowDensity(100);
 	cartoon->addRain();
+	//cartoon->setSnowDensity(100);
+	//cartoon->setRainDensity(100);
+	//cartoon->setRainVelocity(200, 230);
 	root->addFrameListener(cartoon);
 	//Crosshair
 	Ogre::Overlay* crosshair = Ogre::OverlayManager::getSingleton().getByName("Crosshair/Overlay");
@@ -215,6 +217,50 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	if(keyboard->isKeyDown(OIS::KC_H))
 	{
 		play.playSound(1,1);
+	}
+	if(keyboard->isKeyDown(OIS::KC_T))
+	{
+		static int option = 0;
+		
+		if(option == 0)
+		{
+			cartoon->addRain();
+			option = 1;
+		}
+		else if(option == 1)
+		{
+			cartoon->removeRain();
+			cartoon->addSnow();
+			option = 2;
+		}
+		else if(option == 2)
+		{
+			cartoon->removeSnow();
+			option = 0;
+		}
+	}
+	if(keyboard->isKeyDown(OIS::KC_Y))
+	{
+		static int density = 0;
+		
+		if(density == 0)
+		{
+			cartoon->setSnowDensity(35);
+			cartoon->setRainDensity(35);
+			density = 1;
+		}
+		else if(density == 1)
+		{
+			cartoon->setSnowDensity(50);
+			cartoon->setRainDensity(50);
+			density = 2;
+		}
+		else if(density == 2)
+		{
+			cartoon->setSnowDensity(100);
+			cartoon->setRainDensity(100);
+			density = 0;
+		}
 	}
 
 	return true;

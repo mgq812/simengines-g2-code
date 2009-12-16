@@ -110,20 +110,20 @@ namespace CartoonCaelum {
 		}
 	}
 
-	void CartoonSystem::setRainDensity(int emissionRate)
+	void CartoonSystem::setRainDensity(int density)
 	{
 		if (rainPS!=0) {
-			for (unsigned short index = 0; index<rainPS->getNumAffectors(); index++) {
-				rainPS->getEmitter(index)->setParameter("emission_rate", StringConverter::toString(emissionRate));
+			for (unsigned short index = 0; index<rainPS->getNumEmitters(); index++) {
+				rainPS->getEmitter(index)->setParameter("emission_rate", StringConverter::toString(density));
 			}
 		}
 	}
 
-	void CartoonSystem::setSnowDensity(int emissionRate)
+	void CartoonSystem::setSnowDensity(int density)
 	{
 		if (snowPS!=0) {
-			for (unsigned short index = 0; index<snowPS->getNumAffectors(); index++) {
-				snowPS->getEmitter(index)->setParameter("emission_rate", StringConverter::toString(emissionRate));
+			for (unsigned short index = 0; index<snowPS->getNumEmitters(); index++) {
+				snowPS->getEmitter(index)->setParameter("emission_rate", StringConverter::toString(density));
 			}
 		}
 	}
@@ -131,7 +131,7 @@ namespace CartoonCaelum {
 	void CartoonSystem::setRainVelocity(int min, int max)
 	{
 		if (rainPS!=0) {
-			for (unsigned short index = 0; index<rainPS->getNumAffectors(); index++) {
+			for (unsigned short index = 0; index<rainPS->getNumEmitters(); index++) {
 				rainPS->getEmitter(index)->setParameter("velocity_min", StringConverter::toString(min));
 				rainPS->getEmitter(index)->setParameter("velocity_max", StringConverter::toString(max));
 			}
@@ -141,7 +141,7 @@ namespace CartoonCaelum {
 	void CartoonSystem::setSnowVelocity(int min, int max)
 	{
 		if (snowPS!=0) {
-			for (unsigned short index = 0; index<snowPS->getNumAffectors(); index++) {
+			for (unsigned short index = 0; index<snowPS->getNumEmitters(); index++) {
 				snowPS->getEmitter(index)->setParameter("velocity_min", StringConverter::toString(min));
 				snowPS->getEmitter(index)->setParameter("velocity_max", StringConverter::toString(max));
 			}
@@ -203,9 +203,15 @@ namespace CartoonCaelum {
 	{
 		if (snowNode!=0) {
 			snowNode->setPosition(cCamera->getPosition()+(cCamera->getDirection()*(40)));
+			if (windVector!=0) {
+				snowNode->translate(-*windVector*2);
+			}
 		}
 		if (rainNode!=0) {
 			rainNode->setPosition(cCamera->getPosition()+(cCamera->getDirection()*(40)));
+			if (windVector!=0) {
+				rainNode->translate(-*windVector*2);
+			}
 		}
 	}
 

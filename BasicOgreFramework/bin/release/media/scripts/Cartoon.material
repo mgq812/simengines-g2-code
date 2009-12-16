@@ -77,7 +77,7 @@ material Cartoon/Sun
 	{
 		pass
 		{
-			scene_blend alpha_blend
+			//scene_blend alpha_blend
 			texture_unit
 			{
 				texture comic_sun.png

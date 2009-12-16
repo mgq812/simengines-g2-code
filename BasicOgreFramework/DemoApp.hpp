@@ -46,6 +46,7 @@ private:
     Vector3 mDirection;              // The direction the object is moving
     Vector3 mDestination;            // The destination the object is moving towards
 	bool threadStarted;
+	void setNotWalkables();
 	HANDLE thread;
 
 

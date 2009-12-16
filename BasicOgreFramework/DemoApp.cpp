@@ -79,6 +79,54 @@ void DemoApp::setupDemoScene()
 	//Creating the character	
 	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(20,3.5f,20), "fish.mesh");
 	mCharacter->getEntity()->setVisible(false);
+	string s;
+	stringstream out;
+	for(int i = -30; i < 30; i += 3)
+	{
+		out << i;
+		s = "a" + out.str();
+		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(i,0.0f,-30));
+		m_pCubeNode->attachObject(m_pCubeEntity);
+		out.clear();
+	}
+	for(int i = -30; i < 30; i += 3)
+	{
+		out << i;
+		s = "b" + out.str();
+		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(i,0.0f,30));
+		m_pCubeNode->attachObject(m_pCubeEntity);
+		out.clear();
+	}
+	for(int i = -30; i < 30; i += 3)
+	{
+		out << i;
+		s = "c" + out.str();
+		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(30.0f,0.0f,i));
+		m_pCubeNode->attachObject(m_pCubeEntity);
+		out.clear();
+	}
+	for(int i = -30; i < 30; i += 3)
+	{
+		out << i;
+		s = "d" + out.str();
+		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(-30.0f,0.0f,i));
+		m_pCubeNode->attachObject(m_pCubeEntity);
+		out.clear();
+	}
+	for(int i = -30; i < 0; i += 3)
+	{
+		out << i;
+		s = "e" + out.str();
+		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
+		m_pCubeNode->attachObject(m_pCubeEntity);
+		out.clear();
+	}
+	//Boulders
 
 
 	//Creating a fish
@@ -120,16 +168,18 @@ void DemoApp::setupDemoScene()
 
 		//Creating a fish and let it be the last one created
 	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius(),0));
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius()/2,0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
+	m_pCubeNode->scale(0.7f,0.7f,0.7f);
+	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
-	play.setScales(2.0f, 2000000.0f);
+	play.setScales(1.7f, 1000000.0f);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);
 	play.addSound("..\\..\\Extensions\\Sound\\bazooka3.wav", 0, 0, 0, 0, 0, 0);
 	play.addSound("..\\..\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
-	play.addSound("..\\..\\Extensions\\Sound\\Worry.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\Aladdin.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
@@ -175,6 +225,7 @@ void DemoApp::runDemo()
 			mAnimationState->addTime(timeSinceLastFrame/1000);
 			moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
+			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			//Take care of the logic and movments
 			handlePhysics();
 		}
@@ -496,19 +547,19 @@ void DemoApp::initAstar(){
 	
 	mNode = m_pCubeNode;
 	mEntity = m_pCubeEntity;
-	mWalkSpeed = 20.0f;
+	mWalkSpeed = 10.0f;
 	mAnimationState = mEntity->getAnimationState("swim");
 	mAnimationState->setLoop(true);
 	mAnimationState->setEnabled(true);
 	
-	graphMap = Astar::GenerateGraphMap(20);
+	graphMap = Astar::GenerateGraphMap(30);
 	threadStarted = false;
 	newAstar();
 }
 
 DWORD WINAPI DemoApp::threadStart(LPVOID iparam){
 	//DemoApp* da = (DemoApp*)iparam;
-	DemoApp::graphMapTemp = Astar::GenerateGraphMap(20);
+	DemoApp::graphMapTemp = Astar::GenerateGraphMap(30);
 	return 0;
 }
 
@@ -518,25 +569,26 @@ void DemoApp::newAstar(){
 	//Sleep(1000);
 	mDirection = Vector3::ZERO;
 	COORD temp = astarDestination;
-	astarDestination.X = rand()%20;
-	while(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5)
+	astarDestination.X = rand()%30;
+	while(!(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5))
 	{
-		astarDestination.X = rand()%20;
+		astarDestination.X = rand()%30;
 	}
-	astarDestination.Y = rand()%20;
-	while(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5)
+	astarDestination.Y = rand()%30;
+	while(!(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5))
 	{
-		astarDestination.Y = rand()%20;
+		astarDestination.Y = rand()%30;
 	}
 	if(threadStarted){
 		WaitForSingleObject(thread,INFINITE);
 		graphMap = DemoApp::graphMapTemp;
 		CloseHandle(thread);
 	}
+	setNotWalkables();
 	vector<COORD> movementVector = Astar::GenerateAstarPath(*graphMap[temp.X][temp.Y],*graphMap[astarDestination.X][astarDestination.Y], graphMap);
 	for(int i = 0;i < movementVector.size();i++){
-		COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 300, 20);
-		mWalkList.push_back(Vector3(temp.X, mEntity->getBoundingRadius(), temp.Y));
+		COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 30, 30);
+		mWalkList.push_back(Vector3(temp.X, mEntity->getBoundingRadius()/2, temp.Y));
 	}
 	threadStarted = true;
 	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)threadStart,0,0,NULL);
@@ -600,5 +652,10 @@ bool DemoApp::nextLocation(){
     mDirection = mDestination - mNode->getPosition();
     mDistance = mDirection.normalise();
 	return true;
+}
+void DemoApp::setNotWalkables(){
+	for(int i = 0;i <15;i++){
+		graphMap[15][15+ i]->setWalkable(false);
+	}
 }
 //|||||||||||||||||||||||||||||||||||||||||||||||

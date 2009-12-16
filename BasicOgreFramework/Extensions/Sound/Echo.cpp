@@ -10,6 +10,7 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 
 	//--The total reflecting value--
 	float tRV = 0;
+	const float tRFScaling = 1000000.0f;
 
 	//--Distance vector between sound source and boxes for calculations and the actual distance--
 	float distanceVector[3];
@@ -74,9 +75,9 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	}
 
 	//--Scale volume after how much reflection there is--
-	if(tRV > 1000000.0f)
+	if(tRV > tRFScaling)
 		tRV = 1000000.0f;
-	float reduce = (1.0f -((float)tRV/1000000));
+	float reduce = (1.0f -((float)tRV/tRFScaling));
 	volume -= reduce;
 
 	//--Calculate the delay of the sound--

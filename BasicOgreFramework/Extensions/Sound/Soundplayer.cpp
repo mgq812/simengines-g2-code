@@ -116,7 +116,7 @@ void Soundplayer::loadData(int index, float volume)
     alSourcefv(source[index], AL_VELOCITY, sourceVelIn);
     alSourcei (source[index], AL_LOOPING, loop);
     alSourcef (source[index], AL_GAIN, volume);
-	alSourcef(source[index], AL_REFERENCE_DISTANCE, 40.0f);
+	alSourcef(source[index], AL_REFERENCE_DISTANCE, 20.0f);
 }
 //A method that plays a sound that is decided by the index. Also sets the volume after the volume input.
 void Soundplayer::playSound(int index, float volume)

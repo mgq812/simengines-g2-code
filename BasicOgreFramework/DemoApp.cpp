@@ -69,6 +69,7 @@ void DemoApp::setupDemoScene()
 	mCharacter = mRenderSystem->createBody(new NxOgre::Box(10,10,10), NxOgre::Vec3(0,20,0), "fish.mesh");
 	mCharacter->setMass(80);
 	mCharacter->getEntity()->setVisible(false);
+	
 
 	//Creating a fish
 	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1","fish.mesh");
@@ -114,11 +115,10 @@ void DemoApp::runDemo()
 			OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
 
 			timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
-			timeSinceLastAction += timeSinceLastFrame;
+			timeSinceLastAction += timeSinceLastFrame;			
 
-			//play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
-			
-
+			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
+	
 			//Take care of the logic and movments
 			handlePhysics();
 		}

@@ -43,69 +43,9 @@ void DemoApp::startDemo()
 //|||||||||||||||||||||||||||||||||||||||||||||||
 void DemoApp::setupDemoScene()
 {
-	int i = 12;
-	NxOgre::World*		mWorld;
-	NxOgre::Scene*		mScene;
-	NxOgre::TimeController*	mTimeController;
-	OGRE3DRenderSystem*	mRenderSystem;
-	mWorld = NxOgre::World::createWorld();
-	
-	NxOgre::SceneDescription sceneDesc;
-	sceneDesc.mGravity = NxOgre::Vec3(0, -9.8f, 0);
-	sceneDesc.mName = "BloodyMessTutorial2";
+	//Create the basic physic components
+	initPhysics();
 
-	mScene = mWorld->createScene(sceneDesc);
-
-	// Set some physical scene values
-	mScene->getMaterial(0)->setStaticFriction(0.5);
-	mScene->getMaterial(0)->setDynamicFriction(0.5);
-	mScene->getMaterial(0)->setRestitution(0);
-	mRenderSystem = new OGRE3DRenderSystem(mScene);
-	mTimeController = NxOgre::TimeController::getSingleton();
-	//create a plane
-	mScene->createSceneGeometry(new NxOgre::PlaneGeometry(0, NxOgre::Vec3(0, 1, 0)));
-	
-
-	MovablePlane *plane = new MovablePlane("Plane");
-	plane->d = 0;
-	plane->normal = Vector3::UNIT_Y;
-	Ogre::MeshManager::getSingleton().createPlane("PlaneMesh", 
-		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
-		*plane, 120, 120, 1, 1, true, 1, 3, 3, Vector3::UNIT_Z);
-	Entity *planeEnt = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("PlaneEntity", "PlaneMesh");
-	planeEnt->setMaterialName("Examples/GrassFloor");
-
-	Ogre::SceneNode* mPlaneNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
-	mPlaneNode->attachObject(planeEnt);
-	mPlaneNode->scale(100, 100, 100);
-
-	// Add objects
-	//mKB = mRenderSystem->createKinematicBody(new NxOgre::Box(12,1,12), NxOgre::Vec3(0, 12, 0), "cube.mesh");
-	OGRE3DBody* gCube;
-	float x_c, y_c, x_old, y_old;
-	float aMod = 0;
-	float sMod = 0;
-	float step = 0;
-	float dist; 
-	x_old = 100;
-	y_old = 100;
-	for(int cnt = 1; cnt < 200; cnt++) {
-		aMod = 3;
-		sMod = 6;
-		step = (2*3.14/200)*cnt  ;
-		x_c =  aMod*(sMod*cos(step) + cos(sMod*(float)step));
-		y_c =  aMod*(sMod*sin(step) + sin(sMod*(float)step));
-		dist = sqrt(pow(x_c - x_old, 2) + pow(y_c - y_old, 2));
-		if(dist > 2.1) {
-			gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 14, y_c), "cube.1m.mesh");
-			gCube->setMass(2);
-			x_old = x_c;
-			y_old = y_c;
-		}
-	}
-	cannon = new ProjectileCannon(mRenderSystem, OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
-	ID = cannon->addLauncher(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
-	
 	//The sky system
 	CartoonCaelum::CartoonSystem* cartoon = 
 		new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, 
@@ -269,14 +209,77 @@ bool DemoApp::keyReleased(const OIS::KeyEvent &keyEventRef)
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
+//Initializes the physics components
+void DemoApp::initPhysics()
+{
+	mWorld = NxOgre::World::createWorld();
+	
+	sceneDesc.mGravity = NxOgre::Vec3(0, -9.8f, 0);
+	sceneDesc.mName = "BloodyMessTutorial2";
 
+	mScene = mWorld->createScene(sceneDesc);
+
+	// Set some physical scene values
+	mScene->getMaterial(0)->setStaticFriction(0.5);
+	mScene->getMaterial(0)->setDynamicFriction(0.5);
+	mScene->getMaterial(0)->setRestitution(0);
+	mRenderSystem = new OGRE3DRenderSystem(mScene);
+	mTimeController = NxOgre::TimeController::getSingleton();
+	//create a plane
+	mScene->createSceneGeometry(new NxOgre::PlaneGeometry(0, NxOgre::Vec3(0, 1, 0)));
+	
+
+	MovablePlane *plane = new MovablePlane("Plane");
+	plane->d = 0;
+	plane->normal = Vector3::UNIT_Y;
+	Ogre::MeshManager::getSingleton().createPlane("PlaneMesh", 
+		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
+		*plane, 120, 120, 1, 1, true, 1, 3, 3, Vector3::UNIT_Z);
+	Entity *planeEnt = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("PlaneEntity", "PlaneMesh");
+	planeEnt->setMaterialName("Examples/GrassFloor");
+
+	Ogre::SceneNode* mPlaneNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+	mPlaneNode->attachObject(planeEnt);
+	mPlaneNode->scale(100, 100, 100);
+
+	// Add objects
+	//mKB = mRenderSystem->createKinematicBody(new NxOgre::Box(12,1,12), NxOgre::Vec3(0, 12, 0), "cube.mesh");
+	OGRE3DBody* gCube;
+	float x_c, y_c, x_old, y_old;
+	float aMod = 0;
+	float sMod = 0;
+	float step = 0;
+	float dist; 
+	x_old = 100;
+	y_old = 100;
+	for(int cnt = 1; cnt < 200; cnt++) 
+	{
+		aMod = 3;
+		sMod = 6;
+		step = (2*3.14/200)*cnt  ;
+		x_c =  aMod*(sMod*cos(step) + cos(sMod*(float)step));
+		y_c =  aMod*(sMod*sin(step) + sin(sMod*(float)step));
+		dist = sqrt(pow(x_c - x_old, 2) + pow(y_c - y_old, 2));
+		if(dist > 2.1) 
+		{
+			gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 14, y_c), "cube.1m.mesh");
+			gCube->setMass(2);
+			x_old = x_c;
+			y_old = y_c;
+		}
+	}
+	cannon = new ProjectileCannon(mRenderSystem, OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
+	ID = cannon->addLauncher(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
+}
+
+//Handle the physics every frame
 void DemoApp::handlePhysics()
 {
 	NxOgre::TimeController::getSingleton()->advance(timeSinceLastFrame/1000);
 	cannon->purge(timeSinceLastFrame/1000);
 	NxOgre::Vec3 moveTo = NxVec3(0,0,0);
 	
+	//Move camera to the character
 	OgreFramework::getSingletonPtr()->m_pCamera->setPosition(mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
 	
 	//Jump

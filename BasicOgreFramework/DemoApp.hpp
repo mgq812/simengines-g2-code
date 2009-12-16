@@ -26,10 +26,20 @@ private:
 	void setupDemoScene();
 	void runDemo();
 	void handlePhysics();
+	void initPhysics();
 
-	//The soundplayer
+	//The Soundplayer
 	Soundplayer play;
+
+	//The Physics components
+	NxOgre::World*		mWorld;
+	NxOgre::Scene*		mScene;
+	NxOgre::TimeController*	mTimeController;
+	NxOgre::SceneDescription sceneDesc;
+	OGRE3DRenderSystem*	mRenderSystem;
 	OGRE3DBody* mCharacter;
+
+	//The Ogre components
 	Ogre::SceneNode*			m_pCubeNode;
 	Ogre::Entity*				m_pCubeEntity;
 

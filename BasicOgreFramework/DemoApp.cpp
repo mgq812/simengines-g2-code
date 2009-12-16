@@ -75,11 +75,27 @@ void DemoApp::setupDemoScene()
 	mCharacter->setMass(80);
 	mCharacter->getEntity()->setVisible(false);
 	
-
 	//Creating a fish
 	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
 	m_pCubeNode = sceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,500));
 	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2","ogreHead.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3",Vector3(0.0f,0.0f,500));
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("3","ogreHead.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode24",Vector3(0.0f,0.0f,500));
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("4","ogreHead.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode25",Vector3(0.0f,0.0f,500));
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	play.setScales(2.0f, 2000000.0f);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
@@ -150,6 +166,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		vector<SceneNode*> allSceneNodes;
 		vector<MovableObject*> entities;
 		Ogre::SceneNode::ChildNodeIterator cNI = sceneMgr->getRootSceneNode()->getChildIterator();
+		vector<string> names;
 		while(cNI.hasMoreElements())
 		{
 			allSceneNodes.push_back(sceneMgr->getSceneNode(cNI.getNext()->getName()));
@@ -159,13 +176,15 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 			Ogre::SceneNode::ObjectIterator cOI = allSceneNodes[i]->getAttachedObjectIterator();
 			while(cOI.hasMoreElements())
 			{
-				entities.push_back(cOI.getNext());
+				Ogre::MovableObject* objectInput = cOI.getNext();
+				if(objectInput->getName() != "snowSystem" && objectInput->getName()!= "rainSystem")
+					entities.push_back(objectInput);
 			}
 		}
 		for(int y = 0; y < entities.size(); y++)
 		{
 			boxValues.push_back(entities[y]->getBoundingBox().volume());
-			
+
 			vector<float> in;
 			in.push_back(entities[y]->getParentSceneNode()->getPosition().x);
 			in.push_back(entities[y]->getParentSceneNode()->getPosition().y);

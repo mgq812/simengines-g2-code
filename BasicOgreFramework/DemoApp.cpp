@@ -126,7 +126,6 @@ void DemoApp::setupDemoScene()
 	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius(),0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
-	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
 	play.setScales(2.0f, 2000000.0f);
 
@@ -375,13 +374,15 @@ void DemoApp::initPhysics()
 	//		y_old = y_c;
 	//	}
 	//}
+	for(int p = 2; p < 5; p++)
 	for(int h = 0; h < 3; h++) 
 	for(int i = 0; i < 5; i++) {
 		for(int j = 0; j < 5; j++) { 
-		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(i, 1+h+0.001f*h, j), "cube.1m.mesh");
+		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20*p+ i, 1+h+0.001f*h, 20*p+j), "cube.1m.mesh");
 		gCube->setMass(2);
 		gCube->getEntity()->setCastShadows(true);
 		gCube->setForceFieldMaterial(0);
+		gCube->setAngularDamping(0.5);
 		}
 	}
 	cannon = new ProjectileCannon(mRenderSystem, camera->getDirection(), camera->getPosition());
@@ -433,6 +434,14 @@ void DemoApp::handlePhysics()
 		}
 		timeSinceLastAction = 0;
 	}
+	//if(keyboard->isKeyDown(OIS::KC_9)) {
+	//	NxOgre::Actor** actors = mRenderSystem->getScene()->getActors();
+	//	unsigned int nbActors = mRenderSystem->getScene()->getNbActors();
+	//	while(nbActors--)
+	//	{
+	//		NxOgre::Actor* actor = *actors++;
+	//		OGRE3DBody
+	//	}
 	if(keyboard->isKeyDown(OIS::KC_1)) { 
 		gren = true;
 		shell = false;

@@ -46,6 +46,11 @@ namespace CartoonCaelum {
 		cSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
 	}
 
+	SceneNode* Face::getNode()
+	{
+		return faceNode;
+	}
+
 	void Face::createFace()
 	{
 		String uniqueSuffix = InternalUtilities::pointerToString(this);
@@ -57,6 +62,9 @@ namespace CartoonCaelum {
 		faceNode->attachObject(faceEntity);
 		faceEntity->setCastShadows(false);
 		faceEntity->setVisible(false);
+		Quaternion orient = faceNode->getOrientation();
+		//faceNode->setInheritOrientation(false);
+		//faceNode->setOrientation(orient);
 	}
 
 }

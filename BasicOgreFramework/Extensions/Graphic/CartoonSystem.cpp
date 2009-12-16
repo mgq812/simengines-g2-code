@@ -228,7 +228,7 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeWindCloud()
 	{
-		cWindCloud = new Cloud(cSceneMgr, cCamera, 512, 512, 5500);
+		cWindCloud = new Cloud(cSceneMgr, cCamera, 2000, 2000, 5500);
 	}
 
 	void CartoonSystem::updateSky()

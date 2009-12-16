@@ -26,6 +26,8 @@ namespace CartoonCaelum {
 
 		Ogre::Camera *cCamera;
 
+		Ogre::SceneNode *mainNode;
+
 		Ogre::SceneNode *cloudNode;
 
 		Ogre::SceneNode *faceNode;

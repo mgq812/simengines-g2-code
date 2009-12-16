@@ -18,6 +18,8 @@ namespace CartoonCaelum {
 
 		void directFace();
 
+		Ogre::SceneNode* getNode();
+
 	private:
 		Ogre::SceneManager *cSceneMgr;
 

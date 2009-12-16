@@ -58,13 +58,9 @@ void DemoApp::setupDemoScene()
 
 	//The sky system
 	cartoon = new CartoonCaelum::CartoonSystem(root, sceneMgr, camera);
-	//cartoon->addSnow();
 	cartoon->addWindVector(Vector3(20, 0, 0));
-	cartoon->addRain();
-	//cartoon->setSnowDensity(100);
-	//cartoon->setRainDensity(100);
-	//cartoon->setRainVelocity(200, 230);
 	root->addFrameListener(cartoon);
+
 	//Crosshair
 	Ogre::Overlay* crosshair = Ogre::OverlayManager::getSingleton().getByName("Crosshair/Overlay");
 	crosshair->show();

@@ -8,7 +8,7 @@
 #include "math.h"
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-
+vector<vector<AstarNode*>> DemoApp::graphMapTemp;
 int ID;
 ProjectileCannon* cannon; 
 
@@ -51,7 +51,10 @@ void DemoApp::setupDemoScene()
 	mouse = OgreFramework::getSingletonPtr()->m_pMouse;
 
 	//Create the basic physic components
+	
 	initPhysics();
+	
+	
 
 	//The sky system
 	CartoonCaelum::CartoonSystem* cartoon = new CartoonCaelum::CartoonSystem(root, sceneMgr, camera);
@@ -60,7 +63,6 @@ void DemoApp::setupDemoScene()
 	cartoon->setSnowDensity(100);
 	cartoon->addRain();
 	root->addFrameListener(cartoon);
-
 	//Crosshair
 	Ogre::Overlay* crosshair = Ogre::OverlayManager::getSingleton().getByName("Crosshair/Overlay");
 	crosshair->show();
@@ -79,11 +81,7 @@ void DemoApp::setupDemoScene()
 	//Creating the character	
 	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(0,3.5f,0), "fish.mesh");
 	mCharacter->getEntity()->setVisible(false);
-	
-	//Creating a fish
-	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
-	m_pCubeNode = sceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,500));
-	m_pCubeNode->attachObject(m_pCubeEntity);
+
 
 	//Creating a fish
 	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2","ogreHead.mesh");
@@ -98,6 +96,11 @@ void DemoApp::setupDemoScene()
 	//Creating a fish
 	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("4","ogreHead.mesh");
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode25",Vector3(0.0f,0.0f,500));
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+		//Creating a fish
+	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius(),0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 
 	play.setScales(2.0f, 2000000.0f);
@@ -115,10 +118,12 @@ void DemoApp::setupDemoScene()
 void DemoApp::runDemo()
 {
 	OgreFramework::getSingletonPtr()->m_pLog->logMessage("Start main loop...");
-	
+	//Create the basic AI components
+	initAstar();
 	timeSinceLastFrame = 0;
 	startTime = 0;
 	timeSinceLastAction = 0;
+	
 	OgreFramework::getSingletonPtr()->m_pRenderWnd->resetStatistics();
 	
 	while(!m_bShutdown && !OgreFramework::getSingletonPtr()->isOgreToBeShutDown()) 
@@ -143,8 +148,11 @@ void DemoApp::runDemo()
 			timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
 			timeSinceLastAction += timeSinceLastFrame;			
 
+			//play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
+			//Take care of the AI and its movements
+			mAnimationState->addTime(timeSinceLastFrame/1000);
+			moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
-	
 			//Take care of the logic and movments
 			handlePhysics();
 		}
@@ -363,4 +371,115 @@ void DemoApp::handlePhysics()
 	}
 }
 
+void DemoApp::initAstar(){
+	astarDestination.X = 0;
+	astarDestination.Y = 0;
+	
+	mNode = m_pCubeNode;
+	mEntity = m_pCubeEntity;
+	mWalkSpeed = 20.0f;
+	mAnimationState = mEntity->getAnimationState("swim");
+	mAnimationState->setLoop(true);
+	mAnimationState->setEnabled(true);
+	
+	graphMap = Astar::GenerateGraphMap(20);
+	threadStarted = false;
+	newAstar();
+}
+
+DWORD WINAPI DemoApp::threadStart(LPVOID iparam){
+	//DemoApp* da = (DemoApp*)iparam;
+	DemoApp::graphMapTemp = Astar::GenerateGraphMap(20);
+	return 0;
+}
+
+void DemoApp::newAstar(){
+	
+	//	graphMap = Astar::GenerateGraphMap(20);
+	//Sleep(1000);
+	mDirection = Vector3::ZERO;
+	COORD temp = astarDestination;
+	astarDestination.X = rand()%20;
+	while(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5)
+	{
+		astarDestination.X = rand()%20;
+	}
+	astarDestination.Y = rand()%20;
+	while(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5)
+	{
+		astarDestination.Y = rand()%20;
+	}
+	if(threadStarted){
+		WaitForSingleObject(thread,INFINITE);
+		graphMap = DemoApp::graphMapTemp;
+		CloseHandle(thread);
+	}
+	vector<COORD> movementVector = Astar::GenerateAstarPath(*graphMap[temp.X][temp.Y],*graphMap[astarDestination.X][astarDestination.Y], graphMap);
+	for(int i = 0;i < movementVector.size();i++){
+		COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 300, 20);
+		mWalkList.push_back(Vector3(temp.X, mEntity->getBoundingRadius(), temp.Y));
+	}
+	threadStarted = true;
+	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)threadStart,0,0,NULL);
+}
+void DemoApp::moveAstar(int timeSinceLastFrame){
+	
+	if (mDirection == Vector3::ZERO) 
+	{
+		if (nextLocation()) 
+		{
+			mAnimationState = mEntity->getAnimationState("swim");
+			mAnimationState->setLoop(true);
+			mAnimationState->setEnabled(true);
+		}
+		else
+		{
+			newAstar();
+		}
+	}
+	else
+	{
+		Real move = mWalkSpeed * timeSinceLastFrame/1000;
+		mDistance -= move;
+		if (mDistance <= 0.0f)
+		{
+			mNode->setPosition(mDestination);
+			mDirection = Vector3::ZERO;
+			// Set animation based on if the robot has another point to walk to. 
+			if (! nextLocation())
+			{
+				//newAstar();
+			} 
+			else
+			{
+				Vector3 src = mNode->getOrientation() * Vector3::UNIT_X;
+				if ((1.0f + src.dotProduct(mDirection)) < 0.0001f)
+				{
+					mNode->yaw(Degree(180));
+				}
+				else
+				{
+					Ogre::Quaternion quat = src.getRotationTo(mDirection);
+					mNode->rotate(quat);
+					//mNode->yaw(Degree(180));
+				} // else
+				mNode->yaw(Degree(180));
+			}
+		}
+		else
+		{
+			mNode->translate(mDirection * move);
+		} // else
+	} // if
+}
+bool DemoApp::nextLocation(){
+	if (mWalkList.empty())
+            return false;
+	mDestination = mWalkList.front();
+    mWalkList.pop_front();       
+	//Lacking mnode atm
+    mDirection = mDestination - mNode->getPosition();
+    mDistance = mDirection.normalise();
+	return true;
+}
 //|||||||||||||||||||||||||||||||||||||||||||||||

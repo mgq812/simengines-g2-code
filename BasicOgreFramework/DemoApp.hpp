@@ -18,15 +18,36 @@ public:
 	void startDemo();
 	
 	
-
+	
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);
 	bool keyReleased(const OIS::KeyEvent &keyEventRef);
+	static DWORD WINAPI threadStart(LPVOID iparam);
+	static vector<vector<AstarNode*>> graphMapTemp;
 
 private:
 	void setupDemoScene();
 	void runDemo();
 	void handlePhysics();
 	void initPhysics();
+
+	//AI
+	COORD astarDestination;
+	bool nextLocation();
+	void moveAstar(int timeSinceLastFrame);
+	void initAstar();
+	void newAstar();
+	vector<vector<AstarNode*>> graphMap;
+	Entity *mEntity;                 // The Entity we are animating
+    SceneNode *mNode;                // The SceneNode that the Entity is attached to
+    std::deque<Vector3> mWalkList;   // The list of points we are walking to
+	AnimationState *mAnimationState;
+    Real mWalkSpeed;   
+	Real mDistance;                  // The distance the object has left to travel
+    Vector3 mDirection;              // The direction the object is moving
+    Vector3 mDestination;            // The destination the object is moving towards
+	bool threadStarted;
+	HANDLE thread;
+
 
 	//The Soundplayer
 	Soundplayer play;

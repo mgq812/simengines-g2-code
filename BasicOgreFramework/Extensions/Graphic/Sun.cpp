@@ -42,6 +42,12 @@ namespace CartoonCaelum {
 		sunNode->setPosition(Vector3(newX,newY,newZ));
 		sunNode->lookAt(Vector3(0,0,0), 
 			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
+
+		
+		if(sunNode->getPosition().y < 0 && sunLight->isVisible())
+			sunLight->setVisible(false);
+		else if(sunNode->getPosition().y > 0 && !sunLight->isVisible())
+			sunLight->setVisible(true);
 	}
 
 	void Sun::directMood()

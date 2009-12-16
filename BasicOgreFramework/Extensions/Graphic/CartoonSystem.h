@@ -2,47 +2,14 @@
 #define __CartoonSystem_h_
 
 #include <ogre.h>
-#include <OgreStringConverter.h>
-#include <OgreException.h>
+
+#include "Cloud.h"
 #include "Sun.h"
 
 namespace CartoonCaelum {
 
 	class CartoonSystem: public Ogre::FrameListener 
 	{
-
-	private:
-		Ogre::Root *cRoot;
-
-		Ogre::SceneManager *cSceneMgr;
-
-		Ogre::Camera *cCamera;
-
-		Sun *cSun;
-
-		Ogre::Real *timer;
-
-		Ogre::SceneNode *snowNode[8];
-
-		Ogre::ParticleSystem *snowPS[8];
-
-		bool hasWindVector;
-
-		virtual bool frameStarted (const Ogre::FrameEvent &e);
-
-		void updateComponents(Ogre::Real timeSinceLastFrame);
-
-		void updateParticleFacing();
-
-		void makeSky();
-
-		void makeSun();
-
-		void makeWeather();
-
-		void updateSky();
-
-		void updateSun();
 
 	public:
 		CartoonSystem(
@@ -56,7 +23,70 @@ namespace CartoonCaelum {
 
 		void loadResources();
 
-		void setWindVector(Ogre::Vector3 wind);
+		void addRain();
+
+		void addSnow();
+
+		bool hasRain();
+
+		bool hasSnow();
+
+		void removeRain();
+
+		void removeSnow();
+
+		void setRainDensity(int emissionRate);
+
+		void setSnowDensity(int emissionRate);
+
+		void setRainVelocity(int min, int max);
+
+		void setSnowVelocity(int min, int max);
+
+		void addWindVector(Ogre::Vector3 wind);
+
+		void removeWindVector();
+
+	private:
+		Ogre::Root *cRoot;
+
+		Ogre::SceneManager *cSceneMgr;
+
+		Ogre::Camera *cCamera;
+
+		Cloud *cWindCloud;
+
+		Sun *cSun;
+
+		Ogre::Real timer;
+
+		Ogre::SceneNode *snowNode;
+
+		Ogre::SceneNode *rainNode;
+
+		Ogre::ParticleSystem *snowPS;
+
+		Ogre::ParticleSystem *rainPS;
+
+		Ogre::Vector3 *windVector;
+
+		virtual bool frameStarted (const Ogre::FrameEvent &e);
+
+		void updateComponents(Ogre::Real timeSinceLastFrame);
+
+		void updateParticleFacing();
+
+		void makeSky();
+
+		void makeSun();
+
+		void makeWindCloud();
+
+		void updateSky();
+
+		void updateSun();
+
+		void updateWindCloud();
 			
 	};
 

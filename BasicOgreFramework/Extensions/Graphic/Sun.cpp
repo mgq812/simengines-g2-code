@@ -11,7 +11,7 @@ namespace CartoonCaelum {
 		int xSize,
 		int ySize,
 		int distance,
-		Radian *pitch
+		Radian pitch
 	):
 		cSceneMgr (sceneMgr),
 		cCamera (camera),
@@ -20,10 +20,45 @@ namespace CartoonCaelum {
 		sunDistance (distance),
 		cyclePitch (pitch)
 	{
-		previousRotation = new Radian(0);
+		previousRotation = Radian(0);
 		createSun("Cartoon/Sun");
 		createMood();
 		createLight();
+	}
+
+	void Sun::setMood(String materialName) 
+	{
+		moodEntity->setMaterialName(materialName);
+		moodEntity->setVisible(true);
+	}
+
+	void Sun::moveSun(Radian degrees)
+	{
+		Vector3 position = sunNode->getPosition();
+		previousRotation += degrees;
+		int newX = InternalUtilities::round(sunDistance*(Math::Sin(previousRotation, false)));
+		int newY = InternalUtilities::round(sunDistance*(Math::Cos(previousRotation, false)));
+		int newZ = InternalUtilities::round(newY*(Math::Sin(cyclePitch, false))); 
+		sunNode->setPosition(Vector3(newX,newY,newZ));
+		sunNode->lookAt(Vector3(0,0,0), 
+			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
+	}
+
+	void Sun::directMood()
+	{
+		SceneNode* temp = cSceneMgr->getRootSceneNode()->createChildSceneNode("temp");
+		temp->setPosition(cCamera->getPosition()+(cCamera->getDirection()*2500));
+		temp->setOrientation(moodNode->getOrientation());
+		temp->lookAt(cCamera->getPosition(), 
+			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
+		Radian diffAngle = temp->getOrientation().zAxis().angleBetween(cCamera->getUp());
+		temp->yaw(diffAngle);
+		if ((temp->getOrientation().zAxis().angleBetween(cCamera->getUp())) > Radian(0)) {
+			moodNode->yaw(-diffAngle);
+		} else {
+			moodNode->yaw(diffAngle);
+		}
+		cSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
 	}
 
 	void Sun:: createSun(String materialName)
@@ -64,41 +99,6 @@ namespace CartoonCaelum {
 		sunLight->setPosition(Vector3(0, -1, 0));
 		sunLight->setDiffuseColour(0.0, 1.0, 0.1);
 		sunLight->setSpecularColour(0.0, 1.0, 0.1);
-	}
-
-	void Sun::setMood(String materialName) 
-	{
-		moodEntity->setMaterialName(materialName);
-		moodEntity->setVisible(true);
-	}
-
-	void Sun::moveSun(Radian *degrees)
-	{
-		Vector3 position = sunNode->getPosition();
-		*previousRotation += *degrees;
-		int newX = InternalUtilities::round(sunDistance*(Math::Sin(*previousRotation, false)));
-		int newY = InternalUtilities::round(sunDistance*(Math::Cos(*previousRotation, false)));
-		int newZ = InternalUtilities::round(newY*(Math::Sin(*cyclePitch, false))); 
-		sunNode->setPosition(Vector3(newX,newY,newZ));
-		sunNode->lookAt(Vector3(0,0,0), 
-			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-	}
-
-	void Sun::directMood()
-	{
-		SceneNode* temp = cSceneMgr->getRootSceneNode()->createChildSceneNode("temp");
-		temp->setPosition(cCamera->getPosition()+(cCamera->getDirection()*2500));
-		temp->setOrientation(moodNode->getOrientation());
-		temp->lookAt(cCamera->getPosition(), 
-			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-		Radian diffAngle = temp->getOrientation().zAxis().angleBetween(cCamera->getUp());
-		temp->yaw(diffAngle);
-		if ((temp->getOrientation().zAxis().angleBetween(cCamera->getUp())) > *(new Radian(0))) {
-			moodNode->yaw(-diffAngle);
-		} else {
-			moodNode->yaw(diffAngle);
-		}
-		cSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
 	}
 
 }

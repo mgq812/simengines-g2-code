@@ -2,15 +2,23 @@
 #define __Sun_h_
 
 #include <ogre.h>
-#include <OgreStringConverter.h>
-#include <OgreException.h>
-#include <OgreMath.h>
+
 #include "InternalUtilities.h"
 
 namespace CartoonCaelum {
 
 	class Sun
 	{
+
+	public:
+		Sun(Ogre::SceneManager *sceneMgr, Ogre::Camera *camera,
+			int xSize, int ySize, int distance, Ogre::Radian pitch);
+
+		void setMood(Ogre::String materialName);
+
+		void moveSun(Ogre::Radian degrees);
+
+		void directMood();
 
 	private:
 		Ogre::SceneManager *cSceneMgr;
@@ -35,25 +43,15 @@ namespace CartoonCaelum {
 
 		int sunYSize;
 
-		Ogre::Radian *previousRotation;
+		Ogre::Radian previousRotation;
 
-		Ogre::Radian *cyclePitch;
+		Ogre::Radian cyclePitch;
 
 		void createSun(Ogre::String materialName);
 
 		void createMood();
 
 		void createLight();
-
-	public:
-		Sun(Ogre::SceneManager *sceneMgr, Ogre::Camera *camera,
-			int xSize, int ySize, int distance, Ogre::Radian *pitch);
-
-		void setMood(Ogre::String materialName);
-
-		void moveSun(Ogre::Radian *degrees);
-
-		void directMood();
 
 	};
 

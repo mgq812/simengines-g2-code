@@ -12,6 +12,12 @@ namespace CartoonCaelum {
 	{
 		public:
 			static int round(Ogre::Real number);
+
+			/** 
+			 * Quickly format a pointer as a string; in hex
+			 * Code taken from Caelum.
+			 */
+			static const Ogre::String pointerToString(void* pointer);
 	};
 
 }

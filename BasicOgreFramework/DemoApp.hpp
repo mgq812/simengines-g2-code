@@ -42,6 +42,13 @@ private:
 	//The Ogre components
 	Ogre::SceneNode*			m_pCubeNode;
 	Ogre::Entity*				m_pCubeEntity;
+	Ogre::Root*					root;
+	Ogre::SceneManager*			sceneMgr;
+	Ogre::Camera*				camera;
+	
+	//The OIS components
+	OIS::Keyboard*				keyboard;
+	OIS::Mouse*					mouse;
 
 	double timeSinceLastFrame;
 	double startTime;

@@ -43,26 +43,31 @@ void DemoApp::startDemo()
 //|||||||||||||||||||||||||||||||||||||||||||||||
 void DemoApp::setupDemoScene()
 {
+	//Easy to use variables
+	root = OgreFramework::getSingletonPtr()->m_pRoot;
+	camera = OgreFramework::getSingletonPtr()->m_pCamera;
+	sceneMgr = OgreFramework::getSingletonPtr()->m_pSceneMgr;
+	keyboard = OgreFramework::getSingletonPtr()->m_pKeyboard;
+	mouse = OgreFramework::getSingletonPtr()->m_pMouse;
+
 	//Create the basic physic components
 	initPhysics();
 
 	//The sky system
-	CartoonCaelum::CartoonSystem* cartoon = 
-		new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, 
-		OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
+	CartoonCaelum::CartoonSystem* cartoon = new CartoonCaelum::CartoonSystem(root, sceneMgr, camera);
 	cartoon->addSnow();
 	cartoon->addWindVector(Vector3(20, 0, 0));
 	cartoon->setSnowDensity(100);
 	cartoon->addRain();
-	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
+	root->addFrameListener(cartoon);
 
 	//Crosshair
 	Ogre::Overlay* crosshair = Ogre::OverlayManager::getSingleton().getByName("Crosshair/Overlay");
 	crosshair->show();
 
 	//Create light
-	OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(15,60,15);
-	OgreFramework::getSingletonPtr()->m_pSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_ADDITIVE);
+	sceneMgr->createLight("Light")->setPosition(15,60,15);
+	sceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_ADDITIVE);
 	
 
 	//Creating the character	
@@ -72,8 +77,8 @@ void DemoApp::setupDemoScene()
 	
 
 	//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1","fish.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,500));
+	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
+	m_pCubeNode = sceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,500));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
@@ -108,8 +113,8 @@ void DemoApp::runDemo()
 		{	
 			startTime = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU();
 
-			OgreFramework::getSingletonPtr()->m_pKeyboard->capture();
-			OgreFramework::getSingletonPtr()->m_pMouse->capture();
+			keyboard->capture();
+			mouse->capture();
 
 			OgreFramework::getSingletonPtr()->updateOgre(timeSinceLastFrame);
 			OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
@@ -132,23 +137,22 @@ void DemoApp::runDemo()
 	OgreFramework::getSingletonPtr()->m_pLog->logMessage("Shutdown OGRE...");
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Key pressed
 bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 {
 	OgreFramework::getSingletonPtr()->keyPressed(keyEventRef);
 	
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_F))
+	if(keyboard->isKeyDown(OIS::KC_F))
 	{
 		//Find all entities and send their needed input into the playSoundWithEcho() method
 		vector<int> boxValues;
 		vector<vector<float>> boxPositions;
 		vector<SceneNode*> allSceneNodes;
 		vector<MovableObject*> entities;
-		Ogre::SceneNode::ChildNodeIterator cNI = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->getChildIterator();
+		Ogre::SceneNode::ChildNodeIterator cNI = sceneMgr->getRootSceneNode()->getChildIterator();
 		while(cNI.hasMoreElements())
 		{
-			allSceneNodes.push_back(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode(cNI.getNext()->getName()));
+			allSceneNodes.push_back(sceneMgr->getSceneNode(cNI.getNext()->getName()));
 		}
 		for(int i = 0; i < allSceneNodes.size(); i++)
 		{
@@ -172,27 +176,19 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		play.playSoundWithEcho(0, 1, boxValues, boxPositions);
 
 	}
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_G))
+	if(keyboard->isKeyDown(OIS::KC_G))
 	{
 		play.playSound(2,1);
 	}
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_H))
+	if(keyboard->isKeyDown(OIS::KC_H))
 	{
 		play.playSound(1,1);
-	}
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_T))
-	{
-		if(OgreFramework::getSingletonPtr()->m_pSceneMgr->getEntity("0")->isVisible())
-			OgreFramework::getSingletonPtr()->m_pSceneMgr->getEntity("0")->setVisible(false);
-		else
-			OgreFramework::getSingletonPtr()->m_pSceneMgr->getEntity("0")->setVisible(true);
 	}
 
 	return true;
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
+//Key released
 bool DemoApp::keyReleased(const OIS::KeyEvent &keyEventRef)
 {
 	OgreFramework::getSingletonPtr()->keyReleased(keyEventRef);
@@ -210,13 +206,14 @@ void DemoApp::initPhysics()
 
 	mScene = mWorld->createScene(sceneDesc);
 
-	// Set some physical scene values
+	//Set some physical scene values
 	mScene->getMaterial(0)->setStaticFriction(0.5);
 	mScene->getMaterial(0)->setDynamicFriction(0.5);
 	mScene->getMaterial(0)->setRestitution(0);
 	mRenderSystem = new OGRE3DRenderSystem(mScene);
 	mTimeController = NxOgre::TimeController::getSingleton();
-	//create a plane
+
+	//Create a plane
 	mScene->createSceneGeometry(new NxOgre::PlaneGeometry(0, NxOgre::Vec3(0, 1, 0)));
 	
 
@@ -226,14 +223,14 @@ void DemoApp::initPhysics()
 	Ogre::MeshManager::getSingleton().createPlane("PlaneMesh", 
 		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
 		*plane, 120, 120, 1, 1, true, 1, 3, 3, Vector3::UNIT_Z);
-	Entity *planeEnt = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("PlaneEntity", "PlaneMesh");
+	Entity *planeEnt = sceneMgr->createEntity("PlaneEntity", "PlaneMesh");
 	planeEnt->setMaterialName("Examples/GrassFloor");
 
-	Ogre::SceneNode* mPlaneNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+	Ogre::SceneNode* mPlaneNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
 	mPlaneNode->attachObject(planeEnt);
 	mPlaneNode->scale(100, 100, 100);
 
-	// Add objects
+	//Add objects
 	//mKB = mRenderSystem->createKinematicBody(new NxOgre::Box(12,1,12), NxOgre::Vec3(0, 12, 0), "cube.mesh");
 	OGRE3DBody* gCube;
 	float x_c, y_c, x_old, y_old;
@@ -259,11 +256,11 @@ void DemoApp::initPhysics()
 			y_old = y_c;
 		}
 	}
-	cannon = new ProjectileCannon(mRenderSystem, OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
-	ID = cannon->addLauncher(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), OgreFramework::getSingletonPtr()->m_pCamera->getPosition());
+	cannon = new ProjectileCannon(mRenderSystem, camera->getDirection(), camera->getPosition());
+	ID = cannon->addLauncher(camera->getDirection(), camera->getPosition());
 }
 
-//Handle the physics every frame
+//Handle the physics each update
 void DemoApp::handlePhysics()
 {
 	NxOgre::TimeController::getSingleton()->advance(timeSinceLastFrame/1000);
@@ -271,56 +268,57 @@ void DemoApp::handlePhysics()
 	NxOgre::Vec3 moveTo = NxVec3(0,0,0);
 	
 	//Move camera to the character
-	OgreFramework::getSingletonPtr()->m_pCamera->setPosition(mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
+	camera->setPosition(mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
 	
 	//Jump
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_Q))
+	if(keyboard->isKeyDown(OIS::KC_Q))
 	{
 		mCharacter->addForce(NxOgre::Vec3(0,10,0), NxOgre::Enums::ForceMode_Impulse);
 	}
 
 	//Fire projectile
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200)
+	if(keyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200)
 	{
-		cannon->aimCannon(OgreFramework::getSingletonPtr()->m_pCamera->getDirection(), ID);
-		cannon->moveCannon(OgreFramework::getSingletonPtr()->m_pCamera->getPosition(), ID);
-		cannon->fireFastShell(ID);
+		cannon->aimCannon(camera->getDirection(), ID);
+		cannon->moveCannon(camera->getPosition(), ID);
+		cannon->fireCannon(2, ID);
+		//cannon->fireFastShell(ID);
 		timeSinceLastAction = 0;
 	}
 
 	//Movements
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W))
+	if(keyboard->isKeyDown(OIS::KC_W))
 	{
-		moveTo.x = mCharacter->getGlobalPosition().x + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*timeSinceLastFrame/50;
 		moveTo.y = mCharacter->getGlobalPosition().y;
-		moveTo.z = mCharacter->getGlobalPosition().z + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*timeSinceLastFrame/50;
 		
 		mCharacter->setGlobalPosition(moveTo);
 	}
 	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A))
 	{
-		OgreFramework::getSingletonPtr()->m_pCamera->yaw(Ogre::Radian(Math::PI/2));
-		moveTo.x = mCharacter->getGlobalPosition().x + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;	
+		camera->yaw(Ogre::Radian(Math::PI/2));
+		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*timeSinceLastFrame/50;	
 		moveTo.y = mCharacter->getGlobalPosition().y;
-		moveTo.z = mCharacter->getGlobalPosition().z + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
-		OgreFramework::getSingletonPtr()->m_pCamera->yaw(Ogre::Radian((-Math::PI/2)));
+		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*timeSinceLastFrame/50;
+		camera->yaw(Ogre::Radian((-Math::PI/2)));
 		mCharacter->setGlobalPosition(moveTo);
 	}
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S))
+	if(keyboard->isKeyDown(OIS::KC_S))
 	{
-		moveTo.x = mCharacter->getGlobalPosition().x - (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+		moveTo.x = mCharacter->getGlobalPosition().x - (camera->getDirection().x / camera->getDirection().normalise())*timeSinceLastFrame/50;
 		moveTo.y = mCharacter->getGlobalPosition().y;
-		moveTo.z = mCharacter->getGlobalPosition().z - (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
+		moveTo.z = mCharacter->getGlobalPosition().z - (camera->getDirection().z / camera->getDirection().normalise())*timeSinceLastFrame/50;
 
 		mCharacter->setGlobalPosition(moveTo);
 	}
-	if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D))
+	if(keyboard->isKeyDown(OIS::KC_D))
 	{
-		OgreFramework::getSingletonPtr()->m_pCamera->yaw(Ogre::Radian((-Math::PI/2)));
-		moveTo.x = mCharacter->getGlobalPosition().x + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().x / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;	
+		camera->yaw(Ogre::Radian((-Math::PI/2)));
+		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*timeSinceLastFrame/50;	
 		moveTo.y = mCharacter->getGlobalPosition().y;
-		moveTo.z = mCharacter->getGlobalPosition().z + (OgreFramework::getSingletonPtr()->m_pCamera->getDirection().z / OgreFramework::getSingletonPtr()->m_pCamera->getDirection().normalise())*timeSinceLastFrame/50;
-		OgreFramework::getSingletonPtr()->m_pCamera->yaw(Ogre::Radian(Math::PI/2));
+		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*timeSinceLastFrame/50;
+		camera->yaw(Ogre::Radian(Math::PI/2));
 		mCharacter->setGlobalPosition(moveTo);
 	}
 }

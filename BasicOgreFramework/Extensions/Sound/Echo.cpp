@@ -4,26 +4,28 @@
 //A method for generating an echo that depends on the surroundings
 EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<float>> boxPositions , float soundPosition[3], float distanceScale, float reflectionScale)
 {
-	//-----Initialization of used variables-----
-	//--The delay of the echo--
+	//--Variables--
+
+	//The delay of the echo
 	int delay = 0;
 
-	//--The total reflecting value--
+	//The total reflecting value
 	float tRV = 0;
 
-	//--Distance vector between sound source and boxes for calculations and the actual distance--
+	//Distance vector between sound source and boxes for calculations and the actual distance
 	float distanceVector[3];
 	float distance = 0;
 
-	//--List of distances, the mean distance and the amount of boxes for calculating the delay--
+	//List of distances, the mean distance and the amount of boxes for calculating the delay
 	vector<float> distances;
 	int amountOfBoxes;
-	float meanDistance = 0;
+	float aRD = 0;
 
-	//--The starting volume--
+	//Procentual weight for the box values, used to see how much they should affect the approximate reflection distance
+	vector<float> pWeight;
+
+	//The starting volume
 	float sVolume = volume;
-
-	//-----Methods for determine what boxes that should be used-----
 
 	//--Remove objects that are too far away to consider--
 	for(unsigned int i = 0; i < boxValues.size(); i++)
@@ -38,7 +40,7 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 		distance = (float)sqrt(pow((double)distanceVector[0], 2) + pow((double)distanceVector[1], 2) + pow((double)distanceVector[2], 2));
 		
 		//If too far away, erase the box
-		if(distance > volume*750)
+		if(distance > volume*1000)
 		{
 			boxValues.erase(boxValues.begin() + i);
 			boxPositions.erase(boxPositions.begin() + i);
@@ -65,12 +67,16 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 		}
 	}
 
-	//-----Calculations of reflection values, echo, distance delay and return-----
-
 	//--Calculate the total reflecting value--
 	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		tRV += boxValues[i];
+	}
+
+	//--Calculate the percentually reflection from each box--
+	for(int u = 0; u < boxValues.size(); u++)
+	{
+		pWeight.push_back(((float)boxValues[u]/tRV));
 	}
 
 	//--Scale volume after how much reflection there is--
@@ -93,17 +99,17 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 		//Add the distance to the distance list
 		distances.push_back((float)sqrt(pow((double)distanceVector[0], 2) + pow((double)distanceVector[1], 2) + pow((double)distanceVector[2], 2)));
 	}
-	//Calculate the mean distance
-	amountOfBoxes = (int)distances.size();
-	for(int i = 0; i < amountOfBoxes; i++)
-		meanDistance += distances[i];
-	meanDistance /= amountOfBoxes;
+	//Calculate the approximate reflection distance
+	for(int u = 0; u < pWeight.size(); u++)
+	{
+		aRD += (pWeight[u]*distances[u]);
+	}
 	
 	//--Scale the delay after the distance--
-	delay = (int)(meanDistance*distanceScale);
+	delay = (int)(aRD*distanceScale);
 
 	//--Simulate soundloss due to distance--
-	reduce = (float)(meanDistance*0.0006);
+	reduce = (float)(aRD*0.0006);
 	volume -= reduce;
 	//If distance too far and volume negative, make it zero
 	if(volume < 0.0f)

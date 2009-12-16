@@ -56,14 +56,9 @@ void DemoApp::setupDemoScene()
 	cartoon->addRain();
 	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
 
-	//crosshair
+	//Crosshair
 	Ogre::Overlay* crosshair = Ogre::OverlayManager::getSingleton().getByName("Crosshair/Overlay");
 	crosshair->show();
-
-	vector<vector<AstarNode*>> graphMap = Astar::GenerateGraphMap(1);
-	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
-	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
-	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setWorldGeometry("terrain.cfg");
 
 	//Create light
 	OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(15,60,15);
@@ -74,10 +69,6 @@ void DemoApp::setupDemoScene()
 	mCharacter = mRenderSystem->createBody(new NxOgre::Box(10,10,10), NxOgre::Vec3(0,20,0), "fish.mesh");
 	mCharacter->setMass(80);
 	mCharacter->getEntity()->setVisible(false);
-	//create ze ogrehead
-	m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("0", "ogrehead.mesh");
-	m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode", Vector3(100.0f, 0.0f, 200));
-	m_pCubeNode->attachObject(m_pCubeEntity);
 
 	//Creating a fish
 	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("1","fish.mesh");
@@ -125,7 +116,7 @@ void DemoApp::runDemo()
 			timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
 			timeSinceLastAction += timeSinceLastFrame;
 
-			play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
+			//play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
 			
 
 			//Take care of the logic and movments

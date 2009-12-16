@@ -79,6 +79,7 @@ material Cartoon/Sun
 		{
 			scene_blend alpha_blend
 			depth_write off
+			emissive 1.0, 1.0, 1.0
 			texture_unit
 			{
 				texture comic_sun.png

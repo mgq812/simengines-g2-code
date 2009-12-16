@@ -93,12 +93,14 @@ namespace CartoonCaelum {
 	void Sun::createLight()
 	{
 		sunLight = cSceneMgr->createLight("SunLight");
-		sunLight->setType(Light::LT_DIRECTIONAL);
+		sunLight->setType(Light::LT_POINT);
 		lightNode = sunNode->createChildSceneNode("LightNode");
 		lightNode->attachObject(sunLight);
 		sunLight->setPosition(Vector3(0, -1, 0));
-		sunLight->setDiffuseColour(0.0, 1.0, 0.1);
-		sunLight->setSpecularColour(0.0, 1.0, 0.1);
+		sunLight->setDiffuseColour(1.0, 1.0, 1.0);
+		sunLight->setSpecularColour(1.0, 1.0, 1.0);
+		sunLight->setCastShadows(true);
+		
 	}
 
 }

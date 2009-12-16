@@ -66,13 +66,18 @@ void DemoApp::setupDemoScene()
 	crosshair->show();
 
 	//Create light
-	sceneMgr->createLight("Light")->setPosition(15,60,15);
-	sceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_ADDITIVE);
-	
+	sceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
+	sceneMgr->setShadowColour( ColourValue(0.5, 0.5, 0.5));
+	sceneMgr->setAmbientLight( ColourValue(0.2, 0.2, 0.2));
+	//Ogre::Light* light = sceneMgr->createLight("Light");
+	//light->setPosition(5,10,5);
+	//light->setType(Light::LT_POINT);
+	//light->setDiffuseColour(1.0, 0, 0);
+	//light->setSpecularColour(1.0, 0, 0);
+	//light->setVisible(true);
 
 	//Creating the character	
-	mCharacter = mRenderSystem->createBody(new NxOgre::Box(10,10,10), NxOgre::Vec3(0,20,0), "fish.mesh");
-	mCharacter->setMass(80);
+	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(0,3.5f,0), "fish.mesh");
 	mCharacter->getEntity()->setVisible(false);
 	
 	//Creating a fish
@@ -236,18 +241,33 @@ void DemoApp::initPhysics()
 	mScene->createSceneGeometry(new NxOgre::PlaneGeometry(0, NxOgre::Vec3(0, 1, 0)));
 	
 
-	MovablePlane *plane = new MovablePlane("Plane");
-	plane->d = 0;
-	plane->normal = Vector3::UNIT_Y;
-	Ogre::MeshManager::getSingleton().createPlane("PlaneMesh", 
-		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
-		*plane, 120, 120, 1, 1, true, 1, 3, 3, Vector3::UNIT_Z);
-	Entity *planeEnt = sceneMgr->createEntity("PlaneEntity", "PlaneMesh");
-	planeEnt->setMaterialName("Examples/GrassFloor");
+	//MovablePlane *plane = new MovablePlane("Plane");
+	//plane->d = 0;
+	//plane->normal = Vector3::UNIT_Y;
+	//Ogre::MeshManager::getSingleton().createPlane("PlaneMesh", 
+	//	ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
+	//	*plane, 120, 120, 1, 1, true, 1, 3, 3, Vector3::UNIT_Z);
+	//Entity *planeEnt = sceneMgr->createEntity("PlaneEntity", "PlaneMesh");
+	//Ogre::SceneNode* mPlaneNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
+	//mPlaneNode->attachObject(planeEnt);
+	//mPlaneNode->scale(100, 100, 100);
+	//planeEnt->setMaterialName("Examples/GrassFloor");
+	//planeEnt->setCastShadows(false);
+	//mPlaneNode->getMaterial()->setReceiveShadows(true);
+	//sceneMgr->setAmbientLight(ColourValue(0,0,0));
+	Entity *ent;
+	Plane plane(Vector3::UNIT_Y, 0);
+	MeshManager::getSingleton().createPlane("ground",
+		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
+		1500,1500,20,20,true,1,200,200,Vector3::UNIT_Z);
+	ent = sceneMgr->createEntity("GroundEntity", "ground");
 
-	Ogre::SceneNode* mPlaneNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
-	mPlaneNode->attachObject(planeEnt);
-	mPlaneNode->scale(100, 100, 100);
+	sceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);
+	ent->setMaterialName("Examples/GrassFloor");
+	ent->setCastShadows(false);
+
+
+
 
 	//Add objects
 	//mKB = mRenderSystem->createKinematicBody(new NxOgre::Box(12,1,12), NxOgre::Vec3(0, 12, 0), "cube.mesh");
@@ -269,8 +289,9 @@ void DemoApp::initPhysics()
 		dist = sqrt(pow(x_c - x_old, 2) + pow(y_c - y_old, 2));
 		if(dist > 2.1) 
 		{
-			gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 14, y_c), "cube.1m.mesh");
+			gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 2, y_c), "cube.1m.mesh");
 			gCube->setMass(2);
+			gCube->getEntity()->setCastShadows(true);
 			x_old = x_c;
 			y_old = y_c;
 		}
@@ -292,7 +313,7 @@ void DemoApp::handlePhysics()
 	//Jump
 	if(keyboard->isKeyDown(OIS::KC_Q))
 	{
-		mCharacter->addForce(NxOgre::Vec3(0,10,0), NxOgre::Enums::ForceMode_Impulse);
+		//mCharacter->addForce(NxOgre::Vec3(0,10,0), NxOgre::Enums::ForceMode_Impulse);
 	}
 
 	//Fire projectile
@@ -300,7 +321,7 @@ void DemoApp::handlePhysics()
 	{
 		cannon->aimCannon(camera->getDirection(), ID);
 		cannon->moveCannon(camera->getPosition(), ID);
-		cannon->fireCannon(2, ID);
+		cannon->fireCannon(1, ID);
 		//cannon->fireFastShell(ID);
 		timeSinceLastAction = 0;
 	}

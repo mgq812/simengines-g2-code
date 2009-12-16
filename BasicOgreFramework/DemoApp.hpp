@@ -37,7 +37,7 @@ private:
 	NxOgre::TimeController*	mTimeController;
 	NxOgre::SceneDescription sceneDesc;
 	OGRE3DRenderSystem*	mRenderSystem;
-	OGRE3DBody* mCharacter;
+	OGRE3DKinematicBody* mCharacter;
 
 	//The Ogre components
 	Ogre::SceneNode*			m_pCubeNode;

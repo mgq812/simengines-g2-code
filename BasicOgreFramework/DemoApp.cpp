@@ -6,7 +6,6 @@
 #include <OgreWindowEventUtilities.h>
 
 #include "math.h"
-#include "Crosshair.h"
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 

@@ -66,7 +66,13 @@ COORD Astar::convertAstarToOgreCoords(COORD coord, int ogreSize, int astarSize){
 	ogreCoords.Y = ogreSize - 2*coord.Y*ogreSize/astarSize;
 	return ogreCoords;
 }
-
+COORD Astar::convertOgreToAstarCoords(COORD coord, int ogreSize, int astarSize){
+	COORD astarCoords;
+	astarCoords.X = astarSize*(coord.X + ogreSize)/(2*ogreSize);
+	astarCoords.Y = astarSize*(coord.Y - ogreSize)/(-2*ogreSize);
+	//ogreCoords.Y = ogreSize - 2*coord.Y*ogreSize/astarSize;
+	return astarCoords;
+}
 int Astar::CalculateManhattan(AstarNode node,AstarNode* endNode, vector<vector<AstarNode*>> graphMap){
 	int cost = 0;
 	//Loop while the current node is not the end node we want to find.

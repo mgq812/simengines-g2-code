@@ -569,16 +569,24 @@ void DemoApp::newAstar(){
 	//Sleep(1000);
 	mDirection = Vector3::ZERO;
 	COORD temp = astarDestination;
-	astarDestination.X = rand()%30;
-	while(!(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5))
-	{
-		astarDestination.X = rand()%30;
-	}
-	astarDestination.Y = rand()%30;
-	while(!(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5))
-	{
-		astarDestination.Y = rand()%30;
-	}
+	NxOgre::Vec3 playerPos = mCharacter->getGlobalPosition();
+	astarDestination.X = playerPos.x;
+	astarDestination.Y = playerPos.z;
+	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,30,30);
+	//astarDestination.X = playerPos.x;
+	//astarDestination.Y = playerPos.z;
+
+	/*astarDestination.X = rand()%30;*/
+	//while(!(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5))
+	//{
+	//	astarDestination.X = rand()%30;
+	//}
+	//astarDestination.Y = rand()%30;
+	//while(!(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5))
+	//{
+	//	astarDestination.Y = rand()%30;
+	//}
+
 	if(threadStarted){
 		WaitForSingleObject(thread,INFINITE);
 		graphMap = DemoApp::graphMapTemp;

@@ -216,7 +216,7 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValu
 	float newVolume = echoProperties.getVolume();
 	int delay = echoProperties.getDelay();
 	
-	playIn(index, newVolume, delay):
+	playIn(index, newVolume, delay);
 
 }
 

@@ -2,7 +2,7 @@
 #include "math.h"
 
 //A method for generating an echo that depends on the surroundings
-EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<float>> boxPositions , float soundPosition[3])
+EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<float>> boxPositions , float soundPosition[3], float distanceScale, float reflectionScale)
 {
 	//-----Initialization of used variables-----
 	//--The delay of the echo--
@@ -10,7 +10,6 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 
 	//--The total reflecting value--
 	float tRV = 0;
-	const float tRFScaling = 1000000.0f;
 
 	//--Distance vector between sound source and boxes for calculations and the actual distance--
 	float distanceVector[3];
@@ -75,9 +74,9 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	}
 
 	//--Scale volume after how much reflection there is--
-	if(tRV > tRFScaling)
-		tRV = 1000000.0f;
-	float reduce = (1.0f -((float)tRV/tRFScaling));
+	if(tRV > reflectionScale)
+		tRV = reflectionScale;
+	float reduce = (1.0f -((float)tRV/reflectionScale));
 	volume -= reduce;
 
 	//--Calculate the delay of the sound--
@@ -101,10 +100,10 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 	meanDistance /= amountOfBoxes;
 	
 	//--Scale the delay after the distance--
-	delay = (int)(meanDistance*1.5);
+	delay = (int)(meanDistance*distanceScale);
 
 	//--Simulate soundloss due to distance--
-	reduce = (float)(meanDistance*0.0008);
+	reduce = (float)(meanDistance*0.0006);
 	volume -= reduce;
 	//If distance too far and volume negative, make it zero
 	if(volume < 0.0f)

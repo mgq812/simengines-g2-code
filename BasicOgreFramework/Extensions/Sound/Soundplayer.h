@@ -21,6 +21,7 @@ class Soundplayer
 		void setListenerVelocity(float x, float y, float z);
 		void setListenerOrientation(float a, float b, float c, float d, float e, float f);	
 		void setSourcePosition(int index, float x, float y, float z);
+		void setScales(float distanceScale, float reflectionScale);
 
 		void playSound(int index, float volume);
 		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPosition);
@@ -28,7 +29,11 @@ class Soundplayer
 	private:
 		void loadData(int index, float volume);
 		
-		// Sound sources positions and velocities
+		//Scales for modifying the echoes
+		float distanceScale;
+		float reflectionScale;
+
+		//Sound sources positions and velocities
 		vector<ALfloat> sourcePosX;
 		vector<ALfloat> sourcePosY;
 		vector<ALfloat> sourcePosZ;

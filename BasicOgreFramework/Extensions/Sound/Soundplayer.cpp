@@ -1,9 +1,13 @@
 #include "Soundplayer.h"
 #include "windows.h"
 
-//Soundplayer constructor for setting default listener values
+//Soundplayer constructor for setting default listener values.
+
 Soundplayer::Soundplayer()
 {
+	distanceScale = 2.0f;
+	reflectionScale = 1000000.0f;
+
 	listenerPos[0] = 0.0;
 	listenerPos[1] = 0.0;
 	listenerPos[2] = 0.0;
@@ -37,6 +41,13 @@ void Soundplayer::addSound(ALbyte* filePath, float soundPositionX, float soundPo
 	sourceVelX.push_back(soundVelocityX);
 	sourceVelY.push_back(soundVelocityY);
 	sourceVelZ.push_back(soundVelocityZ);
+}
+
+//This sets game specific scales for echos. The distance scale should be modifyed towards the games position system and the reflection scale to the reflection values sent in
+void Soundplayer::setScales(float dS, float rS)
+{
+	distanceScale = dS;
+	reflectionScale = rS;
 }
 
 //A method for updating the listeners position. The input is three coordinates for the room. 
@@ -181,7 +192,7 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValu
 
 	//Calculate echo
 	float in[3] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
-	EchoProperties echoProperties = Echo::calculateEcho(volume, boxValues, boxPositions, in);
+	EchoProperties echoProperties = Echo::calculateEcho(volume, boxValues, boxPositions, in, distanceScale, reflectionScale);
 	
 	//Change volume and waiting time
 	float newVolume = echoProperties.getVolume();

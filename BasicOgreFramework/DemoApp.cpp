@@ -118,9 +118,8 @@ void DemoApp::setupDemoScene()
 	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
 
 	//crosshair
-	Crosshair* crosshair = new Crosshair(OgreFramework::getSingletonPtr()->m_pSceneMgr, 
-		OgreFramework::getSingletonPtr()->m_pCamera, 1, 1, 10);
-	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(crosshair);
+	Ogre::Overlay* crosshair = Ogre::OverlayManager::getSingleton().getByName("Crosshair/Overlay");
+	crosshair->show();
 
 	vector<vector<AstarNode*>> graphMap = Astar::GenerateGraphMap(1);
 	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");

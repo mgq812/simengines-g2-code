@@ -77,7 +77,8 @@ material Cartoon/Sun
 	{
 		pass
 		{
-			//scene_blend alpha_blend
+			scene_blend alpha_blend
+			
 			texture_unit
 			{
 				texture comic_sun.png
@@ -94,6 +95,7 @@ material Cartoon/SleepyFace
 		{
 			scene_blend alpha_blend
 			depth_write off
+			
 			texture_unit
 			{
 				texture sleepy_face.png
@@ -110,6 +112,7 @@ material Cartoon/HappyFace
 		{
 			scene_blend alpha_blend
 			depth_write off
+			
 			texture_unit
 			{
 				texture happy_face.png
@@ -126,6 +129,7 @@ material Cartoon/BlowingFace
 		{
 			scene_blend alpha_blend
 			depth_write off
+			
 			texture_unit
 			{
 				texture blowing_face.png
@@ -142,9 +146,10 @@ material Cartoon/SnowFlake
 		{
 			emissive 1 1 1
 			lighting off
-			scene_blend src_alpha one_minus_src_alpha
+			scene_blend alpha_blend
 			alpha_rejection greater_equal 200
 			depth_write off
+			
 			texture_unit
 			{
 				texture snowflake.png
@@ -161,9 +166,10 @@ material Cartoon/RainDrop
 		{
 			emissive 1 1 1
 			lighting off
-			scene_blend src_alpha one_minus_src_alpha
+			scene_blend alpha_blend
 			alpha_rejection greater_equal 100
 			depth_write off
+			
 			texture_unit
 			{
 				texture raindrop.png

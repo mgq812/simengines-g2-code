@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\BasicOgreFramework\OIS\includes;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include"
+				AdditionalIncludeDirectories="..\BasicOgreFramework\OgreSDK\lib;..\BasicOgreFramework\OIS\includes;..\BasicOgreFramework\OpenAL\include;..\BasicOgreFramework\OgreSDK\include;..\BasicOgreFramework\bin\release\media;..\BasicOgreFramework\Extensions\Sound;..\BasicOgreFramework\Extensions\Physic;..\BasicOgreFramework\Extensions\Graphic;..\BasicOgreFramework\Extensions\AI;..\BasicOgreFramework\NXOgre;..\BasicOgreFramework\NXOgre\build\msvc\source;..\BasicOgreFramework\NXOgre\build\source;..\BasicOgreFramework\NXOgre\sdk;..\BasicOgreFramework\PhysxSDK\Graphics\include;..\BasicOgreFramework\PhysxSDK\SDKs\Physics\include;..\BasicOgreFramework\PhysxSDK\SDKs\Foundation\include;..\BasicOgreFramework\PhysxSDK\SDKs\PhysXLoader\include;..\BasicOgreFramework\PhysxSDK\SDKs\Cooking\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,7 +64,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OgreMain_d.lib OIS_d.lib CEGUIBase_d.lib OgreGUIRenderer_d.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\OgreSDK\lib"
+				AdditionalLibraryDirectories="&quot;J:\Mina dokument\Simulation Engines\SVN\simengines-g2-code\BasicOgreFramework\PhysxSDK\SDKs\lib&quot;;&quot;J:\Mina dokument\Simulation Engines\SVN\simengines-g2-code\BasicOgreFramework\OgreSDK\lib&quot;;C:\OgreSDK\lib;&quot;J:\Mina dokument\Simulation Engines\SVN\simengines-g2-code\BasicOgreFramework\PhysxSDK\Graphics\lib&quot;;&quot;J:\Mina dokument\Simulation Engines\SVN\simengines-g2-code\BasicOgreFramework\OpenAL\libs&quot;;&quot;J:\Mina dokument\Simulation Engines\SVN\simengines-g2-code\BasicOgreFramework\OIS\libs&quot;;&quot;J:\Mina dokument\Simulation Engines\SVN\simengines-g2-code\BasicOgreFramework\NXOgre\dependencies&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -106,6 +106,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				AdditionalDependencies="OgreMain.lib;OIS.lib;OIS_static.lib;CEGUIBase.lib;OgreGUIRenderer.lib;ALut.lib;OpenAL32.lib;NxOgre.lib;PhysXLoader.lib;NxCooking.lib;NxOgreOGRE3D.lib"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -180,7 +181,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Extensions\Graphic\Cloud.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Crosshair.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DemoApp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Extensions\Graphic\Face.cpp"
 				>
 			</File>
 			<File
@@ -246,7 +259,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Extensions\Graphic\Cloud.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Crosshair.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DemoApp.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Extensions\Graphic\Face.h"
 				>
 			</File>
 			<File

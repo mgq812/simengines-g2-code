@@ -1,0 +1,16 @@
+Crosshair/Overlay
+{
+	zorder	10
+	
+	container	Panel(Crosshair/Panel)
+	{
+		horz_align center
+		vert_align center
+		left	-50
+		top		-50
+		metrics_mode pixels
+		width	100
+		height	100
+		material	Crosshair/Cross
+	}
+}

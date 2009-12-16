@@ -4,7 +4,9 @@
 
 #include <OgreLight.h>
 #include <OgreWindowEventUtilities.h>
+
 #include "math.h"
+#include "Crosshair.h"
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 
@@ -109,9 +111,16 @@ void DemoApp::setupDemoScene()
 	CartoonCaelum::CartoonSystem* cartoon = 
 		new CartoonCaelum::CartoonSystem(OgreFramework::getSingletonPtr()->m_pRoot, 
 		OgreFramework::getSingletonPtr()->m_pSceneMgr, OgreFramework::getSingletonPtr()->m_pCamera);
-	//cartoon->setWindVector(Ogre::Vector3(50,0,0));
+	cartoon->addSnow();
+	cartoon->addWindVector(Vector3(20, 0, 0));
+	cartoon->setSnowDensity(100);
+	cartoon->addRain();
 	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(cartoon);
 
+	//crosshair
+	Crosshair* crosshair = new Crosshair(OgreFramework::getSingletonPtr()->m_pSceneMgr, 
+		OgreFramework::getSingletonPtr()->m_pCamera, 1, 1, 10);
+	OgreFramework::getSingletonPtr()->m_pRoot->addFrameListener(crosshair);
 
 	vector<vector<AstarNode*>> graphMap = Astar::GenerateGraphMap(1);
 	//OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");

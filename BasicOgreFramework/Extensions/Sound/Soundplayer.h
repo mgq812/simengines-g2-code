@@ -44,8 +44,10 @@ class Soundplayer
 		// Buffer for sound data
 		vector<ALuint> buffer;
 
-		//Source of sound
-		vector<ALuint> source;
+		//Sources of sound, their source iteration values and a boolean for each sound telling if it has been iterated through yet
+		vector<bool> iteratedThrough;
+		vector<int> sIV;
+		vector<vector<ALuint>> source;
 
 		//A list of filenames for all added sounds
 		vector<ALbyte*> fileNames;

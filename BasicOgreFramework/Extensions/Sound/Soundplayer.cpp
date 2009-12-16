@@ -32,7 +32,15 @@ void Soundplayer::addSound(ALbyte* filePath, float soundPositionX, float soundPo
 	buffer.push_back(0);
 
 	//Create a default source for the vector
-	source.push_back(0);
+	vector<ALuint> inS;
+	inS.push_back(-1);inS.push_back(-1);
+	inS.push_back(-1);inS.push_back(-1);
+	inS.push_back(-1);inS.push_back(-1);
+	inS.push_back(-1);inS.push_back(-1);
+	inS.push_back(-1);inS.push_back(-1);
+	sIV.push_back(-1);
+	iteratedThrough.push_back(false);
+	source.push_back(inS);
 
 	//Save positions and velocities
 	sourcePosX.push_back(soundPositionX);
@@ -105,6 +113,15 @@ void Soundplayer::loadData(int index, float volume)
     ALenum format;
 	ALboolean loop;
 
+
+	sIV[index]++;
+	if(sIV[index] == 10)
+	{
+		sIV[index] = 0;
+		iteratedThrough[index] = true;
+	}
+
+
 	//Generate buffer and load wav data into it
     alGenBuffers(1, &buffer[index]);
 	alutLoadWAVFile(fileNames[index], &format, &data, &size, &freq, &loop);
@@ -114,20 +131,20 @@ void Soundplayer::loadData(int index, float volume)
     alutUnloadWAV(format, data, size, freq);
 
 	//Generate a source
-	alGenSources(1, &source[index]);
-
+	if(!iteratedThrough[index])
+		alGenSources(1, &source[index][sIV[index]]);
 	//Indata
 	ALfloat sourcePosIn[] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
 	ALfloat sourceVelIn[] = { sourceVelX[index], sourceVelY[index], sourceVelZ[index] };
 
 	//Setting sound data and binding buffer to source
-	alSourcei (source[index], AL_BUFFER, buffer[index]);
-    alSourcef (source[index], AL_PITCH, 1.0f);
-	alSourcefv(source[index], AL_POSITION, sourcePosIn);
-    alSourcefv(source[index], AL_VELOCITY, sourceVelIn);
-    alSourcei (source[index], AL_LOOPING, loop);
-    alSourcef (source[index], AL_GAIN, volume);
-	alSourcef(source[index], AL_REFERENCE_DISTANCE, 20.0f);
+	alSourcei (source[index][sIV[index]], AL_BUFFER, buffer[index]);
+    alSourcef (source[index][sIV[index]], AL_PITCH, 1.0f);
+	alSourcefv(source[index][sIV[index]], AL_POSITION, sourcePosIn);
+    alSourcefv(source[index][sIV[index]], AL_VELOCITY, sourceVelIn);
+    alSourcei (source[index][sIV[index]], AL_LOOPING, loop);
+    alSourcef (source[index][sIV[index]], AL_GAIN, volume);
+	alSourcef(source[index][sIV[index]], AL_REFERENCE_DISTANCE, 20.0f);
 }
 //A method that plays a sound that is decided by the index. Also sets the volume after the volume input.
 void Soundplayer::playSound(int index, float volume)
@@ -144,7 +161,7 @@ void Soundplayer::playSound(int index, float volume)
 	alListenerfv(AL_ORIENTATION, listenerOri);
 
 	//Play the sound
-    alSourcePlay(source[index]);
+    alSourcePlay(source[index][sIV[index]]);
 }
 
 //A struct for passing parameters into the ThreadPlayEcho method through a new thread created by the CreateThread() method
@@ -188,7 +205,7 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValu
 	alListenerfv(AL_ORIENTATION, listenerOri);
 
 	//Play the sound
-    alSourcePlay(source[index]);
+    alSourcePlay(source[index][sIV[index]]);
 
 	//Calculate echo
 	float in[3] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };

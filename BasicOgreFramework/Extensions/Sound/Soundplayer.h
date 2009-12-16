@@ -11,8 +11,10 @@
 
 using namespace std;
 
+//The soundplayer class that is build to play sounds through openal, using my echo extension
 class Soundplayer
 {
+	//Public methods for the Soundplayer class
 	public:	
 		Soundplayer();
 
@@ -26,6 +28,7 @@ class Soundplayer
 		void playSound(int index, float volume);
 		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPosition);
 
+	//Private methods and variables for the Soundplayer class
 	private:
 		void loadData(int index, float volume);
 		

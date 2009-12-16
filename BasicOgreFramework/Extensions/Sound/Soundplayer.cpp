@@ -1,13 +1,15 @@
 #include "Soundplayer.h"
 #include "windows.h"
 
-//Soundplayer constructor for setting default listener values.
+//Soundplayer constructor for setting default listener, orientation values and scales
 
 Soundplayer::Soundplayer()
 {
+	//Default scales
 	distanceScale = 2.0f;
 	reflectionScale = 1000000.0f;
 
+	//Default listener position and orientation
 	listenerPos[0] = 0.0;
 	listenerPos[1] = 0.0;
 	listenerPos[2] = 0.0;
@@ -31,13 +33,15 @@ void Soundplayer::addSound(ALbyte* filePath, float soundPositionX, float soundPo
 	//Create a default buffer for the vector
 	buffer.push_back(0);
 
-	//Create a default source for the vector
+	//Create 10 default sound sources for each sound (meaning that 10 sounds of the same kind can only be playing at a time)
 	vector<ALuint> inS;
 	inS.push_back(-1);inS.push_back(-1);
 	inS.push_back(-1);inS.push_back(-1);
 	inS.push_back(-1);inS.push_back(-1);
 	inS.push_back(-1);inS.push_back(-1);
 	inS.push_back(-1);inS.push_back(-1);
+	
+	//Create the starting iteration value for the 10 sources and a boolean that says if you have generated sources for all 10 sources yet.
 	sIV.push_back(-1);
 	iteratedThrough.push_back(false);
 	source.push_back(inS);
@@ -113,7 +117,7 @@ void Soundplayer::loadData(int index, float volume)
     ALenum format;
 	ALboolean loop;
 
-
+	//Increment the source iteration value, reset it to 0 if it reaches the max
 	sIV[index]++;
 	if(sIV[index] == 10)
 	{

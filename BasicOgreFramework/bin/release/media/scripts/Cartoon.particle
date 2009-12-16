@@ -6,19 +6,233 @@ particle_system Cartoon/SnowFall
     cull_each       true
     quota           10000
     billboard_type  point
-	accurate_facing off
 	local_space		true
     
     // Area emitter
     emitter Point
     {
+		position 		0 100 0
         angle           100
         emission_rate   50
         time_to_live    10
         direction       0 -1 0
         velocity_min    20
         velocity_max    50
-        colour		    1 1 1 1
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		20 100 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    50
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		40 100 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    50
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		-20 100 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    50
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		-40 100 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    50
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		-60 100 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    50
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		60 100 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        vvelocity_min   20
+        velocity_max    50
+        colour		    1 1 1
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		0 50 0
+        angle           100
+        emission_rate   50
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    50
+        colour		    1 1 1
+    }
+
+    // Gravity
+    affector LinearForce
+    {
+        force_vector      0 -10 0
+        force_application add
+    }
+    
+}
+
+particle_system Cartoon/RainFall
+{
+    material        Cartoon/RainDrop
+    particle_width  0.5
+    particle_height 0.5
+    cull_each       true
+    quota           10000
+    billboard_type  point
+	local_space		true
+    
+    // Area emitter
+    emitter Point
+    {
+		position 		0 100 0
+        angle           20
+        emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		20 100 0
+        angle           20        
+		emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		40 100 0
+        angle           20
+        emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		-20 100 0
+        angle           20
+        emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		-40 100 0
+        angle           20
+        emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		-60 100 0
+        angle           20
+        emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		60 100 0
+        angle           20        
+		emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
+    }
+	
+	 // Area emitter
+    emitter Point
+    {
+		position 		0 50 0
+        angle           20
+        emission_rate   100
+        time_to_live    10
+        direction       0 -1 0
+        velocity_min    20
+        velocity_max    40
+        colour		    1 1 1 0.8
     }
 
     // Gravity

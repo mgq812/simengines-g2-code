@@ -118,6 +118,22 @@ material Cartoon/HappyFace
 	}
 }
 
+material Cartoon/BlowingFace
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			texture_unit
+			{
+				texture blowing_face.png
+			}
+		}
+	}
+}
+
 material Cartoon/SnowFlake
 {
 	technique
@@ -132,6 +148,25 @@ material Cartoon/SnowFlake
 			texture_unit
 			{
 				texture snowflake.png
+			}
+		}
+	}
+}
+
+material Cartoon/RainDrop
+{
+	technique
+	{
+		pass
+		{
+			emissive 1 1 1
+			lighting off
+			scene_blend src_alpha one_minus_src_alpha
+			alpha_rejection greater_equal 100
+			depth_write off
+			texture_unit
+			{
+				texture raindrop.png
 			}
 		}
 	}

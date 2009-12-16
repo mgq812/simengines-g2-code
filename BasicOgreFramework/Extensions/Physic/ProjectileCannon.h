@@ -8,6 +8,7 @@ class ProjectileCannon {
 public:
 	ProjectileCannon(OGRE3DRenderSystem* extRenderSystem, NxOgre::Vec3 direction, NxOgre::Vec3 position);
 	void setGrenadeLife(int tLife);
+	int getGreandeLife() { return grenadeLife; };
 	void aimCannon(NxOgre::Vec3 direction, int ID);
 	void moveCannon(NxOgre::Vec3 position, int ID);
 	void purge(Ogre::Real evtTime);

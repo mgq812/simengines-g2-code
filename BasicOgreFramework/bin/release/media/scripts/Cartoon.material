@@ -78,10 +78,26 @@ material Cartoon/Sun
 		pass
 		{
 			scene_blend alpha_blend
-			
+			depth_write off
 			texture_unit
 			{
 				texture comic_sun.png
+			}
+		}
+	}
+}
+
+material Cartoon/Cloud1
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			texture_unit
+			{
+				texture cloud_1.png
 			}
 		}
 	}

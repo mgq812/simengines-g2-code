@@ -169,10 +169,10 @@ namespace CartoonCaelum {
 			rainPS->getAffector(rainPS->getNumAffectors()-1)->setParameter("force_application", "add");
 		}
 		if (windVector==0) {
-			//makeWindCloud();
+			makeWindCloud();
 		}
-		//cWindCloud->setPosition(Vector3(-wind.x, 50,-wind.z));
-		windVector = &wind;
+		cWindCloud->setPosition(Vector3(-wind.x, 1, -wind.z));
+		windVector = new Vector3(wind);
 	}
 
 	void CartoonSystem::removeWindVector()

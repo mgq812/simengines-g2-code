@@ -18,7 +18,7 @@ namespace CartoonCaelum {
 		cloudYSize (ySize),
 		cloudDistance (distance)
 	{
-		createCloud("Cartoon/Sun");
+		createCloud("Cartoon/Cloud1");
 		cloudFace = new Face(cSceneMgr, cCamera, 
 			cloudNode->createChildSceneNode("FaceNode" + InternalUtilities::pointerToString(this)),
 			InternalUtilities::round(cloudXSize*0.9), 
@@ -28,8 +28,16 @@ namespace CartoonCaelum {
 
 	void Cloud::setPosition(Vector3 newPos)
 	{
-		newPos.normalise();
-		cloudNode->setPosition(newPos*cloudDistance);
+		Vector3 normPos = newPos.normalisedCopy();
+		cloudNode->setPosition(normPos*cloudDistance);
+		cloudNode->lookAt(Vector3(0,0,0), Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
+		Radian diffAngle = cloudNode->getOrientation().zAxis().angleBetween(Vector3::UNIT_Y + normPos);
+		cloudNode->yaw(diffAngle);
+		if ((cloudNode->getOrientation().zAxis().angleBetween(newPos.perpendicular())) > Radian(0)) {
+			cloudNode->yaw(-diffAngle*2);
+		} else {
+			cloudNode->yaw(diffAngle);
+		}
 	}
 
 	SceneNode *Cloud::getNode()

@@ -62,6 +62,8 @@ private:
 	NxOgre::SceneDescription sceneDesc;
 	OGRE3DRenderSystem*	mRenderSystem;
 	OGRE3DKinematicBody* mCharacter;
+	OGRE3DBody* theFish;
+	bool gren, shell, fShell;
 
 	//The Ogre components
 	Ogre::SceneNode*			m_pCubeNode;

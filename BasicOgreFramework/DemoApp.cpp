@@ -73,15 +73,15 @@ void DemoApp::setupDemoScene()
 	sceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
 	sceneMgr->setShadowColour( ColourValue(0.5, 0.5, 0.5));
 	sceneMgr->setAmbientLight( ColourValue(0.2, 0.2, 0.2));
-	//Ogre::Light* light = sceneMgr->createLight("Light");
-	//light->setPosition(5,10,5);
-	//light->setType(Light::LT_POINT);
-	//light->setDiffuseColour(1.0, 0, 0);
-	//light->setSpecularColour(1.0, 0, 0);
-	//light->setVisible(true);
+	Ogre::Light* light = sceneMgr->createLight("Light");
+	light->setPosition(5,20,5);
+	light->setType(Light::LT_POINT);
+	light->setDiffuseColour(1.0, 1.0, 1.0);
+	light->setSpecularColour(1.0, 1.0, 1.0);
+	light->setVisible(true);
 
 	//Creating the character	
-	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(0,3.5f,0), "fish.mesh");
+	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(20,3.5f,20), "fish.mesh");
 	mCharacter->getEntity()->setVisible(false);
 
 
@@ -104,6 +104,7 @@ void DemoApp::setupDemoScene()
 	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius(),0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
+	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
 	play.setScales(2.0f, 2000000.0f);
 
@@ -285,8 +286,8 @@ void DemoApp::initPhysics()
 	mScene = mWorld->createScene(sceneDesc);
 
 	//Set some physical scene values
-	mScene->getMaterial(0)->setStaticFriction(0.5);
-	mScene->getMaterial(0)->setDynamicFriction(0.5);
+	mScene->getMaterial(0)->setStaticFriction(1.0);
+	mScene->getMaterial(0)->setDynamicFriction(1.0);
 	mScene->getMaterial(0)->setRestitution(0);
 	mRenderSystem = new OGRE3DRenderSystem(mScene);
 	mTimeController = NxOgre::TimeController::getSingleton();
@@ -350,13 +351,21 @@ void DemoApp::initPhysics()
 	//		y_old = y_c;
 	//	}
 	//}
-	for(int i = 0; i < 500; i++) {
-		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(10, i, 10), "cube.1m.mesh");
+	for(int h = 0; h < 3; h++) 
+	for(int i = 0; i < 5; i++) {
+		for(int j = 0; j < 5; j++) { 
+		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(i, 1+h+0.001f*h, j), "cube.1m.mesh");
 		gCube->setMass(2);
 		gCube->getEntity()->setCastShadows(true);
+		gCube->setForceFieldMaterial(0);
+		}
 	}
 	cannon = new ProjectileCannon(mRenderSystem, camera->getDirection(), camera->getPosition());
 	ID = cannon->addLauncher(camera->getDirection(), camera->getPosition());
+	//default cannon values, for launching
+	gren = true;
+	shell = false;
+	fShell = false;
 }
 
 //Handle the physics each update
@@ -378,14 +387,32 @@ void DemoApp::handlePhysics()
 	//Fire projectile
 	if(keyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200)
 	{
+		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*3;
+		moveTo.y = mCharacter->getGlobalPosition().y;
+		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*3;
 		cannon->aimCannon(camera->getDirection(), ID);
-		cannon->moveCannon(camera->getPosition(), ID);
-		cannon->fireShell(ID);
-		//cannon->fireFastShell(ID);
+		cannon->moveCannon(moveTo, ID);
+		if(shell) cannon->fireShell(ID);
+		if(fShell) cannon->fireFastShell(ID);
+		if(gren) cannon->fireGrenade(ID);
 		timeSinceLastAction = 0;
 	}
-
-	//Movements
+	if(keyboard->isKeyDown(OIS::KC_1)) { 
+		gren = true;
+		shell = false;
+		fShell = false;
+	}
+	if(keyboard->isKeyDown(OIS::KC_2)) {
+		gren = false;
+		shell = true;
+		fShell = false;		
+	}
+	if(keyboard->isKeyDown(OIS::KC_3)) {
+		gren = false;
+		shell = false;
+		fShell = true;
+	}
+	//Movements	
 	if(keyboard->isKeyDown(OIS::KC_W))
 	{
 		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*timeSinceLastFrame/50;

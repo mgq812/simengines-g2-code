@@ -108,7 +108,7 @@ void ProjectileCannon::fireFastShell(int ID) {
 void ProjectileCannon::fireShell(int ID) {
 	pList.reserve(1);
 	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(1, 1, 1), getLauncherPos(ID), "cube.1m.mesh"); 
-	shot.mCube->setMass(0.5f);
+	shot.mCube->setMass(0.1f);
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
@@ -122,7 +122,7 @@ void ProjectileCannon::fireGrenade(int ID){
 
 	pList.reserve(1);
 	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(1, 1, 1), getLauncherPos(ID), "cube.1m.mesh"); 
-	shot.mCube->setMass(0.1f);
+	shot.mCube->setMass(0.5f);
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
@@ -202,7 +202,7 @@ void ProjectileCannon::purge(Ogre::Real evtTime) {
 
 	if(exploSpawned) {
 		explosionLife += evtTime;
-		if(cnt > 200) {
+		if(explosionLife > 100) {
 			m_inclusionShape->isSphere()->setRadius(0.1f);
 	//		m_excludeShape->isSphere()->setRadius(0.2f);
 			gForceField->removeShapeGroup(*m_inclusionGroup);

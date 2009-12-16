@@ -11,7 +11,8 @@ public:
 	void aimCannon(NxOgre::Vec3 direction, int ID);
 	void moveCannon(NxOgre::Vec3 position, int ID);
 	void purge(Ogre::Real evtTime);
-	void fireCannon(short extType, int ID);
+	void fireShell(int ID);
+	void fireGrenade(int ID);
 	void fireFastShell(int ID);
 	NxOgre::RaycastHit fireBullet(int ID);
 	int addLauncher(NxOgre::Vec3 direction, NxOgre::Vec3 position);

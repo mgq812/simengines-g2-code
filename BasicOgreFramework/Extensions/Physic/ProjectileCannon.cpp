@@ -87,6 +87,9 @@ NxOgre::RaycastHit ProjectileCannon::fireBullet(int ID) {
 	NxOgre::Ray ray;
 	ray.mDirection = getLauncherDir(ID);
 	ray.mOrigin = getLauncherPos(ID);
+	//todo: bullet drop --> time = speed/distance
+	//raycast again, with the height coordinate dropped by a value of d = -(1/2)g*t^2 
+	//if(abs(oldDistance - newDistance) > 0.5) raycast again. 
 	return mRenderSystem->getScene()->raycastClosestShape(ray, NxOgre::Enums::ShapesType_All);
 }
 void ProjectileCannon::fireFastShell(int ID) { 
@@ -102,19 +105,30 @@ void ProjectileCannon::fireFastShell(int ID) {
 	shot.location = NxVec3(loc.x, loc.y, loc.z);
 	pList.insert(pList.end(), shot);
 }
-void ProjectileCannon::fireCannon(short extType, int ID){ 
-
+void ProjectileCannon::fireShell(int ID) {
 	pList.reserve(1);
 	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(1, 1, 1), getLauncherPos(ID), "cube.1m.mesh"); 
 	shot.mCube->setMass(0.5f);
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
-	/*if(extType == GRENADE) {
-	}*/
 	shot.purge = false;
 	shot.lifeTime = 0;
-	shot.type = extType;
+	shot.type = SHELL;
+	pList.insert(pList.end(), shot);
+
+}
+void ProjectileCannon::fireGrenade(int ID){ 
+
+	pList.reserve(1);
+	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(1, 1, 1), getLauncherPos(ID), "cube.1m.mesh"); 
+	shot.mCube->setMass(0.1f);
+	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
+	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
+
+	shot.purge = false;
+	shot.lifeTime = 0;
+	shot.type = GRENADE;
 	pList.insert(pList.end(), shot);
 }	
 void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
@@ -122,8 +136,8 @@ void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
 	NxForceFieldLinearKernelDesc	lKernelDesc;
 	NxForceFieldLinearKernel*		linearKernel;
 
-	//constant force of 100 outwards
-	lKernelDesc.constant = NxVec3(150, 0, 0);
+	//constant force of 100 outwards	
+	lKernelDesc.constant = NxVec3(250, 0, 0);
 
 	//The forces do not depend on where the objects are positioned
 	NxMat33 m;
@@ -132,7 +146,7 @@ void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
 	lKernelDesc.noise = NxVec3(1,15,1); //adds a random noise on the forces to make the objects a little more chaotic
 
 	//Set target velocity along the radius to 20
-	lKernelDesc.velocityTarget = NxVec3(50,0,0);
+	lKernelDesc.velocityTarget = NxVec3(20,0,0);
 	m.diagonal(NxVec3(1,0,0)); //Acts with a force relative to the current velocity to reach the
 	//target velocities. 0 means that those components won't be affected
 	lKernelDesc.velocityMultiplier = m;

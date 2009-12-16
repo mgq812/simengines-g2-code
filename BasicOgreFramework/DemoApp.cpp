@@ -326,29 +326,34 @@ void DemoApp::initPhysics()
 	//Add objects
 	//mKB = mRenderSystem->createKinematicBody(new NxOgre::Box(12,1,12), NxOgre::Vec3(0, 12, 0), "cube.mesh");
 	OGRE3DBody* gCube;
-	float x_c, y_c, x_old, y_old;
-	float aMod = 0;
-	float sMod = 0;
-	float step = 0;
-	float dist; 
-	x_old = 100;
-	y_old = 100;
-	for(int cnt = 1; cnt < 200; cnt++) 
-	{
-		aMod = 3;
-		sMod = 6;
-		step = (2*3.14/200)*cnt  ;
-		x_c =  aMod*(sMod*cos(step) + cos(sMod*(float)step));
-		y_c =  aMod*(sMod*sin(step) + sin(sMod*(float)step));
-		dist = sqrt(pow(x_c - x_old, 2) + pow(y_c - y_old, 2));
-		if(dist > 2.1) 
-		{
-			gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 2, y_c), "cube.1m.mesh");
-			gCube->setMass(2);
-			gCube->getEntity()->setCastShadows(true);
-			x_old = x_c;
-			y_old = y_c;
-		}
+	//float x_c, y_c, x_old, y_old;
+	//float aMod = 0;
+	//float sMod = 0;
+	//float step = 0;
+	//float dist; 
+	//x_old = 100;
+	//y_old = 100;
+	//for(int cnt = 1; cnt < 200; cnt++) 
+	//{
+	//	aMod = 3;
+	//	sMod = 6;
+	//	step = (2*3.14/200)*cnt  ;
+	//	x_c =  aMod*(sMod*cos(step) + cos(sMod*(float)step));
+	//	y_c =  aMod*(sMod*sin(step) + sin(sMod*(float)step));
+	//	dist = sqrt(pow(x_c - x_old, 2) + pow(y_c - y_old, 2));
+	//	if(dist > 2.1) 
+	//	{
+	//		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(x_c, 2, y_c), "cube.1m.mesh");
+	//		gCube->setMass(2);
+	//		gCube->getEntity()->setCastShadows(true);
+	//		x_old = x_c;
+	//		y_old = y_c;
+	//	}
+	//}
+	for(int i = 0; i < 500; i++) {
+		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(10, i, 10), "cube.1m.mesh");
+		gCube->setMass(2);
+		gCube->getEntity()->setCastShadows(true);
 	}
 	cannon = new ProjectileCannon(mRenderSystem, camera->getDirection(), camera->getPosition());
 	ID = cannon->addLauncher(camera->getDirection(), camera->getPosition());
@@ -375,7 +380,7 @@ void DemoApp::handlePhysics()
 	{
 		cannon->aimCannon(camera->getDirection(), ID);
 		cannon->moveCannon(camera->getPosition(), ID);
-		cannon->fireCannon(1, ID);
+		cannon->fireShell(ID);
 		//cannon->fireFastShell(ID);
 		timeSinceLastAction = 0;
 	}

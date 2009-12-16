@@ -178,7 +178,7 @@ struct ThreadParameterPassingStruct
 };
 
 //The method to be run by the new thread in order to play the echo. The parameter is cast into the right type(ThreadParameterPassingStruct)
-DWORD WINAPI ThreadPlayEcho(LPVOID lparam)
+DWORD WINAPI ThreadPlay(LPVOID lparam)
 {
 	//Cast parameter into struct
 	ThreadParameterPassingStruct param = *(ThreadParameterPassingStruct*)lparam;
@@ -190,9 +190,6 @@ DWORD WINAPI ThreadPlayEcho(LPVOID lparam)
 	param.s->playSound(param.i, param.v);
 	return 0;
 }
-
-//A struct needed for sending many parameters into the thread
-ThreadParameterPassingStruct tPPS;
 
 //A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play, an volume for the volume, values of other objects in the room and positions of those objects
 void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPositions)
@@ -219,18 +216,27 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValu
 	float newVolume = echoProperties.getVolume();
 	int delay = echoProperties.getDelay();
 	
-	//Put parameters in the struct made for passing parameters into the thread
-	tPPS.i = index;
-	tPPS.v = newVolume;
-	tPPS.d = delay;
-	tPPS.s = this;
+	playIn(index, newVolume, delay);
 
+}
+
+//A struct needed for sending many parameters into the playIn thread
+ThreadParameterPassingStruct pIT;
+
+//A method for playing a sound after a certain time.
+void Soundplayer::playIn(int index, float volume, float delay)
+{
 	//Create the thread handle
 	HANDLE thread;
 
-	//Create and start a new thread, running the ThreadPlayEcho method, taking a voidpointer to a ThreadParameterPassingStruct as input
-	//This thread plays the echo of the sound after a certain time decided by the Echo class's calculation
-	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadPlayEcho,&tPPS,0,0);
+	//Put parameters in the struct made for passing parameters into the thread
+	pIT.d = delay;
+	pIT.i = index;
+	pIT.v = volume;
+	pIT.s = this;
+
+	//Create and start a new thread
+	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadPlay, &pIT,0,0);
 	
 	//Release the thread
 	CloseHandle(thread);

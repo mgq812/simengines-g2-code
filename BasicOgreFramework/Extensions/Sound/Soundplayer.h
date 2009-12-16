@@ -17,15 +17,17 @@ class Soundplayer
 	//Public methods for the Soundplayer class
 	public:	
 		Soundplayer();
-
+		
 		void addSound(ALbyte* fN, float soundPositionX, float soundPositionY, float soundPositionZ, float soundVelocityX, float soundVelocityY, float soundVelocityZ);
 		void setListenerPosition(float x, float y, float z);
 		void setListenerVelocity(float x, float y, float z);
 		void setListenerOrientation(float a, float b, float c, float d, float e, float f);	
 		void setSourcePosition(int index, float x, float y, float z);
 		void setScales(float distanceScale, float reflectionScale);
-
+		
+		
 		void playSound(int index, float volume);
+		void playIn(int index, float volume, float delay);
 		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPosition);
 
 	//Private methods and variables for the Soundplayer class

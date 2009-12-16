@@ -86,6 +86,28 @@ void DemoApp::setupDemoScene()
 
 
 	//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("5","palisade_circle.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode5",Vector3(100.0f,0.0f,100));
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+		//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("56","palisade_circle.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode56",Vector3(-100.0f,0.0f,100));
+	m_pCubeNode->rotate(-90);
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+		//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("57","palisade_circle.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode57",Vector3(100.0f,0.0f,-100));
+	m_pCubeNode->rotate(90);
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	//Creating a fish
+	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("55","palisade_circle.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode55",Vector3(-100.0f,0.0f,-100));
+	m_pCubeNode->attachObject(m_pCubeEntity);
+
+	//Creating a fish
 	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2","ogreHead.mesh");
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3",Vector3(0.0f,0.0f,500));
 	m_pCubeNode->attachObject(m_pCubeEntity);
@@ -100,7 +122,7 @@ void DemoApp::setupDemoScene()
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode25",Vector3(0.0f,0.0f,500));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 
-		//Creating a fish
+		//Creating a fish and let it be the last one created
 	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius(),0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
@@ -109,6 +131,8 @@ void DemoApp::setupDemoScene()
 	play.setScales(2.0f, 2000000.0f);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);
+	play.addSound("..\\..\\Extensions\\Sound\\bazooka3.wav", 0, 0, 0, 0, 0, 0);
 	play.addSound("..\\..\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Worry.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
@@ -392,9 +416,21 @@ void DemoApp::handlePhysics()
 		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*3;
 		cannon->aimCannon(camera->getDirection(), ID);
 		cannon->moveCannon(moveTo, ID);
-		if(shell) cannon->fireShell(ID);
-		if(fShell) cannon->fireFastShell(ID);
-		if(gren) cannon->fireGrenade(ID);
+		if(shell)
+		{
+			cannon->fireShell(ID);
+			play.playSound(2,1.0f);
+		}
+		if(fShell)
+		{
+			cannon->fireFastShell(ID);
+			play.playSound(2,1.0f);
+		}
+		if(gren)
+		{
+			cannon->fireGrenade(ID);
+			play.playIn(1, 1.0f, cannon->getGreandeLife()*1000);
+		}
 		timeSinceLastAction = 0;
 	}
 	if(keyboard->isKeyDown(OIS::KC_1)) { 

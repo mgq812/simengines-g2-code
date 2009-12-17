@@ -93,7 +93,7 @@ void DemoApp::setupDemoScene()
 	}
 	//Boulders
 	OGRE3DKinematicBody* houseA = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(4.0f,0,1.0f), "cg_house_A.mesh");
-	OGRE3DKinematicBody* well = mRenderSystem->createKinematicBody(new NxOgre::Box(6,16,6), NxOgre::Vec3(4.0f,0,20.0f), "cg_well.mesh");
+	OGRE3DKinematicBody* well = mRenderSystem->createKinematicBody(new NxOgre::Box(6,16,6), NxOgre::Vec3(2.0f,0,20.0f), "cg_well.mesh");
 	well->getSceneNode()->scale(2.0f,2.0f,2.0f);
 	OGRE3DKinematicBody* wella = mRenderSystem->createKinematicBody(new NxOgre::Box(6,16,6), NxOgre::Vec3(14.0f,0,20.0f), "cg_well.mesh");
 	wella->getSceneNode()->scale(2.0f,2.0f,2.0f);
@@ -609,7 +609,7 @@ void DemoApp::setNotWalkables(){
 
 	graphMap[16][14]->setWalkable(false);
 	graphMap[17][14]->setWalkable(false);
-	graphMap[16][12]->setWalkable(false);
+	graphMap[15][12]->setWalkable(false);
 	graphMap[17][12]->setWalkable(false);
 	graphMap[19][12]->setWalkable(false);
 	//COORD temp;

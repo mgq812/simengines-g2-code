@@ -105,6 +105,14 @@ void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 	sourcePosX[index] = x;
 	sourcePosY[index] = y;
 	sourcePosZ[index] = z;
+
+	//Update the sounds positions if the current sound buffer has been initialized
+	if(sIV[index] != -1)
+	{
+		ALfloat sourcePosIn[] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
+		alSourcefv(source[index][sIV[index]], AL_POSITION, sourcePosIn);
+	}
+
 }
 
 //A method for loading sound data before playing it. The input is an index for what sound to load.
@@ -124,7 +132,6 @@ void Soundplayer::loadData(int index, float volume, ALboolean looping)
 		sIV[index] = 0;
 		iteratedThrough[index] = true;
 	}
-
 
 	//Generate buffer and load wav data into it
     alGenBuffers(1, &buffer[index]);

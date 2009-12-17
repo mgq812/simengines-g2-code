@@ -237,6 +237,21 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 			density = 0;
 		}
 	}
+	if(keyboard->isKeyDown(OIS::KC_U))
+	{
+		static int face = 0;
+		
+		if(face == 0)
+		{
+			cartoon->getSun()->getFace()->setFace("Cartoon/SleepyFace");
+			face = 1;
+		}
+		else if(face == 1)
+		{
+			cartoon->getSun()->getFace()->setFace("Cartoon/HappyFace");
+			face = 0;
+		}
+	}
 
 	return true;
 }

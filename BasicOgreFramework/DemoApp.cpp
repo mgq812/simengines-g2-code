@@ -110,7 +110,7 @@ void DemoApp::setupDemoScene()
 	m_pCubeNode->scale(0.7f,0.7f,0.7f);
 	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
-	play.setScales(1.7f, 2000.0f);
+	play.setScales(1.7f, 3000.0f);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);
@@ -368,18 +368,23 @@ void DemoApp::handlePhysics()
 		if(shell)
 		{
 			cannon->fireShell(ID);
-			play.playSound(2,0.1f);
+
+			vector<MovableObject*> eList = getEntities();
+			play.setSourcePosition(2, mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
+			play.playSoundWithEcho(2, 1.0f, getBoxValues(eList), getBoxPositions(eList));
 		}
 		else if(fShell)
 		{
 			cannon->fireFastShell(ID);
-			play.playSound(2,1.0f);
+			
+			vector<MovableObject*> eList = getEntities();
+			play.setSourcePosition(2, mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
+			play.playSoundWithEcho(2,1.0f, getBoxValues(eList), getBoxPositions(eList));
 		}
 		else if(gren)
 		{
 			cannon->fireGrenade(ID);
 			
-
 			play.setSourcePosition(1, mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
 			vector<MovableObject*> eList = getEntities();
 			play.playWithEchoIn(1, 1.0f, cannon->getGreandeLife()*1000, getBoxValues(eList), getBoxPositions(eList));

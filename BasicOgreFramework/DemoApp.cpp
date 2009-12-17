@@ -114,14 +114,9 @@ void DemoApp::setupDemoScene()
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);
 	play.addSound("..\\..\\Extensions\\Sound\\bazooka3.wav", 0, 0, 0, 0, 0, 0);
-	play.addSound("..\\..\\Extensions\\Sound\\Will.wav", 0,0,0,0,0,0);
-	play.addSound("..\\..\\Extensions\\Sound\\Aladdin.wav", 0,0,0,0,0,0);
-	play.addSound("..\\..\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
-	play.addSound("..\\..\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
-	play.addSound("..\\..\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\roboto.wav", 0,0,0,0,0,0);
 
-	play.playSound(8, 0.4f, true);
+	play.playSound(3, 0.4f, true);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -165,7 +160,7 @@ void DemoApp::runDemo()
 			moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
-			play.setSourcePosition(8, ((float)mNode->getPosition().x), ((float)mNode->getPosition().y), ((float)mNode->getPosition().z));
+			play.setSourcePosition(3, ((float)mNode->getPosition().x), ((float)mNode->getPosition().y), ((float)mNode->getPosition().z));
 
 			//Take care of the logic and movments
 			handlePhysics();

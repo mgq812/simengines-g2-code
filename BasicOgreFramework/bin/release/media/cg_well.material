@@ -1,0 +1,168 @@
+material /global/structures/cg_well/ossyja_post
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\ossyja_post\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/ossyja_rope
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\ossyja_rope\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/ossyja_rough_beams
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\ossyja_rough_beams\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/rezpa_masonry
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\rezpa_masonry\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/roof
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\roof\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/roof_shale
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\roof_shale\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/roof_trim
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\roof_trim\D.png
+			}
+		}
+	}
+}
+
+
+material /global/structures/cg_well/wooden_fence
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ..\..\textures\wooden_fence\D.png
+			}
+		}
+	}
+}
+
+

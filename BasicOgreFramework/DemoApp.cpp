@@ -616,12 +616,14 @@ void DemoApp::setNotWalkables(){
 		graphMap[15][15+ i]->setWalkable(false);
 	}
 	COORD temp;
-	for(int i = -1;i <5;i++){
+	for(int i = -1;i <4;i++){
 		temp.X = i;
 		temp.Y = 1;
 		temp = Astar::convertOgreToAstarCoords(temp,100,30);
 		graphMap[temp.X][temp.Y]->setWalkable(false);
 		graphMap[temp.X+1][temp.Y]->setWalkable(false);
+		graphMap[temp.X+2][temp.Y]->setWalkable(false);
+		graphMap[temp.X-1][temp.Y]->setWalkable(false);
 	}
 }
 //|||||||||||||||||||||||||||||||||||||||||||||||

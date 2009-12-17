@@ -149,7 +149,7 @@ vector<COORD> Astar::GenerateAstarPath(AstarNode& start, AstarNode& end, vector<
 	AstarNode* startNode = &start;
 	AstarNode* endNode = &end;
 	//if either the start node or the end node is in a enclosed area but not the other, return an empty vector
-	if(startNode->isEnclosed() != endNode->isEnclosed()){
+	if(startNode->isEnclosed() != endNode->isEnclosed() || !endNode->isWalkable()){
 		return *(new vector<COORD>());
 	}
 	//Creating one vector containing the final path and one vector containing the nodes that're on the open list

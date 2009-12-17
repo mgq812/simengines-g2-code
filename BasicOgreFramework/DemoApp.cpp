@@ -79,92 +79,24 @@ void DemoApp::setupDemoScene()
 	//Creating the character	
 	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(20,3.5f,20), "fish.mesh");
 	mCharacter->getEntity()->setVisible(false);
-	string s;
-	stringstream out;
-	/*for(int i = -30; i < 30; i += 3)
-	{
-		out << i;
-		s = "a" + out.str();
-		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(i,0.0f,-30));
-		m_pCubeNode->attachObject(m_pCubeEntity);
-		out.clear();
-	}
-	for(int i = -30; i < 30; i += 3)
-	{
-		out << i;
-		s = "b" + out.str();
-		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(i,0.0f,30));
-		m_pCubeNode->attachObject(m_pCubeEntity);
-		out.clear();
-	}
-	for(int i = -30; i < 30; i += 3)
-	{
-		out << i;
-		s = "c" + out.str();
-		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(30.0f,0.0f,i));
-		m_pCubeNode->attachObject(m_pCubeEntity);
-		out.clear();
-	}
-	for(int i = -30; i < 30; i += 3)
-	{
-		out << i;
-		s = "d" + out.str();
-		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(-30.0f,0.0f,i));
-		m_pCubeNode->attachObject(m_pCubeEntity);
-		out.clear();
-	}*/
+	//string s;
+	//stringstream out;
+	OGRE3DKinematicBody* boulder;
 	for(int i = -30; i < 0; i += 3)
 	{
-		out << i;
-		s = "e" + out.str();
-		m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
-		m_pCubeNode->attachObject(m_pCubeEntity);
-		out.clear();
+		/*out << i;
+		s = "e" + out.str();*/
+		boulder = mRenderSystem->createKinematicBody(new NxOgre::Box(5,7,5), NxOgre::Vec3(0.0f,0,i), "boulder_02.mesh");
+		//m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		//m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
+		//m_pCubeNode->attachObject(boulder->getEntity());
+		//out.clear();
 	}
 	//Boulders
-
-
-	//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("5","palisade_circle.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode5",Vector3(100.0f,0.0f,100));
-	m_pCubeNode->attachObject(m_pCubeEntity);
-
-		//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("56","palisade_circle.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode56",Vector3(-100.0f,0.0f,100));
-	m_pCubeNode->rotate(-90);
-	m_pCubeNode->attachObject(m_pCubeEntity);
-
-		//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("57","palisade_circle.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode57",Vector3(100.0f,0.0f,-100));
-	m_pCubeNode->rotate(90);
-	m_pCubeNode->attachObject(m_pCubeEntity);
-
-	//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("55","palisade_circle.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode55",Vector3(-100.0f,0.0f,-100));
-	m_pCubeNode->attachObject(m_pCubeEntity);
-
-	//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("2","ogreHead.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode3",Vector3(0.0f,0.0f,500));
-	m_pCubeNode->attachObject(m_pCubeEntity);
-
-	//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("3","ogreHead.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode24",Vector3(0.0f,0.0f,500));
-	m_pCubeNode->attachObject(m_pCubeEntity);
-
-	//Creating a fish
-	m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("4","ogreHead.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode25",Vector3(0.0f,0.0f,500));
-	m_pCubeNode->attachObject(m_pCubeEntity);
+	OGRE3DKinematicBody* houseA = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(5.0f,0,1.0f), "cg_house_A.mesh");
+	/*OGRE3DKinematicBody* houseB = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(0.0f,0,10.0f), "cg_house_B.mesh");
+	OGRE3DKinematicBody* houseC = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(10.0f,0,0.0f), "cg_house_C.mesh");
+	OGRE3DKinematicBody* houseD = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(20.0f,0,-10.0f), "cg_house_D.mesh");*/
 
 		//Creating a fish and let it be the last one created
 	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
@@ -575,7 +507,9 @@ void DemoApp::newAstar(){
 	astarDestination.X = playerPos.x;
 	astarDestination.Y = playerPos.z;
 	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,100,30);
-	if((temp.X != astarDestination.X && temp.Y != astarDestination.Y) && ((astarDestination.X < 30 && astarDestination.X > 0) && (astarDestination.Y < 30 && astarDestination.Y > 0)))
+	if((temp.X != astarDestination.X && temp.Y != astarDestination.Y) && 
+		((astarDestination.X < 30 && astarDestination.X > 0) && (astarDestination.Y < 30 && astarDestination.Y > 0)) &&
+		((temp.X < 30 && temp.X > 0) && (temp.Y < 30 && temp.Y > 0)))
 	{
 		//astarDestination.X = playerPos.x;
 		//astarDestination.Y = playerPos.z;
@@ -612,13 +546,22 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 	{
 		if (nextLocation()) 
 		{
-			mAnimationState = mEntity->getAnimationState("swim");
-			mAnimationState->setLoop(true);
-			mAnimationState->setEnabled(true);
+			//Vector3 src = mNode->getOrientation() * Vector3::UNIT_X;
+			//if ((1.0f + src.dotProduct(mDirection)) < 0.0001f)
+			//{
+			//	mNode->yaw(Degree(180));
+			//}
+			//else
+			//{
+			//	Ogre::Quaternion quat = src.getRotationTo(mDirection);
+			//	mNode->rotate(quat);
+			//	//mNode->yaw(Degree(180));
+			//} // else
+			//mNode->yaw(Degree(180));
 		}
 		else if(cdAstar < 0)
 		{
-			cdAstar = 5000;
+			cdAstar = 6000;
 			newAstar();
 		}
 		else
@@ -636,11 +579,7 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 			mNode->setPosition(mDestination);
 			mDirection = Vector3::ZERO;
 			// Set animation based on if the robot has another point to walk to. 
-			if (! nextLocation())
-			{
-				//newAstar();
-			} 
-			else
+			if ( nextLocation())
 			{
 				Vector3 src = mNode->getOrientation() * Vector3::UNIT_X;
 				if ((1.0f + src.dotProduct(mDirection)) < 0.0001f)
@@ -675,6 +614,14 @@ bool DemoApp::nextLocation(){
 void DemoApp::setNotWalkables(){
 	for(int i = 0;i <15;i++){
 		graphMap[15][15+ i]->setWalkable(false);
+	}
+	COORD temp;
+	for(int i = -1;i <5;i++){
+		temp.X = i;
+		temp.Y = 1;
+		temp = Astar::convertOgreToAstarCoords(temp,100,30);
+		graphMap[temp.X][temp.Y]->setWalkable(false);
+		graphMap[temp.X+1][temp.Y]->setWalkable(false);
 	}
 }
 //|||||||||||||||||||||||||||||||||||||||||||||||

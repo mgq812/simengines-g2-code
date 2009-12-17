@@ -352,11 +352,6 @@ void DemoApp::handlePhysics()
 	//Move camera to the character
 	camera->setPosition(mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
 	
-	//Jump
-	if(keyboard->isKeyDown(OIS::KC_Q))
-	{
-		//mCharacter->addForce(NxOgre::Vec3(0,10,0), NxOgre::Enums::ForceMode_Impulse);
-	}
 	//Fire projectile
 	if(keyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200 || mouse->getMouseState().buttonDown(OIS::MB_Left) && timeSinceLastAction > 200)
 	{
@@ -378,7 +373,9 @@ void DemoApp::handlePhysics()
 		else if(gren)
 		{
 			cannon->fireGrenade(ID);
-			play.playIn(1, 1.0f, cannon->getGreandeLife()*1000);
+
+			vector<MovableObject*> eList = getEntities();
+			play.playWithEchoIn(1, 1.0f, cannon->getGreandeLife()*1000, getBoxValues(eList), getBoxPositions(eList));
 		}
 		if(obliterate)
 		{
@@ -386,14 +383,6 @@ void DemoApp::handlePhysics()
 		}
 		timeSinceLastAction = 0;
 	}
-	//if(keyboard->isKeyDown(OIS::KC_9)) {
-	//	NxOgre::Actor** actors = mRenderSystem->getScene()->getActors();
-	//	unsigned int nbActors = mRenderSystem->getScene()->getNbActors();
-	//	while(nbActors--)
-	//	{
-	//		NxOgre::Actor* actor = *actors++;
-	//		OGRE3DBody
-	//	}
 	if(keyboard->isKeyDown(OIS::KC_1)) { 
 		gren = true;
 		shell = false;
@@ -479,10 +468,8 @@ DWORD WINAPI DemoApp::threadStart(LPVOID iparam){
 	return 0;
 }
 
-void DemoApp::newAstar(){
-	
-	//	graphMap = Astar::GenerateGraphMap(20);
-	//Sleep(1000);
+void DemoApp::newAstar()
+{
 	mDirection = Vector3::ZERO;
 	COORD temp = astarDestination;
 	NxOgre::Vec3 playerPos = mCharacter->getGlobalPosition();
@@ -493,20 +480,6 @@ void DemoApp::newAstar(){
 		((astarDestination.X < 30 && astarDestination.X > 0) && (astarDestination.Y < 30 && astarDestination.Y > 0)) &&
 		((temp.X < 30 && temp.X > 0) && (temp.Y < 30 && temp.Y > 0)))
 	{
-		//astarDestination.X = playerPos.x;
-		//astarDestination.Y = playerPos.z;
-
-		/*astarDestination.X = rand()%30;*/
-		//while(!(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5))
-		//{
-		//	astarDestination.X = rand()%30;
-		//}
-		//astarDestination.Y = rand()%30;
-		//while(!(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5))
-		//{
-		//	astarDestination.Y = rand()%30;
-		//}
-
 		if(threadStarted){
 			WaitForSingleObject(thread,INFINITE);
 			graphMap = DemoApp::graphMapTemp;
@@ -528,18 +501,7 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 	{
 		if (nextLocation()) 
 		{
-			//Vector3 src = mNode->getOrientation() * Vector3::UNIT_X;
-			//if ((1.0f + src.dotProduct(mDirection)) < 0.0001f)
-			//{
-			//	mNode->yaw(Degree(180));
-			//}
-			//else
-			//{
-			//	Ogre::Quaternion quat = src.getRotationTo(mDirection);
-			//	mNode->rotate(quat);
-			//	//mNode->yaw(Degree(180));
-			//} // else
-			//mNode->yaw(Degree(180));
+
 		}
 		else if(cdAstar < 0)
 		{
@@ -572,23 +534,21 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 				{
 					Ogre::Quaternion quat = src.getRotationTo(mDirection);
 					mNode->rotate(quat);
-					//mNode->yaw(Degree(180));
-				} // else
+				}
 				mNode->yaw(Degree(180));
 			}
 		}
 		else
 		{
 			mNode->translate(mDirection * move);
-		} // else
-	} // if
+		}
+	}
 }
 bool DemoApp::nextLocation(){
 	if (mWalkList.empty())
             return false;
 	mDestination = mWalkList.front();
     mWalkList.pop_front();       
-	//Lacking mnode atm
     mDirection = mDestination - mNode->getPosition();
     mDistance = mDirection.normalise();
 	return true;

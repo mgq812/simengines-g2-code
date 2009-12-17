@@ -115,6 +115,6 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 		volume = 0.0f;
 
 	//--Create and return an EchoProperties object--
-	EchoProperties eP = EchoProperties(1.0f, delay);
+	EchoProperties eP = EchoProperties(volume, delay);
 	return eP;
 }

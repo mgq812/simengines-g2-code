@@ -104,7 +104,7 @@ void DemoApp::setupDemoScene()
 	m_pCubeNode->scale(0.7f,0.7f,0.7f);
 	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
-	play.setScales(1.7f, 1000000.0f);
+	play.setScales(1.7f, 2000.0f);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);
@@ -178,7 +178,6 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	if(keyboard->isKeyDown(OIS::KC_F))
 	{
 		vector<MovableObject*> eList = getEntities();
-		
 		play.playSoundWithEcho(0, 1, getBoxValues(eList), getBoxPositions(eList));
 
 	}
@@ -373,7 +372,9 @@ void DemoApp::handlePhysics()
 		else if(gren)
 		{
 			cannon->fireGrenade(ID);
+			
 
+			play.setSourcePosition(1, mCharacter->getGlobalPosition().x, mCharacter->getGlobalPosition().y, mCharacter->getGlobalPosition().z);
 			vector<MovableObject*> eList = getEntities();
 			play.playWithEchoIn(1, 1.0f, cannon->getGreandeLife()*1000, getBoxValues(eList), getBoxPositions(eList));
 		}

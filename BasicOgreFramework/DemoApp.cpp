@@ -178,39 +178,9 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	
 	if(keyboard->isKeyDown(OIS::KC_F))
 	{
-		//Find all entities and send their needed input into the playSoundWithEcho() method
-		vector<int> boxValues;
-		vector<vector<float>> boxPositions;
-		vector<SceneNode*> allSceneNodes;
-		vector<MovableObject*> entities;
-		Ogre::SceneNode::ChildNodeIterator cNI = sceneMgr->getRootSceneNode()->getChildIterator();
-		vector<string> names;
-		while(cNI.hasMoreElements())
-		{
-			allSceneNodes.push_back(sceneMgr->getSceneNode(cNI.getNext()->getName()));
-		}
-		for(int i = 0; i < allSceneNodes.size(); i++)
-		{
-			Ogre::SceneNode::ObjectIterator cOI = allSceneNodes[i]->getAttachedObjectIterator();
-			while(cOI.hasMoreElements())
-			{
-				Ogre::MovableObject* objectInput = cOI.getNext();
-				if(objectInput->getName() != "snowSystem" && objectInput->getName()!= "rainSystem")
-					entities.push_back(objectInput);
-			}
-		}
-		for(int y = 0; y < entities.size(); y++)
-		{
-			boxValues.push_back(entities[y]->getBoundingBox().volume());
-
-			vector<float> in;
-			in.push_back(entities[y]->getParentSceneNode()->getPosition().x);
-			in.push_back(entities[y]->getParentSceneNode()->getPosition().y);
-			in.push_back(entities[y]->getParentSceneNode()->getPosition().z);
-			boxPositions.push_back(in);
-		}
-
-		play.playSoundWithEcho(0, 1, boxValues, boxPositions);
+		vector<MovableObject*> eList = getEntities();
+		
+		play.playSoundWithEcho(0, 1, getBoxValues(eList), getBoxPositions(eList));
 
 	}
 	if(keyboard->isKeyDown(OIS::KC_G))
@@ -625,5 +595,62 @@ void DemoApp::setNotWalkables(){
 		graphMap[temp.X+2][temp.Y]->setWalkable(false);
 		graphMap[temp.X-1][temp.Y]->setWalkable(false);
 	}
+}
+
+//Returns all entities that are of interest for the echo
+vector<MovableObject*> DemoApp::getEntities()
+{
+	vector<MovableObject*> entities;
+	vector<SceneNode*> allSceneNodes;
+	
+	Ogre::SceneNode::ChildNodeIterator cNI = sceneMgr->getRootSceneNode()->getChildIterator();
+	
+	while(cNI.hasMoreElements())
+	{
+		allSceneNodes.push_back(sceneMgr->getSceneNode(cNI.getNext()->getName()));
+	}
+
+	for(int i = 0; i < allSceneNodes.size(); i++)
+	{
+		Ogre::SceneNode::ObjectIterator cOI = allSceneNodes[i]->getAttachedObjectIterator();
+		while(cOI.hasMoreElements())
+		{
+			Ogre::MovableObject* objectInput = cOI.getNext();
+			if(objectInput->getName() != "snowSystem" && objectInput->getName()!= "rainSystem")
+				entities.push_back(objectInput);
+		}
+	}
+
+	return(entities);
+}
+
+//Returns the box values for the echo calculations
+vector<float> DemoApp::getBoxValues(vector<MovableObject*> entityList)
+{
+
+	//Find all entities and send their needed input into the playSoundWithEcho() method
+	vector<float> boxValues;
+	
+	for(int y = 0; y < entityList.size(); y++)
+		boxValues.push_back(entityList[y]->getBoundingBox().volume());
+	
+	return(boxValues);
+}
+
+//Returns the box positions for the echo calculations
+vector<vector<float>> DemoApp::getBoxPositions(vector<MovableObject*> entityList)
+{
+	vector<vector<float>> boxPositions;
+	
+	for(int y = 0; y < entityList.size(); y++)
+	{
+		vector<float> in;
+		in.push_back(entityList[y]->getParentSceneNode()->getPosition().x);
+		in.push_back(entityList[y]->getParentSceneNode()->getPosition().y);
+		in.push_back(entityList[y]->getParentSceneNode()->getPosition().z);
+		boxPositions.push_back(in);
+	}
+
+	return(boxPositions);
 }
 //|||||||||||||||||||||||||||||||||||||||||||||||

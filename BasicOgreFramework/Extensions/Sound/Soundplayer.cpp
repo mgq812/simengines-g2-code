@@ -192,7 +192,7 @@ DWORD WINAPI ThreadPlay(LPVOID lparam)
 }
 
 //A method that plays a sound with an echo that is decided by the input, which is an integer for what sound to play, an volume for the volume, values of other objects in the room and positions of those objects
-void Soundplayer::playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPositions)
+void Soundplayer::playSoundWithEcho(int index, float volume, vector<float> boxValues, vector<vector<float>> boxPositions)
 {
 	//Initialize alut
     alutInit(NULL, NULL);

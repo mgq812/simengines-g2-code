@@ -29,6 +29,9 @@ private:
 	void runDemo();
 	void handlePhysics();
 	void initPhysics();
+	vector<MovableObject*> getEntities();
+	vector<float> getBoxValues(vector<MovableObject*> entityList);
+	vector<vector<float>> getBoxPositions(vector<MovableObject*> entityList);
 
 	//AI
 	COORD astarDestination;

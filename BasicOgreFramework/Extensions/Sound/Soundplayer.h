@@ -28,7 +28,7 @@ class Soundplayer
 		
 		void playSound(int index, float volume);
 		void playIn(int index, float volume, float delay);
-		void playSoundWithEcho(int index, float volume, vector<int> boxValues, vector<vector<float>> boxPosition);
+		void playSoundWithEcho(int index, float volume, vector<float> boxValues, vector<vector<float>> boxPosition);
 
 	//Private methods and variables for the Soundplayer class
 	private:

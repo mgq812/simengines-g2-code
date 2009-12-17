@@ -2,7 +2,7 @@
 #include "math.h"
 
 //A method for generating an echo that depends on the surroundings
-EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<vector<float>> boxPositions , float soundPosition[3], float distanceScale, float reflectionScale)
+EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector<vector<float>> boxPositions , float soundPosition[3], float distanceScale, float reflectionScale)
 {
 	//--Variables--
 
@@ -18,7 +18,6 @@ EchoProperties Echo::calculateEcho(float volume, vector<int> boxValues, vector<v
 
 	//List of distances, the mean distance and the amount of boxes for calculating the delay
 	vector<float> distances;
-	int amountOfBoxes;
 	float aRD = 0;
 
 	//Procentual weight for the box values, used to see how much they should affect the approximate reflection distance

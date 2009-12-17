@@ -93,11 +93,11 @@ void DemoApp::setupDemoScene()
 	}
 	//Boulders
 	OGRE3DKinematicBody* houseA = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(4.0f,0,1.0f), "cg_house_A.mesh");
-	OGRE3DKinematicBody* well = mRenderSystem->createKinematicBody(new NxOgre::Box(6,8,6), NxOgre::Vec3(4.0f,0,20.0f), "cg_well.mesh");
+	OGRE3DKinematicBody* well = mRenderSystem->createKinematicBody(new NxOgre::Box(6,16,6), NxOgre::Vec3(4.0f,0,20.0f), "cg_well.mesh");
 	well->getSceneNode()->scale(2.0f,2.0f,2.0f);
-	OGRE3DKinematicBody* wella = mRenderSystem->createKinematicBody(new NxOgre::Box(6,8,6), NxOgre::Vec3(14.0f,0,20.0f), "cg_well.mesh");
+	OGRE3DKinematicBody* wella = mRenderSystem->createKinematicBody(new NxOgre::Box(6,16,6), NxOgre::Vec3(14.0f,0,20.0f), "cg_well.mesh");
 	wella->getSceneNode()->scale(2.0f,2.0f,2.0f);
-	OGRE3DKinematicBody* wellb = mRenderSystem->createKinematicBody(new NxOgre::Box(6,8,6), NxOgre::Vec3(24.0f,0,20.0f), "cg_well.mesh");
+	OGRE3DKinematicBody* wellb = mRenderSystem->createKinematicBody(new NxOgre::Box(6,16,6), NxOgre::Vec3(24.0f,0,20.0f), "cg_well.mesh");
 	wellb->getSceneNode()->scale(2.0f,2.0f,2.0f);
 	/*OGRE3DKinematicBody* houseB = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(0.0f,0,10.0f), "cg_house_B.mesh");
 	OGRE3DKinematicBody* houseC = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(10.0f,0,0.0f), "cg_house_C.mesh");
@@ -108,7 +108,6 @@ void DemoApp::setupDemoScene()
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 	m_pCubeNode->scale(0.05f,0.05f,0.05f);
-	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
 	play.setScales(1.7f, 3000.0f);
 
@@ -120,6 +119,9 @@ void DemoApp::setupDemoScene()
 	play.addSound("..\\..\\Extensions\\Sound\\Jungle.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\asd.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\roboto.wav", 0,0,0,0,0,0);
+
+	play.playSound(8, 0.4f);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -163,6 +165,7 @@ void DemoApp::runDemo()
 			moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
+			play.setSourcePosition(8, mNode->getPosition().x, mNode->getPosition().y, mNode->getPosition().z);
 			//Take care of the logic and movments
 			handlePhysics();
 		}

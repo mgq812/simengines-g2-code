@@ -105,7 +105,7 @@ void DemoApp::setupDemoScene()
 
 		//Creating a fish and let it be the last one created
 	m_pCubeEntity = sceneMgr->createEntity("1","robot.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,0));
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,10.0f));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 	m_pCubeNode->scale(0.05f,0.05f,0.05f);
 
@@ -465,14 +465,14 @@ void DemoApp::handlePhysics()
 }
 
 void DemoApp::initAstar(){
-	astarDestination.X = 0;
-	astarDestination.Y = 0;
-	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,300,30);
+	astarDestination.X = 15;
+	astarDestination.Y = 13;
+	//astarDestination = Astar::convertOgreToAstarCoords(astarDestination,300,30);
 	cdAstar = 5000;
 	
 	mNode = m_pCubeNode;
 	mEntity = m_pCubeEntity;
-	mWalkSpeed = 10.0f;
+	mWalkSpeed = 3.0f;
 	mAnimationState = mEntity->getAnimationState("Walk");
 				mAnimationState->setLoop(true);
 				mAnimationState->setEnabled(true);
@@ -494,8 +494,23 @@ void DemoApp::newAstar()
 	mDirection = Vector3::ZERO;
 	COORD temp = astarDestination;
 	NxOgre::Vec3 playerPos = mCharacter->getGlobalPosition();
-	astarDestination.X = playerPos.x;
-	astarDestination.Y = playerPos.z;
+	if(playerPos.x > 0)
+	{
+		astarDestination.X = playerPos.x + 0.5;
+	}
+	else
+	{
+		astarDestination.X = playerPos.x - 0.5;
+	}
+		if(playerPos.z > 0)
+	{
+		astarDestination.Y = playerPos.z + 0.5;
+	}
+	else
+	{
+		astarDestination.Y = playerPos.z - 0.5;
+	}
+	//astarDestination.Y = playerPos.z;
 	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,100,30);
 	if((temp.X != astarDestination.X || temp.Y != astarDestination.Y) && 
 		((astarDestination.X < 30 && astarDestination.X > 0) && (astarDestination.Y < 30 && astarDestination.Y > 0)) &&
@@ -508,12 +523,20 @@ void DemoApp::newAstar()
 		}
 		setNotWalkables();
 		vector<COORD> movementVector = Astar::GenerateAstarPath(*graphMap[temp.X][temp.Y],*graphMap[astarDestination.X][astarDestination.Y], graphMap);
+		if(movementVector.size() == 0)
+		{
+			astarDestination = temp;
+		}
 		for(int i = 0;i < movementVector.size();i++){
 			COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 100, 30);
 			mWalkList.push_back(Vector3(temp.X, 0, temp.Y));
 		}
 		threadStarted = true;
 		thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)threadStart,0,0,NULL);
+	}
+	else
+	{
+		astarDestination = temp;
 	}
 }
 void DemoApp::moveAstar(int timeSinceLastFrame){
@@ -528,7 +551,7 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 				mAnimationState = mEntity->getAnimationState("Walk");
 				mAnimationState->setLoop(true);
 				mAnimationState->setEnabled(true);
-			cdAstar = 6000;
+			cdAstar = 3000;
 			newAstar();
 		}
 		else

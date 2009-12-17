@@ -111,11 +111,11 @@ void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 void Soundplayer::loadData(int index, float volume, ALboolean looping)
 {
     //Data holders
-	ALvoid* data;
-    ALsizei freq;
-	ALsizei size;
-    ALenum format;
-	ALboolean loop;
+	ALvoid* d;
+    ALsizei fr;
+	ALsizei s;
+    ALenum fo;
+	ALboolean l;
 
 	//Increment the source iteration value, reset it to 0 if it reaches the max
 	sIV[index]++;
@@ -128,11 +128,11 @@ void Soundplayer::loadData(int index, float volume, ALboolean looping)
 
 	//Generate buffer and load wav data into it
     alGenBuffers(1, &buffer[index]);
-	alutLoadWAVFile(fileNames[index], &format, &data, &size, &freq, &loop);
-    alBufferData(buffer[index], format, data, size, freq);
+	alutLoadWAVFile(fileNames[index], &fo, &d, &s, &fr, &l);
+    alBufferData(buffer[index], fo, d, s, fr);
 
 	//Unload wav data
-    alutUnloadWAV(format, data, size, freq);
+    alutUnloadWAV(fo, d, s, fr);
 
 	//Generate a source
 	if(!iteratedThrough[index])

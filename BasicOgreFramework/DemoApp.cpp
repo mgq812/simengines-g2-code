@@ -81,7 +81,7 @@ void DemoApp::setupDemoScene()
 	mCharacter->getEntity()->setVisible(false);
 	string s;
 	stringstream out;
-	for(int i = -30; i < 30; i += 3)
+	/*for(int i = -30; i < 30; i += 3)
 	{
 		out << i;
 		s = "a" + out.str();
@@ -116,7 +116,7 @@ void DemoApp::setupDemoScene()
 		m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(-30.0f,0.0f,i));
 		m_pCubeNode->attachObject(m_pCubeEntity);
 		out.clear();
-	}
+	}*/
 	for(int i = -30; i < 0; i += 3)
 	{
 		out << i;
@@ -544,6 +544,8 @@ void DemoApp::handlePhysics()
 void DemoApp::initAstar(){
 	astarDestination.X = 0;
 	astarDestination.Y = 0;
+	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,300,30);
+	cdAstar = 5000;
 	
 	mNode = m_pCubeNode;
 	mEntity = m_pCubeEntity;
@@ -572,34 +574,37 @@ void DemoApp::newAstar(){
 	NxOgre::Vec3 playerPos = mCharacter->getGlobalPosition();
 	astarDestination.X = playerPos.x;
 	astarDestination.Y = playerPos.z;
-	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,30,30);
-	//astarDestination.X = playerPos.x;
-	//astarDestination.Y = playerPos.z;
+	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,100,30);
+	if((temp.X != astarDestination.X && temp.Y != astarDestination.Y) && ((astarDestination.X < 30 && astarDestination.X > 0) && (astarDestination.Y < 30 && astarDestination.Y > 0)))
+	{
+		//astarDestination.X = playerPos.x;
+		//astarDestination.Y = playerPos.z;
 
-	/*astarDestination.X = rand()%30;*/
-	//while(!(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5))
-	//{
-	//	astarDestination.X = rand()%30;
-	//}
-	//astarDestination.Y = rand()%30;
-	//while(!(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5))
-	//{
-	//	astarDestination.Y = rand()%30;
-	//}
+		/*astarDestination.X = rand()%30;*/
+		//while(!(astarDestination.X > temp.X +5 || astarDestination.X < temp.X -5))
+		//{
+		//	astarDestination.X = rand()%30;
+		//}
+		//astarDestination.Y = rand()%30;
+		//while(!(astarDestination.Y > temp.Y +5 || astarDestination.Y < temp.Y -5))
+		//{
+		//	astarDestination.Y = rand()%30;
+		//}
 
-	if(threadStarted){
-		WaitForSingleObject(thread,INFINITE);
-		graphMap = DemoApp::graphMapTemp;
-		CloseHandle(thread);
+		if(threadStarted){
+			WaitForSingleObject(thread,INFINITE);
+			graphMap = DemoApp::graphMapTemp;
+			CloseHandle(thread);
+		}
+		setNotWalkables();
+		vector<COORD> movementVector = Astar::GenerateAstarPath(*graphMap[temp.X][temp.Y],*graphMap[astarDestination.X][astarDestination.Y], graphMap);
+		for(int i = 0;i < movementVector.size();i++){
+			COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 100, 30);
+			mWalkList.push_back(Vector3(temp.X, mEntity->getBoundingRadius()/2, temp.Y));
+		}
+		threadStarted = true;
+		thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)threadStart,0,0,NULL);
 	}
-	setNotWalkables();
-	vector<COORD> movementVector = Astar::GenerateAstarPath(*graphMap[temp.X][temp.Y],*graphMap[astarDestination.X][astarDestination.Y], graphMap);
-	for(int i = 0;i < movementVector.size();i++){
-		COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 30, 30);
-		mWalkList.push_back(Vector3(temp.X, mEntity->getBoundingRadius()/2, temp.Y));
-	}
-	threadStarted = true;
-	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)threadStart,0,0,NULL);
 }
 void DemoApp::moveAstar(int timeSinceLastFrame){
 	
@@ -611,15 +616,21 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 			mAnimationState->setLoop(true);
 			mAnimationState->setEnabled(true);
 		}
+		else if(cdAstar < 0)
+		{
+			cdAstar = 5000;
+			newAstar();
+		}
 		else
 		{
-			newAstar();
+			cdAstar -= timeSinceLastFrame;
 		}
 	}
 	else
 	{
 		Real move = mWalkSpeed * timeSinceLastFrame/1000;
 		mDistance -= move;
+		cdAstar -= timeSinceLastFrame;
 		if (mDistance <= 0.0f)
 		{
 			mNode->setPosition(mDestination);

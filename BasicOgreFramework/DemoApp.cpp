@@ -229,20 +229,14 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		
 		if(density == 0)
 		{
-			cartoon->setSnowDensity(35);
-			cartoon->setRainDensity(35);
+			cartoon->setSnowDensity(20);
+			cartoon->setRainDensity(20);
 			density = 1;
 		}
 		else if(density == 1)
 		{
-			cartoon->setSnowDensity(50);
-			cartoon->setRainDensity(50);
-			density = 2;
-		}
-		else if(density == 2)
-		{
-			cartoon->setSnowDensity(100);
-			cartoon->setRainDensity(100);
+			cartoon->setSnowDensity(70);
+			cartoon->setRainDensity(70);
 			density = 0;
 		}
 	}

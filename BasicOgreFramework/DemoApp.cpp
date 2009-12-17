@@ -82,16 +82,16 @@ void DemoApp::setupDemoScene()
 	//string s;
 	//stringstream out;
 	OGRE3DKinematicBody* boulder;
-	for(int i = -30; i < 0; i += 3)
-	{
-		/*out << i;
-		s = "e" + out.str();*/
-		boulder = mRenderSystem->createKinematicBody(new NxOgre::Box(5,7,5), NxOgre::Vec3(0.0f,0,i), "boulder_02.mesh");
-		//m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-		//m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
-		//m_pCubeNode->attachObject(boulder->getEntity());
-		//out.clear();
-	}
+	//for(int i = -30; i < 0; i += 3)
+	//{
+	//	out << i;
+	//	s = "e" + out.str();*/
+	//	boulder = mRenderSystem->createKinematicBody(new NxOgre::Box(5,7,5), NxOgre::Vec3(0.0f,0,i), "boulder_02.mesh");
+	//	//m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+	//	//m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
+	//	//m_pCubeNode->attachObject(boulder->getEntity());
+	//	//out.clear();
+	//}
 	//Boulders
 	OGRE3DKinematicBody* houseA = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(5.0f,0,1.0f), "cg_house_A.mesh");
 	/*OGRE3DKinematicBody* houseB = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(0.0f,0,10.0f), "cg_house_B.mesh");
@@ -155,7 +155,7 @@ void DemoApp::runDemo()
 			//play.setListenerPosition(OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().x, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().y, OgreFramework::getSingletonPtr()->m_pSceneMgr->getSceneNode("CubeNode")->getAttachedObject("0")->getParentSceneNode()->getPosition().z);
 			//Take care of the AI and its movements
 			mAnimationState->addTime(timeSinceLastFrame/1000);
-			moveAstar(timeSinceLastFrame);
+			//moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			//Take care of the logic and movments
@@ -323,10 +323,10 @@ void DemoApp::initPhysics()
 	//		y_old = y_c;
 	//	}
 	//}
-	for(int p = 2; p < 5; p++)
-	for(int h = 0; h < 3; h++) 
-	for(int i = 0; i < 5; i++) {
-		for(int j = 0; j < 5; j++) { 
+	for(int p = 2; p < 7; p++)
+	for(int h = 0; h < 2; h++) 
+	for(int i = 0; i < 2; i++) {
+		for(int j = 0; j < 2; j++) { 
 		gCube = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20*p+ i, 1+h+0.001f*h, 20*p+j), "cube.1m.mesh");
 		gCube->setMass(2);
 		gCube->getEntity()->setCastShadows(true);
@@ -357,9 +357,8 @@ void DemoApp::handlePhysics()
 	{
 		//mCharacter->addForce(NxOgre::Vec3(0,10,0), NxOgre::Enums::ForceMode_Impulse);
 	}
-
 	//Fire projectile
-	if(keyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200)
+	if(keyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200 || mouse->getMouseState().buttonDown(OIS::MB_Left) && timeSinceLastAction > 200)
 	{
 		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*3;
 		moveTo.y = mCharacter->getGlobalPosition().y;
@@ -369,14 +368,14 @@ void DemoApp::handlePhysics()
 		if(shell)
 		{
 			cannon->fireShell(ID);
-			play.playSound(2,1.0f);
+			play.playSound(2,0.1f);
 		}
-		if(fShell)
+		else if(fShell)
 		{
 			cannon->fireFastShell(ID);
 			play.playSound(2,1.0f);
 		}
-		if(gren)
+		else if(gren)
 		{
 			cannon->fireGrenade(ID);
 			play.playIn(1, 1.0f, cannon->getGreandeLife()*1000);

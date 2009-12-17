@@ -105,14 +105,6 @@ void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 	sourcePosX[index] = x;
 	sourcePosY[index] = y;
 	sourcePosZ[index] = z;
-
-	//Update source's new position
-	if(index != 0)
-	{
-	ALfloat sourcePosIn[] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
-	alSourcefv(source[index][sIV[index]], AL_POSITION, sourcePosIn);
-	}
-	
 }
 
 //A method for loading sound data before playing it. The input is an index for what sound to load.

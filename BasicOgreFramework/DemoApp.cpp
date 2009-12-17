@@ -165,10 +165,7 @@ void DemoApp::runDemo()
 			moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
-			float temp = ((float)mNode->getPosition().x);
-			float temp2 = ((float)mNode->getPosition().y);
-			float temp3 = ((float)mNode->getPosition().z);
-			play.setSourcePosition(8, temp, temp2, temp3);
+			play.setSourcePosition(8, ((float)mNode->getPosition().x), ((float)mNode->getPosition().y), ((float)mNode->getPosition().z));
 
 			//Take care of the logic and movments
 			handlePhysics();

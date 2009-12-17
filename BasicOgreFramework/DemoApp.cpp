@@ -75,7 +75,6 @@ void DemoApp::setupDemoScene()
 	light->setDiffuseColour(1.0, 1.0, 1.0);
 	light->setSpecularColour(1.0, 1.0, 1.0);
 	light->setVisible(true);
-
 	//Creating the character	
 	mCharacter = mRenderSystem->createKinematicBody(new NxOgre::Box(1,5,1), NxOgre::Vec3(20,3.5f,20), "fish.mesh");
 	mCharacter->getEntity()->setVisible(false);
@@ -340,6 +339,7 @@ void DemoApp::initPhysics()
 	gren = true;
 	shell = false;
 	fShell = false;
+	obliterate = false; 
 }
 
 //Handle the physics each update
@@ -380,6 +380,10 @@ void DemoApp::handlePhysics()
 			cannon->fireGrenade(ID);
 			play.playIn(1, 1.0f, cannon->getGreandeLife()*1000);
 		}
+		if(obliterate)
+		{
+			cannon->obliterate(ID);
+		}
 		timeSinceLastAction = 0;
 	}
 	//if(keyboard->isKeyDown(OIS::KC_9)) {
@@ -394,16 +398,25 @@ void DemoApp::handlePhysics()
 		gren = true;
 		shell = false;
 		fShell = false;
+		obliterate = false;
 	}
 	if(keyboard->isKeyDown(OIS::KC_2)) {
 		gren = false;
 		shell = true;
 		fShell = false;		
+		obliterate = false;
 	}
 	if(keyboard->isKeyDown(OIS::KC_3)) {
 		gren = false;
 		shell = false;
 		fShell = true;
+		obliterate = false;
+	}
+	if(keyboard->isKeyDown(OIS::KC_4)) {
+		gren = false;
+		shell = false;
+		fShell = false;
+		obliterate = true;
 	}
 	//Movements	
 	if(keyboard->isKeyDown(OIS::KC_W))

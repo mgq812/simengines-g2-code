@@ -68,7 +68,7 @@ private:
 	OGRE3DRenderSystem*	mRenderSystem;
 	OGRE3DKinematicBody* mCharacter;
 	OGRE3DBody* theFish;
-	bool gren, shell, fShell;
+	bool gren, shell, fShell, obliterate;
 
 	//The Ogre components
 	Ogre::SceneNode*			m_pCubeNode;

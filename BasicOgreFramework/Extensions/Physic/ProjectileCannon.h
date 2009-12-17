@@ -15,6 +15,7 @@ public:
 	void fireShell(int ID);
 	void fireGrenade(int ID);
 	void fireFastShell(int ID);
+	void obliterate(int ID);
 	NxOgre::RaycastHit fireBullet(int ID);
 	int addLauncher(NxOgre::Vec3 direction, NxOgre::Vec3 position);
 	int removeLauncher(int ID);
@@ -33,10 +34,11 @@ private:
 	void explode(int i);
 
 protected:  
+	int exploForce, defaultFfRadius;
 	NxScene* nScene;
 	OGRE3DRenderSystem* mRenderSystem;
 	//explosion forcefield variables
-	bool exploSpawned;
+	bool exploSpawned, obliterated;
 	NxActor* explosionHolder;
 	NxForceFieldShape* m_inclusionShape;
 	NxForceFieldShape* m_excludeShape;

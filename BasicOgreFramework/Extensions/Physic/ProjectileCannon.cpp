@@ -9,6 +9,7 @@
 #define GRENADE 2
 #define BULLET 3 
 #define FASTSHELL 4
+#define OBLITERATE 5
 
 struct projectile {
 	short type;
@@ -66,13 +67,15 @@ ProjectileCannon::ProjectileCannon(OGRE3DRenderSystem* extRenderSystem, NxOgre::
 	actorDesc.body = &bodyDesc;
 	nScene = mRenderSystem->getScene()->getScene();
 	explosionHolder = nScene->createActor(actorDesc);
-	explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
 	cnt = 0;
 	explosionLife = 0;
 	grenadeLife = 3;
 	launcherForce = 1000;
-
+	exploForce = 250;
 	mRenderSystem->getScene()->getScene()->setUserContactReport(new myContactReport());
+	defaultFfRadius = 10;
+	explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
+	obliterated = false;
 }
 void ProjectileCannon::setGrenadeLife(int tLife) {
 	grenadeLife = tLife;
@@ -107,8 +110,12 @@ void ProjectileCannon::fireFastShell(int ID) {
 }
 void ProjectileCannon::fireShell(int ID) {
 	pList.reserve(1);
-	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(1, 1, 1), getLauncherPos(ID), "cube.1m.mesh"); 
+	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(0.2, 0.2, 0.2), getLauncherPos(ID), "cube.1m.mesh"); 
+	shot.mCube->getEntity()->getParentNode()->scale(0.2, 0.2, 0.2);
 	shot.mCube->setMass(0.1f);
+	NxOgre::Matrix44 m44pose = Matrix44_Identity;
+	
+	//shot.mCube->setGlobalPose();
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
@@ -118,11 +125,25 @@ void ProjectileCannon::fireShell(int ID) {
 	pList.insert(pList.end(), shot);
 
 }
+void ProjectileCannon::obliterate(int ID) {
+	exploForce = 10000;
+	defaultFfRadius = 1000;
+	explosion(mRenderSystem->getScene()->getScene(), explosionHolder);
+	pList.reserve(1);
+	shot.purge = true;
+	shot.type = OBLITERATE;
+	shot.mCube = NULL;
+	NxOgre::Vec3 loc = getLauncherPos(ID);
+	shot.location = NxVec3(loc.x, loc.y, loc.z);
+	pList.insert(pList.end(), shot);
+}
 void ProjectileCannon::fireGrenade(int ID){ 
 
 	pList.reserve(1);
-	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(1, 1, 1), getLauncherPos(ID), "cube.1m.mesh"); 
-	shot.mCube->setMass(0.5f);
+	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(0.82, 1.6, 0.6f), getLauncherPos(ID), "cube.002.mesh"); 
+	NxOgre::Vec3 vector = getLauncherPos(ID);
+	shot.mCube->getEntity()->getParentNode()->scale(0.2, 0.2, 0.2);
+ 	shot.mCube->setMass(0.5f);
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
@@ -137,7 +158,7 @@ void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
 	NxForceFieldLinearKernel*		linearKernel;
 
 	//constant force of 100 outwards	
-	lKernelDesc.constant = NxVec3(250, 0, 0);
+	lKernelDesc.constant = NxVec3(exploForce, 0, 0);
 
 	//The forces do not depend on where the objects are positioned
 	NxMat33 m;
@@ -176,15 +197,15 @@ void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
 	m_inclusionShape = m_inclusionGroup->createShape(s);
 
 	// exclude group\q
-	/*NxForceFieldShapeGroupDesc sgExclDesc;
-	sgExclDesc.flags = NX_FFSG_EXCLUDE_GROUP;
-	m_excludeGroup = scene->createForceFieldShapeGroup(sgExclDesc);
-	NxSphereForceFieldShapeDesc exclude;
-	exclude.radius = 0.2f;
-	exclude.pose.t = NxVec3(0, 0, 0);
-	m_excludeShape = m_excludeGroup->createShape(exclude);
+	//NxForceFieldShapeGroupDesc sgExclDesc;
+	//sgExclDesc.flags = NX_FFSG_EXCLUDE_GROUP;
+	//m_excludeGroup = scene->createForceFieldShapeGroup(sgExclDesc);
+	//NxSphereForceFieldShapeDesc exclude;
+	//exclude.radius = 0.2f;
+	//exclude.pose.t = NxVec3(0, 0, 0);
+	//m_excludeShape = m_excludeGroup->createShape(exclude);
 
-	gForceField->addShapeGroup(*m_excludeGroup);*/
+	//gForceField->addShapeGroup(*m_excludeGroup);
 }
 void ProjectileCannon::explode(int i) {
 	NxMat34 pose;
@@ -192,7 +213,7 @@ void ProjectileCannon::explode(int i) {
 	pose.t = pList.at(i).location;
 	explosionHolder->setGlobalPose(pose); // to set FF, could also get rid of that indirection				
 	m_inclusionShape->setPose(pose);
-	m_inclusionShape->isSphere()->setRadius(10);
+	m_inclusionShape->isSphere()->setRadius(defaultFfRadius);
 	//m_excludeShape->isSphere()->setPose(pose);
 	//m_excludeShape->isSphere()->setRadius(0.1f);
 	pList.erase(pList.begin() + i);
@@ -203,12 +224,18 @@ void ProjectileCannon::purge(Ogre::Real evtTime) {
 	if(exploSpawned) {
 		explosionLife += evtTime;
 		if(explosionLife > 100) {
-			m_inclusionShape->isSphere()->setRadius(0.1f);
-	//		m_excludeShape->isSphere()->setRadius(0.2f);
 			gForceField->removeShapeGroup(*m_inclusionGroup);
+			//m_inclusionShape->isSphere()->setRadius(0.1f);
+			//m_excludeShape->isSphere()->setRadius(0.2f);
 			exploSpawned = false;
 			//explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
 			explosionLife = 0;
+			if(obliterated) {
+				obliterated = false;
+				exploForce = 250;
+				defaultFfRadius = 10;
+				explosion(mRenderSystem->getScene()->getScene(), explosionHolder);
+			}
 		}
 	}
 
@@ -219,12 +246,20 @@ void ProjectileCannon::purge(Ogre::Real evtTime) {
 				mRenderSystem->destroyBody(pList.at(i).mCube);
 				gForceField->addShapeGroup(*m_inclusionGroup);
 				explode(i);
+				
+			//	pList.erase(pList.begin() + i);
 			}
 		}
 		else if(pList.at(i).purge || pList.at(i).lifeTime > projectileLife){
 			mRenderSystem->destroyBody(pList.at(i).mCube);
 			gForceField->addShapeGroup(*m_inclusionGroup);				
 			explode(i);
+		}
+		else if(pList.at(i).type == OBLITERATE) {
+			gForceField->addShapeGroup(*m_inclusionGroup);		
+			explode(i);
+			obliterated = true;
+			//pList.erase(pList.begin() + i);
 		}
 	}
 }

@@ -121,7 +121,7 @@ void DemoApp::setupDemoScene()
 	play.addSound("..\\..\\Extensions\\Sound\\asd2.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\roboto.wav", 0,0,0,0,0,0);
 
-	play.playSound(8, 0.4f);
+	play.playSound(8, 0.4f, true);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -165,7 +165,11 @@ void DemoApp::runDemo()
 			moveAstar(timeSinceLastFrame);
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
-			play.setSourcePosition(8, mNode->getPosition().x, mNode->getPosition().y, mNode->getPosition().z);
+			float temp = ((float)mNode->getPosition().x);
+			float temp2 = ((float)mNode->getPosition().y);
+			float temp3 = ((float)mNode->getPosition().z);
+			play.setSourcePosition(8, temp, temp2, temp3);
+
 			//Take care of the logic and movments
 			handlePhysics();
 		}
@@ -192,11 +196,11 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	}
 	if(keyboard->isKeyDown(OIS::KC_G))
 	{
-		play.playSound(2,1);
+		play.playSound(2,1, false);
 	}
 	if(keyboard->isKeyDown(OIS::KC_H))
 	{
-		play.playSound(1,1);
+		play.playSound(1,1, false);
 	}
 	if(keyboard->isKeyDown(OIS::KC_T))
 	{

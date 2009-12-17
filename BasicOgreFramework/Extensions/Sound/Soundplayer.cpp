@@ -105,10 +105,18 @@ void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 	sourcePosX[index] = x;
 	sourcePosY[index] = y;
 	sourcePosZ[index] = z;
+
+	//Update source's new position
+	if(index != 0)
+	{
+	ALfloat sourcePosIn[] = { sourcePosX[index], sourcePosY[index], sourcePosZ[index] };
+	alSourcefv(source[index][sIV[index]], AL_POSITION, sourcePosIn);
+	}
+	
 }
 
 //A method for loading sound data before playing it. The input is an index for what sound to load.
-void Soundplayer::loadData(int index, float volume)
+void Soundplayer::loadData(int index, float volume, ALboolean looping)
 {
     //Data holders
 	ALvoid* data;
@@ -146,18 +154,18 @@ void Soundplayer::loadData(int index, float volume)
     alSourcef (source[index][sIV[index]], AL_PITCH, 1.0f);
 	alSourcefv(source[index][sIV[index]], AL_POSITION, sourcePosIn);
     alSourcefv(source[index][sIV[index]], AL_VELOCITY, sourceVelIn);
-    alSourcei (source[index][sIV[index]], AL_LOOPING, loop);
+    alSourcei (source[index][sIV[index]], AL_LOOPING, looping);
     alSourcef (source[index][sIV[index]], AL_GAIN, volume);
 	alSourcef(source[index][sIV[index]], AL_REFERENCE_DISTANCE, 20.0f);
 }
 //A method that plays a sound that is decided by the index. Also sets the volume after the volume input.
-void Soundplayer::playSound(int index, float volume)
+void Soundplayer::playSound(int index, float volume, bool loop)
 {
 	//Initialize alut
     alutInit(NULL, NULL);
 
 	// Load the wav data
-	loadData(index, volume);
+	loadData(index, volume, loop);
 
 	//Set listener values
 	alListenerfv(AL_POSITION, listenerPos);
@@ -198,7 +206,7 @@ DWORD WINAPI ThreadPlay(LPVOID lparam)
 	Sleep((DWORD)param.d);
 	
 	//Play the echo sound and return
-	param.s->playSound(param.i, param.v);
+	param.s->playSound(param.i, param.v, false);
 	return 0;
 }
 
@@ -223,7 +231,7 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<float> boxVa
     alutInit(NULL, NULL);
 
 	// Load the wav data
-    loadData(index, volume);
+    loadData(index, volume, false);
 
 	//Set listener values
 	alListenerfv(AL_POSITION,    listenerPos);

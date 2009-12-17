@@ -26,14 +26,14 @@ class Soundplayer
 		void setScales(float distanceScale, float reflectionScale);
 		
 		
-		void playSound(int index, float volume);
+		void playSound(int index, float volume, bool loop);
 		void playIn(int index, float volume, float delay);
 		void playSoundWithEcho(int index, float volume, vector<float> boxValues, vector<vector<float>> boxPosition);
 		void Soundplayer::playWithEchoIn(int index, float volume, float delay, vector<float> boxValues, vector<vector<float>> boxPositions);
 
 	//Private methods and variables for the Soundplayer class
 	private:
-		void loadData(int index, float volume);
+		void loadData(int index, float volume, ALboolean loop);
 		
 		//Scales for modifying the echoes
 		float distanceScale;

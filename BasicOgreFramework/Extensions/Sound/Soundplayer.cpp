@@ -168,13 +168,24 @@ void Soundplayer::playSound(int index, float volume)
     alSourcePlay(source[index][sIV[index]]);
 }
 
-//A struct for passing parameters into the ThreadPlayEcho method through a new thread created by the CreateThread() method
+//A struct for passing parameters into the ThreadPlay method through a new thread created by the CreateThread() method
 struct ThreadParameterPassingStruct
 {
 	int i;
 	float v;
 	int d;
 	Soundplayer* s;
+};
+
+//A struct for passing parameters into the ThreadPlayWithEcho method through a new thread created by the CreateThread() method
+struct ThreadEchoParameterPassingStruct
+{
+	int i;
+	float v;
+	int d;
+	Soundplayer* s;
+	vector<float> bV;
+	vector<vector<float>> bP;
 };
 
 //The method to be run by the new thread in order to play the echo. The parameter is cast into the right type(ThreadParameterPassingStruct)
@@ -188,6 +199,20 @@ DWORD WINAPI ThreadPlay(LPVOID lparam)
 	
 	//Play the echo sound and return
 	param.s->playSound(param.i, param.v);
+	return 0;
+}
+
+//The method to be run by the new thread in order to play a sound that is later followed by an echo. The parameter is cast into the right type(ThreadParameterPassingStruct)
+DWORD WINAPI ThreadPlayWithEcho(LPVOID lparam)
+{
+	//Cast parameter into struct
+	ThreadEchoParameterPassingStruct param = *(ThreadEchoParameterPassingStruct*)lparam;
+	
+	//Sleep for the delay time
+	Sleep((DWORD)param.d);
+	
+	//Play the echo sound and return
+	param.s->playSoundWithEcho(param.i, param.v, param.bV, param.bP);
 	return 0;
 }
 
@@ -220,8 +245,9 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<float> boxVa
 
 }
 
-//A struct needed for sending many parameters into the playIn thread
+//A structs needed for sending many parameters into the other soundplaying threads
 ThreadParameterPassingStruct pIT;
+ThreadEchoParameterPassingStruct pEIT;
 
 //A method for playing a sound after a certain time.
 void Soundplayer::playIn(int index, float volume, float delay)
@@ -237,6 +263,28 @@ void Soundplayer::playIn(int index, float volume, float delay)
 
 	//Create and start a new thread
 	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadPlay, &pIT,0,0);
+	
+	//Release the thread
+	CloseHandle(thread);
+}
+
+//A method for playar a sound with an echo after a certain time
+void Soundplayer::playWithEchoIn(int index, float volume, float delay, vector<float> boxValues, vector<vector<float>> boxPositions)
+{
+
+	//Create the thread handle
+	HANDLE thread;
+
+	//Put parameters in the struct made for passing parameters into the thread
+	pEIT.d = delay;
+	pEIT.i = index;
+	pEIT.v = volume;
+	pEIT.s = this;
+	pEIT.bV = boxValues;
+	pEIT.bP = boxPositions;
+
+	//Create and start a new thread
+	thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ThreadPlayWithEcho, &pEIT,0,0);
 	
 	//Release the thread
 	CloseHandle(thread);

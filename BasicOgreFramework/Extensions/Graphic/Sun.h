@@ -4,6 +4,7 @@
 #include <ogre.h>
 
 #include "InternalUtilities.h"
+#include "Face.h"
 
 namespace CartoonCaelum {
 
@@ -14,26 +15,28 @@ namespace CartoonCaelum {
 		Sun(Ogre::SceneManager *sceneMgr, Ogre::Camera *camera,
 			int xSize, int ySize, int distance, Ogre::Radian pitch);
 
-		void setMood(Ogre::String materialName);
+		~Sun();
 
 		void moveSun(Ogre::Radian degrees);
 
-		void directMood();
+		Ogre::SceneNode *getNode();
+
+		Face* getFace();
 
 	private:
 		Ogre::SceneManager *cSceneMgr;
 
 		Ogre::Camera *cCamera;
 
-		Ogre::SceneNode *sunNode;
+		Face *sunFace;
 
-		Ogre::SceneNode *moodNode;
+		Ogre::SceneNode *mainNode;
+
+		Ogre::SceneNode *sunNode;
 
 		Ogre::SceneNode *lightNode;
 
 		Ogre::Entity *sunEntity;
-
-		Ogre::Entity *moodEntity;
 
 		Ogre::Light *sunLight;
 
@@ -47,9 +50,9 @@ namespace CartoonCaelum {
 
 		Ogre::Radian cyclePitch;
 
-		void createSun(Ogre::String materialName);
+		Ogre::String uniqueSuffix;
 
-		void createMood();
+		void createSun(Ogre::String materialName);
 
 		void createLight();
 

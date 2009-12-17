@@ -25,7 +25,6 @@ namespace CartoonCaelum {
 			mainNode->createChildSceneNode("FaceNode"+uniqueSuffix),
 			InternalUtilities::round(cloudXSize*0.25), 
 			InternalUtilities::round(cloudYSize*0.25), 200);
-		cloudFace->setFace("Cartoon/BlowingFace");
 	}
 
 	Cloud::~Cloud()
@@ -51,7 +50,7 @@ namespace CartoonCaelum {
 
 	SceneNode *Cloud::getNode()
 	{
-		return cloudNode;
+		return mainNode;
 	}
 
 	Face* Cloud::getFace()

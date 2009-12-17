@@ -179,6 +179,11 @@ namespace CartoonCaelum {
 		windVector = 0;
 	}
 
+	Sun* CartoonSystem::getSun()
+	{
+		return cSun;
+	}
+
 	bool CartoonSystem::frameStarted(const FrameEvent &e) 
 	{	
 		updateComponents(e.timeSinceLastFrame);
@@ -221,7 +226,7 @@ namespace CartoonCaelum {
 	void CartoonSystem::makeSun()
 	{
 		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 5500, Degree(0));
-		cSun->setMood("Cartoon/HappyFace");
+		cSun->getFace()->setFace("Cartoon/HappyFace");
 	}
 
 	void CartoonSystem::makeWindCloud()
@@ -230,6 +235,7 @@ namespace CartoonCaelum {
 			delete cWindCloud;
 		}
 		cWindCloud = new Cloud(cSceneMgr, cCamera, 2000, 2000, 5500);
+		cWindCloud->getFace()->setFace("Cartoon/BlowingFace");
 	}
 
 	void CartoonSystem::updateSky()
@@ -240,7 +246,7 @@ namespace CartoonCaelum {
 	void CartoonSystem::updateSun()
 	{
 		cSun->moveSun(Radian(Degree(0.1)));
-		cSun->directMood();
+		cSun->getFace()->directFace();
 	}
 
 	void CartoonSystem::updateWindCloud()

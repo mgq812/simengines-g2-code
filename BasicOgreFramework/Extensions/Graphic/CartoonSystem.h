@@ -47,6 +47,8 @@ namespace CartoonCaelum {
 
 		void removeWindVector();
 
+		Sun* getSun();
+
 	private:
 		Ogre::Root *cRoot;
 

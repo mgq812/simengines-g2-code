@@ -20,93 +20,72 @@ namespace CartoonCaelum {
 		sunDistance (distance),
 		cyclePitch (pitch)
 	{
+		uniqueSuffix = InternalUtilities::pointerToString(this);
+		mainNode = cSceneMgr->getRootSceneNode()->createChildSceneNode("MainNode"+uniqueSuffix);
 		previousRotation = Radian(0);
 		createSun("Cartoon/Sun");
-		createMood();
 		createLight();
+		sunFace = new Face(cSceneMgr, cCamera, 
+			mainNode->createChildSceneNode("FaceNode"+uniqueSuffix),
+			InternalUtilities::round(sunXSize*0.9), 
+			InternalUtilities::round(sunYSize*0.9), 200);
 	}
 
-	void Sun::setMood(String materialName) 
+	Sun::~Sun()
 	{
-		moodEntity->setMaterialName(materialName);
-		moodEntity->setVisible(true);
+		cSceneMgr->destroyEntity(sunEntity);
+		cSceneMgr->destroyLight(sunLight);
+		mainNode->removeAndDestroyAllChildren();
+		mainNode->getParentSceneNode()->removeAndDestroyChild(mainNode->getName());
 	}
 
 	void Sun::moveSun(Radian degrees)
 	{
-		Vector3 position = sunNode->getPosition();
+		Vector3 position = mainNode->getPosition();
 		previousRotation += degrees;
 		int newX = InternalUtilities::round(sunDistance*(Math::Sin(previousRotation, false)));
 		int newY = InternalUtilities::round(sunDistance*(Math::Cos(previousRotation, false)));
 		int newZ = InternalUtilities::round(newY*(Math::Sin(cyclePitch, false))); 
-		sunNode->setPosition(Vector3(newX,newY,newZ));
-		sunNode->lookAt(Vector3(0,0,0), 
+		mainNode->setPosition(Vector3(newX,newY,newZ));
+		mainNode->lookAt(Vector3(0,0,0), 
 			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-
-		
-		if(sunNode->getPosition().y < 0 && sunLight->isVisible())
-			sunLight->setVisible(false);
-		else if(sunNode->getPosition().y > 0 && !sunLight->isVisible())
-			sunLight->setVisible(true);
+		sunLight->setVisible((mainNode->getPosition().y > 0));
 	}
 
-	void Sun::directMood()
+	SceneNode *Sun::getNode()
 	{
-		SceneNode* temp = cSceneMgr->getRootSceneNode()->createChildSceneNode("temp");
-		temp->setPosition(cCamera->getPosition()+(cCamera->getDirection()*2500));
-		temp->setOrientation(moodNode->getOrientation());
-		temp->lookAt(cCamera->getPosition(), 
-			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-		Radian diffAngle = temp->getOrientation().zAxis().angleBetween(cCamera->getUp());
-		temp->yaw(diffAngle);
-		if ((temp->getOrientation().zAxis().angleBetween(cCamera->getUp())) > Radian(0)) {
-			moodNode->yaw(-diffAngle);
-		} else {
-			moodNode->yaw(diffAngle);
-		}
-		cSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
+		return mainNode;
+	}
+
+	Face* Sun::getFace()
+	{
+		return sunFace;
 	}
 
 	void Sun:: createSun(String materialName)
 	{
 		Plane plane(Vector3(0,-1,0), 0);
-		MeshManager::getSingleton().createPlane("sun",
+		MeshManager::getSingleton().createPlane("sun"+uniqueSuffix,
            ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
            sunXSize,sunYSize,1,1,true,1,1,1,Vector3::UNIT_Z);
-		sunEntity = cSceneMgr->createEntity("SunEntity", "sun");
-		sunNode = cSceneMgr->getRootSceneNode()->createChildSceneNode("SunNode");
+		sunEntity = cSceneMgr->createEntity("SunEntity"+uniqueSuffix, "sun"+uniqueSuffix);
+		sunNode = mainNode->createChildSceneNode("SunNode"+uniqueSuffix);
 		sunNode->attachObject(sunEntity);
 		sunEntity->setMaterialName(materialName);
 		sunEntity->setCastShadows(false);
-		sunNode->setPosition(Vector3(0,sunDistance,0));
-	}
-
-	void Sun::createMood()
-	{
-		Plane plane(Vector3(0,-1,0), 200);
-		MeshManager::getSingleton().createPlane("mood",
-		   ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-		   InternalUtilities::round(sunXSize*0.9),
-		   InternalUtilities::round(sunXSize*0.9),
-		   1,1,true,1,1,1,Vector3::UNIT_Z);
-		moodEntity = cSceneMgr->createEntity("MoodEntity", "mood");
-		moodNode = sunNode->createChildSceneNode("MoodNode");
-		moodNode->attachObject(moodEntity);
-		moodEntity->setCastShadows(false);
-		moodEntity->setVisible(false);
+		mainNode->setPosition(Vector3(0,sunDistance,0));
 	}
 
 	void Sun::createLight()
 	{
-		sunLight = cSceneMgr->createLight("SunLight");
+		sunLight = cSceneMgr->createLight("SunLight"+uniqueSuffix);
 		sunLight->setType(Light::LT_POINT);
-		lightNode = sunNode->createChildSceneNode("LightNode");
+		lightNode = sunNode->createChildSceneNode("LightNode"+uniqueSuffix);
 		lightNode->attachObject(sunLight);
 		sunLight->setPosition(Vector3(0, -1, 0));
 		sunLight->setDiffuseColour(1.0, 1.0, 1.0);
 		sunLight->setSpecularColour(1.0, 1.0, 1.0);
 		sunLight->setCastShadows(true);
-		
 	}
 
 }

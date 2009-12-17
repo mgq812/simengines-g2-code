@@ -15,11 +15,13 @@ namespace CartoonCaelum {
 		Cloud(Ogre::SceneManager *sceneMgr, Ogre::Camera *camera,
 			int xSize, int ySize, int distance);
 
+		~Cloud();
+
 		void setPosition(Ogre::Vector3 newPos);
 
 		Ogre::SceneNode *getNode();
 
-		Face *getFace();
+		Face* getFace();
 
 	private:
 		Ogre::SceneManager *cSceneMgr;
@@ -41,6 +43,8 @@ namespace CartoonCaelum {
 		int cloudYSize;
 
 		Face *cloudFace;
+
+		Ogre::String uniqueSuffix;
 
 		void createCloud(Ogre::String materialName);
 

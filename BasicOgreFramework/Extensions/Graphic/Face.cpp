@@ -20,7 +20,14 @@ namespace CartoonCaelum {
 		faceYSize (ySize),
 		faceDistance (distance)
 	{
+		uniqueSuffix = InternalUtilities::pointerToString(this);
 		createFace();
+	}
+
+	Face::~Face()
+	{
+		cSceneMgr->destroyEntity(faceEntity);
+		faceNode->getParentSceneNode()->removeChild(faceNode->getName());
 	}
 
 	void Face::setFace(String materialName) 
@@ -53,7 +60,6 @@ namespace CartoonCaelum {
 
 	void Face::createFace()
 	{
-		String uniqueSuffix = InternalUtilities::pointerToString(this);
 		Plane plane(Vector3(0,-1,0), faceDistance);
 		MeshManager::getSingleton().createPlane("face"+uniqueSuffix,
 		   ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, faceXSize,faceYSize,
@@ -62,9 +68,6 @@ namespace CartoonCaelum {
 		faceNode->attachObject(faceEntity);
 		faceEntity->setCastShadows(false);
 		faceEntity->setVisible(false);
-		Quaternion orient = faceNode->getOrientation();
-		//faceNode->setInheritOrientation(false);
-		//faceNode->setOrientation(orient);
 	}
 
 }

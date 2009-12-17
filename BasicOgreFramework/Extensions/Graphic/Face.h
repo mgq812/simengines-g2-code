@@ -14,6 +14,8 @@ namespace CartoonCaelum {
 		Face(Ogre::SceneManager *sceneMgr, Ogre::Camera *camera,
 			Ogre::SceneNode *node, int xSize, int ySize, int distance);
 
+		~Face();
+
 		void setFace(Ogre::String materialName);
 
 		void directFace();
@@ -34,6 +36,8 @@ namespace CartoonCaelum {
 		int faceXSize;
 
 		int faceYSize;
+
+		Ogre::String uniqueSuffix;
 
 		void createFace();
 

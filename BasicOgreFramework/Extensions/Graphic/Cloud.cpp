@@ -18,13 +18,21 @@ namespace CartoonCaelum {
 		cloudYSize (ySize),
 		cloudDistance (distance)
 	{
-		mainNode = cSceneMgr->getRootSceneNode()->createChildSceneNode("MainNode"+InternalUtilities::pointerToString(this));
+		uniqueSuffix = InternalUtilities::pointerToString(this);
+		mainNode = cSceneMgr->getRootSceneNode()->createChildSceneNode("MainNode"+uniqueSuffix);
 		createCloud("Cartoon/Cloud1");
 		cloudFace = new Face(cSceneMgr, cCamera, 
-			mainNode->createChildSceneNode("FaceNode" + InternalUtilities::pointerToString(this)),
-			InternalUtilities::round(cloudXSize*0.3), 
-			InternalUtilities::round(cloudYSize*0.3), 200);
+			mainNode->createChildSceneNode("FaceNode"+uniqueSuffix),
+			InternalUtilities::round(cloudXSize*0.25), 
+			InternalUtilities::round(cloudYSize*0.25), 200);
 		cloudFace->setFace("Cartoon/BlowingFace");
+	}
+
+	Cloud::~Cloud()
+	{
+		cSceneMgr->destroyEntity(cloudEntity);
+		mainNode->removeAndDestroyAllChildren();
+		mainNode->getParentSceneNode()->removeAndDestroyChild(mainNode->getName());
 	}
 
 	void Cloud::setPosition(Vector3 newPos)
@@ -46,14 +54,13 @@ namespace CartoonCaelum {
 		return cloudNode;
 	}
 
-	Face *Cloud::getFace()
+	Face* Cloud::getFace()
 	{
 		return cloudFace;
 	}
 
 	void Cloud:: createCloud(String materialName)
 	{
-		String uniqueSuffix = InternalUtilities::pointerToString(this);
 		Plane plane(Vector3(0,-1,0), 0);
 		MeshManager::getSingleton().createPlane("cloud"+uniqueSuffix,
            ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,

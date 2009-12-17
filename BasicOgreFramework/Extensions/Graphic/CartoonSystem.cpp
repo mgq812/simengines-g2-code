@@ -93,8 +93,8 @@ namespace CartoonCaelum {
 	void CartoonSystem::removeRain()
 	{
 		if (rainPS!=0) {
-			cSceneMgr->destroyParticleSystem("rainSystem");
 			cSceneMgr->getRootSceneNode()->removeAndDestroyChild("rainNode");
+			cSceneMgr->destroyParticleSystem("rainSystem");
 			rainPS = 0;
 			rainNode = 0;
 		}
@@ -103,8 +103,8 @@ namespace CartoonCaelum {
 	void CartoonSystem::removeSnow()
 	{
 		if (snowPS!=0) {
-			cSceneMgr->destroyParticleSystem("snowSystem");
 			cSceneMgr->getRootSceneNode()->removeAndDestroyChild("snowNode");
+			cSceneMgr->destroyParticleSystem("snowSystem");
 			snowPS = 0;
 			snowNode = 0;
 		}
@@ -168,9 +168,7 @@ namespace CartoonCaelum {
 				+" "+StringConverter::toString(wind.y)+" "+StringConverter::toString(wind.z));
 			rainPS->getAffector(rainPS->getNumAffectors()-1)->setParameter("force_application", "add");
 		}
-		if (windVector==0) {
-			makeWindCloud();
-		}
+		makeWindCloud();
 		cWindCloud->setPosition(Vector3(-wind.x, 1, -wind.z));
 		windVector = new Vector3(wind);
 	}
@@ -228,6 +226,9 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeWindCloud()
 	{
+		if (cWindCloud!=0) {
+			delete cWindCloud;
+		}
 		cWindCloud = new Cloud(cSceneMgr, cCamera, 2000, 2000, 5500);
 	}
 

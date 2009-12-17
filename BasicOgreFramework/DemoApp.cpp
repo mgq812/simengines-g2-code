@@ -105,7 +105,7 @@ void DemoApp::setupDemoScene()
 
 		//Creating a fish and let it be the last one created
 	m_pCubeEntity = sceneMgr->createEntity("1","robot.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,10.0f));
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(-20.0f,0.0f,10.0f));
 	m_pCubeNode->attachObject(m_pCubeEntity);
 	m_pCubeNode->scale(0.05f,0.05f,0.05f);
 
@@ -465,7 +465,7 @@ void DemoApp::handlePhysics()
 }
 
 void DemoApp::initAstar(){
-	astarDestination.X = 15;
+	astarDestination.X = 10;
 	astarDestination.Y = 13;
 	//astarDestination = Astar::convertOgreToAstarCoords(astarDestination,300,30);
 	cdAstar = 5000;
@@ -502,7 +502,7 @@ void DemoApp::newAstar()
 	{
 		astarDestination.X = playerPos.x - 0.5;
 	}
-		if(playerPos.z > 0)
+	if(playerPos.z > 0)
 	{
 		astarDestination.Y = playerPos.z + 0.5;
 	}

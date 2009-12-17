@@ -7,6 +7,9 @@ material Cartoon/WeirdSky
 		{
 			lighting off
 			depth_write off
+			//emissive 0.1 0.1 0.1
+			//specular 1.0 1.0 1.0
+			//diffuse 0.1 0.1 0.1
 
 			texture_unit
 			{

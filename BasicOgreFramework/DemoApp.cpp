@@ -81,16 +81,16 @@ void DemoApp::setupDemoScene()
 	//string s;
 	//stringstream out;
 	OGRE3DKinematicBody* boulder;
-	//for(int i = -30; i < 0; i += 3)
-	//{
-	//	out << i;
-	//	s = "e" + out.str();*/
-	//	boulder = mRenderSystem->createKinematicBody(new NxOgre::Box(5,7,5), NxOgre::Vec3(0.0f,0,i), "boulder_02.mesh");
-	//	//m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
-	//	//m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
-	//	//m_pCubeNode->attachObject(boulder->getEntity());
-	//	//out.clear();
-	//}
+	for(int i = -30; i < 0; i += 5)
+	{
+		/*out << i;
+		s = "e" + out.str();*/
+		boulder = mRenderSystem->createKinematicBody(new NxOgre::Box(5,7,5), NxOgre::Vec3(0.0f,0,i), "boulder_02.mesh");
+		//m_pCubeEntity=OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity(s,"boulder_02.mesh");
+		//m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode(s + "a",Vector3(0.0f,0.0f,i));
+		//m_pCubeNode->attachObject(boulder->getEntity());
+		//out.clear();
+	}
 	//Boulders
 	OGRE3DKinematicBody* houseA = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(5.0f,0,1.0f), "cg_house_A.mesh");
 	/*OGRE3DKinematicBody* houseB = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(0.0f,0,10.0f), "cg_house_B.mesh");
@@ -489,7 +489,7 @@ void DemoApp::newAstar(){
 	astarDestination.X = playerPos.x;
 	astarDestination.Y = playerPos.z;
 	astarDestination = Astar::convertOgreToAstarCoords(astarDestination,100,30);
-	if((temp.X != astarDestination.X && temp.Y != astarDestination.Y) && 
+	if((temp.X != astarDestination.X || temp.Y != astarDestination.Y) && 
 		((astarDestination.X < 30 && astarDestination.X > 0) && (astarDestination.Y < 30 && astarDestination.Y > 0)) &&
 		((temp.X < 30 && temp.X > 0) && (temp.Y < 30 && temp.Y > 0)))
 	{
@@ -594,19 +594,22 @@ bool DemoApp::nextLocation(){
 	return true;
 }
 void DemoApp::setNotWalkables(){
-	for(int i = 0;i <15;i++){
-		graphMap[15][15+ i]->setWalkable(false);
+	for(int i = 0;i <16;i++){
+		graphMap[15][14+ i]->setWalkable(false);
 	}
-	COORD temp;
-	for(int i = -1;i <4;i++){
-		temp.X = i;
-		temp.Y = 1;
-		temp = Astar::convertOgreToAstarCoords(temp,100,30);
-		graphMap[temp.X][temp.Y]->setWalkable(false);
-		graphMap[temp.X+1][temp.Y]->setWalkable(false);
-		graphMap[temp.X+2][temp.Y]->setWalkable(false);
-		graphMap[temp.X-1][temp.Y]->setWalkable(false);
-	}
+
+	graphMap[16][14]->setWalkable(false);
+	graphMap[17][14]->setWalkable(false);
+	//COORD temp;
+	//for(int i = 4;i <5;i++){
+	//	temp.X = i;
+	//	temp.Y = 1;
+	//	temp = Astar::convertOgreToAstarCoords(temp,100,30);
+	//	graphMap[temp.X][temp.Y]->setWalkable(false);
+	//	graphMap[temp.X][temp.Y+1]->setWalkable(false);
+	//	//graphMap[temp.X][temp.Y+2]->setWalkable(false);
+	//	//graphMap[temp.X][temp.Y-1]->setWalkable(false);
+	//}
 }
 
 //Returns all entities that are of interest for the echo

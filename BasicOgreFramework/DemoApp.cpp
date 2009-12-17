@@ -104,10 +104,10 @@ void DemoApp::setupDemoScene()
 	OGRE3DKinematicBody* houseD = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(20.0f,0,-10.0f), "cg_house_D.mesh");*/
 
 		//Creating a fish and let it be the last one created
-	m_pCubeEntity = sceneMgr->createEntity("1","fish.mesh");
-	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,m_pCubeEntity->getBoundingRadius()/2,0));
+	m_pCubeEntity = sceneMgr->createEntity("1","robot.mesh");
+	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(0.0f,0.0f,0));
 	m_pCubeNode->attachObject(m_pCubeEntity);
-	m_pCubeNode->scale(0.7f,0.7f,0.7f);
+	m_pCubeNode->scale(0.05f,0.05f,0.05f);
 	theFish = mRenderSystem->createBody(new NxOgre::Box(1,1,1), NxOgre::Vec3(20,0,20), "fish.mesh");
 
 	play.setScales(1.7f, 3000.0f);
@@ -465,9 +465,10 @@ void DemoApp::initAstar(){
 	mNode = m_pCubeNode;
 	mEntity = m_pCubeEntity;
 	mWalkSpeed = 10.0f;
-	mAnimationState = mEntity->getAnimationState("swim");
-	mAnimationState->setLoop(true);
-	mAnimationState->setEnabled(true);
+	mAnimationState = mEntity->getAnimationState("Walk");
+				mAnimationState->setLoop(true);
+				mAnimationState->setEnabled(true);
+
 	
 	graphMap = Astar::GenerateGraphMap(30);
 	threadStarted = false;
@@ -501,7 +502,7 @@ void DemoApp::newAstar()
 		vector<COORD> movementVector = Astar::GenerateAstarPath(*graphMap[temp.X][temp.Y],*graphMap[astarDestination.X][astarDestination.Y], graphMap);
 		for(int i = 0;i < movementVector.size();i++){
 			COORD temp = Astar::convertAstarToOgreCoords(movementVector[i], 100, 30);
-			mWalkList.push_back(Vector3(temp.X, mEntity->getBoundingRadius()/2, temp.Y));
+			mWalkList.push_back(Vector3(temp.X, 0, temp.Y));
 		}
 		threadStarted = true;
 		thread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)threadStart,0,0,NULL);
@@ -513,15 +514,20 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 	{
 		if (nextLocation()) 
 		{
-
 		}
 		else if(cdAstar < 0)
 		{
+				mAnimationState = mEntity->getAnimationState("Walk");
+				mAnimationState->setLoop(true);
+				mAnimationState->setEnabled(true);
 			cdAstar = 6000;
 			newAstar();
 		}
 		else
 		{
+							mAnimationState = mEntity->getAnimationState("Idle");
+				mAnimationState->setLoop(true);
+				mAnimationState->setEnabled(true);
 			cdAstar -= timeSinceLastFrame;
 		}
 	}
@@ -547,7 +553,7 @@ void DemoApp::moveAstar(int timeSinceLastFrame){
 					Ogre::Quaternion quat = src.getRotationTo(mDirection);
 					mNode->rotate(quat);
 				}
-				mNode->yaw(Degree(180));
+				//mNode->yaw(Degree(180));
 			}
 		}
 		else

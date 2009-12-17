@@ -109,7 +109,7 @@ void DemoApp::setupDemoScene()
 	m_pCubeNode->attachObject(m_pCubeEntity);
 	m_pCubeNode->scale(0.05f,0.05f,0.05f);
 
-	play.setScales(1.7f, 400000.0f);
+	play.setScales(1.8f, 400000.0f);
 
 	play.addSound("..\\..\\Extensions\\Sound\\cat.wav", 0,0,0,0,0,0);
 	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);

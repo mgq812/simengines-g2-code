@@ -91,7 +91,7 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 	delay = (int)(aRD*distanceScale);
 
 	//--Simulate soundloss due to distance--
-	reduce = (float)(aRD*0.0006);
+	reduce = (float)(aRD*0.0007);
 	volume -= reduce;
 	//If distance too far and volume negative, make it zero
 	if(volume < 0.0f)

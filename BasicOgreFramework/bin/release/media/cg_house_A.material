@@ -1,0 +1,152 @@
+
+
+material /global/structures/cg_house_A/ossyja_inner_walls
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ossyja_inner_walls\D.png
+				filtering bilinear
+				colour_op modulate
+			}
+			texture_unit
+			{
+				texture cg_house_A\L.png
+				tex_address_mode clamp
+				filtering linear linear none
+				tex_coord_set 1
+				
+				colour_op_ex modulate_x1 src_current src_texture
+			}
+		}
+	}
+}
+
+material /global/structures/cg_house_A/ossyja_rough_beams
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ossyja_rough_beams\D.png
+				filtering bilinear
+				colour_op modulate
+			}
+			texture_unit
+			{
+				texture cg_house_A\L.png
+				tex_address_mode clamp
+				filtering linear linear none
+				tex_coord_set 1
+				colour_op_ex modulate_x1 src_current src_texture
+			}
+		}
+	}
+}
+
+material /global/structures/cg_house_A/ossyja_wall_cobblestone
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ossyja_wall_cobblestone\D.png
+				filtering bilinear
+				colour_op modulate
+			}
+			texture_unit
+			{
+				texture cg_house_A\L.png
+				tex_address_mode clamp
+				filtering linear linear none
+				tex_coord_set 1
+				colour_op_ex modulate_x1 src_current src_texture
+			}
+		}
+	}
+}
+
+material /global/structures/cg_house_A/ossyja_floor_planks
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture ossyja_floor_planks\D.png
+				filtering bilinear
+				colour_op modulate
+			}
+			texture_unit
+			{
+				texture cg_house_A\L.png
+				tex_address_mode clamp
+				filtering linear linear none
+				tex_coord_set 1
+				colour_op_ex modulate_x1 src_current src_texture
+			}
+		}
+	}
+}
+
+material /global/structures/cg_house_A/roof_shale
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0 0 0
+			emissive 1 1 1 1
+			specular 0 0 0 0
+			scene_blend alpha_blend
+			texture_unit
+			{
+				texture roof_shale\D.png
+				filtering bilinear
+				colour_op modulate
+			}
+			texture_unit
+			{
+				texture cg_house_A\L.png
+				tex_address_mode clamp
+				filtering linear linear none
+				tex_coord_set 1
+				colour_op_ex modulate_x1 src_current src_texture
+			}
+		}
+	}
+}

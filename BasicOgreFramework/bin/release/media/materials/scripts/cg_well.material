@@ -96,7 +96,7 @@ material /global/structures/cg_well/roof
 			scene_blend alpha_blend
 			texture_unit
 			{
-				texture roof\D.png
+				texture textures\roof\D.png
 			}
 		}
 	}
@@ -117,7 +117,7 @@ material /global/structures/cg_well/roof_shale
 			scene_blend alpha_blend
 			texture_unit
 			{
-				texture roof_shale\D.png
+				texture ..\..\textures\roof_shale\D.png
 			}
 		}
 	}
@@ -138,7 +138,7 @@ material /global/structures/cg_well/roof_trim
 			scene_blend alpha_blend
 			texture_unit
 			{
-				texture roof_trim\D.png
+				texture ..\..\textures\roof_trim\D.png
 			}
 		}
 	}
@@ -159,7 +159,7 @@ material /global/structures/cg_well/wooden_fence
 			scene_blend alpha_blend
 			texture_unit
 			{
-				texture wooden_fence\D.png
+				texture ..\..\textures\wooden_fence\D.png
 			}
 		}
 	}

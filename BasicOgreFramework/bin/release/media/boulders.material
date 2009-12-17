@@ -1,0 +1,58 @@
+
+material /global/environment/boulder/moraf_rock
+
+
+{
+  receive_shadows on
+  technique
+  {
+    pass
+    {
+      specular 0.8 0.8 0.8 50.000000
+      texture_unit
+      {
+      texture moraf_rock/D.png
+
+      }
+    }
+  }
+}
+
+
+material /global/environment/boulder/mossy_boulder
+
+
+{
+  receive_shadows on
+  technique
+  {
+    pass
+    {
+      specular 0.8 0.8 0.8 50.000000
+      texture_unit
+      {
+      texture stone_felsite/D.png
+
+      }
+    }
+  }
+}
+
+material /global/environment/boulder/felsite
+
+
+{
+  receive_shadows on
+  technique
+  {
+    pass
+    {
+      specular 0.8 0.8 0.8 50.000000
+      texture_unit
+      {
+      texture stone_felsite/D.png
+
+      }
+    }
+  }
+}

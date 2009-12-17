@@ -6,6 +6,9 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 {
 	//--Variables--
 
+	//Does the sound return too quickly?
+	bool playEcho = true;
+
 	//The delay of the echo
 	int delay = 0;
 
@@ -40,26 +43,6 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 		
 		//If too far away, erase the box
 		if(distance > volume*1000)
-		{
-			boxValues.erase(boxValues.begin() + i);
-			boxPositions.erase(boxPositions.begin() + i);
-		}
-	}
-
-	//--Remove boxes that are too close--
-	for(unsigned int i = 0; i < boxValues.size(); i++)
-	{
-		//Calculate the distance and the distance vector
-		distanceVector[0] = (float)boxPositions[i][0];
-		distanceVector[1] = (float)boxPositions[i][1];
-		distanceVector[2] = (float)boxPositions[i][2];
-		distanceVector[0] -= soundPosition[0];
-		distanceVector[1] -= soundPosition[1];
-		distanceVector[2] -= soundPosition[2];
-		distance = sqrt(pow(distanceVector[0], 2) + pow(distanceVector[1], 2) + pow(distanceVector[2], 2));
-
-		//If too close, erase the box
-		if(distance < 75)
 		{
 			boxValues.erase(boxValues.begin() + i);
 			boxPositions.erase(boxPositions.begin() + i);
@@ -114,7 +97,12 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 	if(volume < 0.0f)
 		volume = 0.0f;
 
+	//If the sound return too quickly, don't play an echo
+	if(delay <= 40)
+	{
+		playEcho = false;
+	}
 	//--Create and return an EchoProperties object--
-	EchoProperties eP = EchoProperties(volume, delay);
+	EchoProperties eP = EchoProperties(volume, delay, playEcho);
 	return eP;
 }

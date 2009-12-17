@@ -240,8 +240,11 @@ void Soundplayer::playSoundWithEcho(int index, float volume, vector<float> boxVa
 	//Change volume and waiting time
 	float newVolume = echoProperties.getVolume();
 	int delay = echoProperties.getDelay();
+	bool playEcho = echoProperties.getPlayEcho();
 	
-	playIn(index, newVolume, delay);
+	//Don't play the echo if it returns within 40 milliseconds
+	if(playEcho)
+		playIn(index, newVolume, delay);
 
 }
 

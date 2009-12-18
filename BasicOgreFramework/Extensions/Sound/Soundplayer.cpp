@@ -115,6 +115,16 @@ void Soundplayer::setSourcePosition(int index, float x, float y, float z)
 
 }
 
+//A method for stopping sounds
+void Soundplayer::stopSound(int index)
+{
+	for(int i = 0; i < 10; i++)
+	{
+		
+		alSourceStop(source[index][i]);
+	}
+}
+
 //A method for loading sound data before playing it. The input is an index for what sound to load.
 void Soundplayer::loadData(int index, float volume, ALboolean looping)
 {

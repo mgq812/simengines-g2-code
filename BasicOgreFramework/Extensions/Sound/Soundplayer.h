@@ -25,7 +25,7 @@ class Soundplayer
 		void setSourcePosition(int index, float x, float y, float z);
 		void setScales(float distanceScale, float reflectionScale);
 		
-		
+		void stopSound(int index);
 		void playSound(int index, float volume, bool loop);
 		void playIn(int index, float volume, float delay);
 		void playSoundWithEcho(int index, float volume, vector<float> boxValues, vector<vector<float>> boxPosition);

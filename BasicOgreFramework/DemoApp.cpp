@@ -103,7 +103,7 @@ void DemoApp::setupDemoScene()
 	OGRE3DKinematicBody* houseC = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(10.0f,0,0.0f), "cg_house_C.mesh");
 	OGRE3DKinematicBody* houseD = mRenderSystem->createKinematicBody(new NxOgre::Box(9,10,5), NxOgre::Vec3(20.0f,0,-10.0f), "cg_house_D.mesh");*/
 
-		//Creating a fish and let it be the last one created
+	//Creating a fish and let it be the last one created
 	m_pCubeEntity = sceneMgr->createEntity("1","robot.mesh");
 	m_pCubeNode=OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode2",Vector3(-20.0f,0.0f,10.0f));
 	m_pCubeNode->attachObject(m_pCubeEntity);
@@ -115,8 +115,9 @@ void DemoApp::setupDemoScene()
 	play.addSound("..\\..\\Extensions\\Sound\\Grenade3.wav", 0, 0, 0, 0, 0, 0);
 	play.addSound("..\\..\\Extensions\\Sound\\bazooka3.wav", 0, 0, 0, 0, 0, 0);
 	play.addSound("..\\..\\Extensions\\Sound\\roboto.wav", 0,0,0,0,0,0);
+	play.addSound("..\\..\\Extensions\\Sound\\rain.wav", 0,0,0,0,0,0);
 
-	play.playSound(3, 0.4f, true);
+	play.playSound(3, 0.2f, true);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -161,6 +162,7 @@ void DemoApp::runDemo()
 			play.setListenerPosition(((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(0, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 			play.setSourcePosition(3, ((float)mNode->getPosition().x), ((float)mNode->getPosition().y), ((float)mNode->getPosition().z));
+			play.setSourcePosition(4, ((float)mCharacter->getGlobalPosition().x), ((float)mCharacter->getGlobalPosition().y), ((float)mCharacter->getGlobalPosition().z));
 
 			//Take care of the logic and movments
 			handlePhysics();
@@ -201,11 +203,13 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		if(option == 0)
 		{
 			cartoon->addRain();
+			play.playSound(4, 1.0f, true);
 			option = 1;
 		}
 		else if(option == 1)
 		{
 			cartoon->removeRain();
+			play.stopSound(4);
 			cartoon->addSnow();
 			option = 2;
 		}

@@ -92,6 +92,24 @@ material Cartoon/WeirdSky2
 	}
 }
 
+material Cartoon/WindParticle
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+
+			texture_unit
+			{
+				texture wind.jpg
+			}
+		}
+	}
+}
+
 material Cartoon/Sun
 {
 	technique

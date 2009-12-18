@@ -233,24 +233,29 @@ namespace CartoonCaelum {
 	{
 		if (cWindCloud!=0) {
 			delete cWindCloud;
-			for (int k=0; k<sizeof(windNode); k++) {
-				//cSceneMgr->destroyParticleSystem("windSystem"+StringConverter::toString(k));
-			}
+			/*for (int k=0; k<sizeof(windNode); k++) {
+				cSceneMgr->destroyParticleSystem("windSystem"+StringConverter::toString(k));
+			}*/
 		}
 		cWindCloud = new Cloud(cSceneMgr, cCamera, 2000, 2000, 5500);
 		cWindCloud->getFace()->setFace("Cartoon/BlowingFace");
-		/*for (int k=0; k<sizeof(windNode); k++) {
-			//windNode[k] = cWindCloud->getNode()->createChildSceneNode();
+		/*for (int k=0; k<4; k++) {
+			//windNode[k] = cWindCloud->getFace()->getNode()->createChildSceneNode();
 			windNode[k] = cSceneMgr->getRootSceneNode()->createChildSceneNode();
+			windNode[k]->setOrientation(cWindCloud->getFace()->getNode()->getOrientation());
 			windPS[k] = cSceneMgr->createParticleSystem("windSystem"+
 				StringConverter::toString(k), "Cartoon/WindFlow");
 			windNode[k]->attachObject(windPS[k]);
+			windNode[0]->translate(Vector3(0,0,-20));
 		}
-		windNode[0]->setPosition(Vector3(5,0,0));
-		windNode[1]->setPosition(Vector3(0,0,5));
-		windNode[2]->setPosition(Vector3(-5,0,0));
-		windNode[3]->setPosition(Vector3(0,0,-5));
-		windNode[4]->setPosition(Vector3(20,0,0));*/
+		windNode[0]->translate(Vector3(0,0,5));
+		windNode[1]->translate(Vector3(5,0,0));
+		windNode[2]->translate(Vector3(-5,0,0));
+		windNode[3]->translate(Vector3(0,0,-5));
+		windNode[2]->yaw(-Degree(45));
+		windNode[1]->yaw(Degree(90));
+		windNode[3]->yaw(Degree(135));
+		//windNode[4]->translate(Vector3(20,0,0));*/
 	}
 
 	void CartoonSystem::updateSky()
@@ -269,6 +274,15 @@ namespace CartoonCaelum {
 	{
 		cSun->moveSun(Radian(Degree(0.1)));
 		cSun->getFace()->directFace();
+		if (cSun->getNode()->getPosition().y < 1000) {
+			if (cSun->getFace()->getCurrentFace()== "Cartoon/HappyFace") {
+				cSun->getFace()->setFace("Cartoon/SleepyFace");
+			}
+		} else {
+			if (cSun->getFace()->getCurrentFace()== "Cartoon/SleepyFace") {
+				cSun->getFace()->setFace("Cartoon/HappyFace");
+			}
+		}
 	}
 
 	void CartoonSystem::updateWindCloud()

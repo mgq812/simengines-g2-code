@@ -21,6 +21,7 @@ namespace CartoonCaelum {
 		faceDistance (distance)
 	{
 		uniqueSuffix = InternalUtilities::pointerToString(this);
+		currentFace = "";
 		createFace();
 	}
 
@@ -32,6 +33,7 @@ namespace CartoonCaelum {
 
 	void Face::setFace(String materialName) 
 	{
+		currentFace = materialName;
 		faceEntity->setMaterialName(materialName);
 		faceEntity->setVisible(true);
 	}
@@ -56,6 +58,11 @@ namespace CartoonCaelum {
 	SceneNode* Face::getNode()
 	{
 		return faceNode;
+	}
+
+	String Face::getCurrentFace()
+	{
+		return currentFace;
 	}
 
 	void Face::createFace()

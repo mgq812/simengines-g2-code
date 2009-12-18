@@ -22,6 +22,8 @@ namespace CartoonCaelum {
 
 		Ogre::SceneNode* getNode();
 
+		Ogre::String getCurrentFace();
+
 	private:
 		Ogre::SceneManager *cSceneMgr;
 
@@ -38,6 +40,8 @@ namespace CartoonCaelum {
 		int faceYSize;
 
 		Ogre::String uniqueSuffix;
+
+		Ogre::String currentFace;
 
 		void createFace();
 

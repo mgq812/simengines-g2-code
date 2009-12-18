@@ -21,6 +21,7 @@ namespace CartoonCaelum {
 		cyclePitch (pitch)
 	{
 		uniqueSuffix = InternalUtilities::pointerToString(this);
+		lightChanged = false;
 		mainNode = cSceneMgr->getRootSceneNode()->createChildSceneNode("MainNode"+uniqueSuffix);
 		previousRotation = Radian(0);
 		createSun("Cartoon/Sun");
@@ -49,6 +50,13 @@ namespace CartoonCaelum {
 		mainNode->setPosition(Vector3(newX,newY,newZ));
 		mainNode->lookAt(Vector3(0,0,0), 
 			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
+		if (mainNode->getPosition().y > 0 && !sunLight->getVisible()) {
+			sunLight->setVisible(true);
+			flipLightChanged();
+		} else if (mainNode->getPosition().y < 0 && sunLight->getVisible()) {
+			sunLight->setVisible(false);
+			flipLightChanged();
+		}
 		sunLight->setVisible((mainNode->getPosition().y > 0));
 	}
 
@@ -60,6 +68,21 @@ namespace CartoonCaelum {
 	Face* Sun::getFace()
 	{
 		return sunFace;
+	}
+
+	Light* Sun::getLight()
+	{
+		return sunLight;
+	}
+
+	bool Sun::isLightChanged()
+	{
+		return lightChanged;
+	}
+
+	void Sun::flipLightChanged()
+	{
+		lightChanged = !lightChanged;
 	}
 
 	void Sun:: createSun(String materialName)

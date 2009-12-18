@@ -220,12 +220,12 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::makeSky()
 	{
-		cSceneMgr->setSkyBox(true, "Cartoon/WeirdSky", 10000);
+		cSceneMgr->setSkyDome(true, "Cartoon/WeirdSky2", 5, 8, 10000);
 	}
 
 	void CartoonSystem::makeSun()
 	{
-		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 5500, Degree(0));
+		cSun = new Sun(cSceneMgr, cCamera, 512, 512, 5600, Degree(0));
 		cSun->getFace()->setFace("Cartoon/HappyFace");
 	}
 
@@ -233,14 +233,36 @@ namespace CartoonCaelum {
 	{
 		if (cWindCloud!=0) {
 			delete cWindCloud;
+			for (int k=0; k<sizeof(windNode); k++) {
+				//cSceneMgr->destroyParticleSystem("windSystem"+StringConverter::toString(k));
+			}
 		}
 		cWindCloud = new Cloud(cSceneMgr, cCamera, 2000, 2000, 5500);
 		cWindCloud->getFace()->setFace("Cartoon/BlowingFace");
+		/*for (int k=0; k<sizeof(windNode); k++) {
+			//windNode[k] = cWindCloud->getNode()->createChildSceneNode();
+			windNode[k] = cSceneMgr->getRootSceneNode()->createChildSceneNode();
+			windPS[k] = cSceneMgr->createParticleSystem("windSystem"+
+				StringConverter::toString(k), "Cartoon/WindFlow");
+			windNode[k]->attachObject(windPS[k]);
+		}
+		windNode[0]->setPosition(Vector3(5,0,0));
+		windNode[1]->setPosition(Vector3(0,0,5));
+		windNode[2]->setPosition(Vector3(-5,0,0));
+		windNode[3]->setPosition(Vector3(0,0,-5));
+		windNode[4]->setPosition(Vector3(20,0,0));*/
 	}
 
 	void CartoonSystem::updateSky()
 	{
-
+		if (cSun->isLightChanged()) {
+			if (cSun->getNode()->getPosition().y > 0) {
+				cSceneMgr->setSkyDome(true, "Cartoon/WeirdSky2", 5, 8, 10000);
+			} else {
+				cSceneMgr->setSkyDome(true, "Cartoon/NightSky", 5, 8, 10000);
+			}
+			cSun->flipLightChanged();
+		}
 	}
 
 	void CartoonSystem::updateSun()

@@ -197,7 +197,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 	if(keyboard->isKeyDown(OIS::KC_T))
 	{
 		static int option = 0;
-		
+
 		if(option == 0)
 		{
 			cartoon->addRain();

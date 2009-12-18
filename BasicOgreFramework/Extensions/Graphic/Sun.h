@@ -23,6 +23,12 @@ namespace CartoonCaelum {
 
 		Face* getFace();
 
+		Ogre::Light* getLight();
+
+		bool isLightChanged();
+
+		void flipLightChanged();
+
 	private:
 		Ogre::SceneManager *cSceneMgr;
 
@@ -51,6 +57,8 @@ namespace CartoonCaelum {
 		Ogre::Radian cyclePitch;
 
 		Ogre::String uniqueSuffix;
+
+		bool lightChanged;
 
 		void createSun(Ogre::String materialName);
 

@@ -66,9 +66,13 @@ namespace CartoonCaelum {
 
 		Ogre::SceneNode *rainNode;
 
+		Ogre::SceneNode *windNode[5];
+
 		Ogre::ParticleSystem *snowPS;
 
 		Ogre::ParticleSystem *rainPS;
+
+		Ogre::ParticleSystem *windPS[5];
 
 		Ogre::Vector3 *windVector;
 

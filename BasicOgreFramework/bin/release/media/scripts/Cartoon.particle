@@ -246,7 +246,7 @@ particle_system Cartoon/RainFall
 
 particle_system Cartoon/WindFlow
 {
-    material        Cartoon/SnowFlake
+    material        Examples/Flare2
     particle_width  2
     particle_height 2
     cull_each       true
@@ -258,7 +258,7 @@ particle_system Cartoon/WindFlow
     emitter Point
     {
 		position 		0 1 0
-        angle           90
+        angle           0
         emission_rate   50
         time_to_live    5
         direction       0 -1 0

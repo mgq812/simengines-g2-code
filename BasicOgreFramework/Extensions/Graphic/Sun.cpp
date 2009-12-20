@@ -6,109 +6,78 @@ namespace CartoonCaelum {
 
 	Sun::Sun
 	(
-		SceneManager *sceneMgr,
-		Camera *camera,
-		int xSize,
-		int ySize,
-		int distance,
+		SceneManager *pSceneMgr,
+		Camera *pCamera,
+		SceneNode *pNode,
+		int nXSize,
+		int nYSize,
+		int nDistance,
 		Radian pitch
 	):
-		cSceneMgr (sceneMgr),
-		cCamera (camera),
-		sunXSize (xSize),
-		sunYSize (ySize),
-		sunDistance (distance),
-		cyclePitch (pitch)
+		CartoonSkyObject(pSceneMgr, pCamera, pNode, "Cartoon/Sun", "Cartoon/HappyFace", nXSize, 
+			nYSize, nDistance, Real(0.9), Real(0.9)),
+		m_previousRotation(Radian(0)),
+		m_cyclePitch (pitch),
+		m_fLightChanged(false)
 	{
-		uniqueSuffix = InternalUtilities::pointerToString(this);
-		lightChanged = false;
-		mainNode = cSceneMgr->getRootSceneNode()->createChildSceneNode("MainNode"+uniqueSuffix);
-		previousRotation = Radian(0);
-		createSun("Cartoon/Sun");
 		createLight();
-		sunFace = new Face(cSceneMgr, cCamera, 
-			mainNode->createChildSceneNode("FaceNode"+uniqueSuffix),
-			InternalUtilities::round(sunXSize*0.9), 
-			InternalUtilities::round(sunYSize*0.9), 200);
 	}
 
 	Sun::~Sun()
 	{
-		cSceneMgr->destroyEntity(sunEntity);
-		cSceneMgr->destroyLight(sunLight);
-		mainNode->removeAndDestroyAllChildren();
-		mainNode->getParentSceneNode()->removeAndDestroyChild(mainNode->getName());
+		m_pSceneMgr->destroyLight(m_pSunLight);
 	}
 
 	void Sun::moveSun(Radian degrees)
 	{
-		Vector3 position = mainNode->getPosition();
-		previousRotation += degrees;
-		int newX = InternalUtilities::round(sunDistance*(Math::Sin(previousRotation, false)));
-		int newY = InternalUtilities::round(sunDistance*(Math::Cos(previousRotation, false)));
-		int newZ = InternalUtilities::round(newY*(Math::Sin(cyclePitch, false))); 
-		mainNode->setPosition(Vector3(newX,newY,newZ));
-		mainNode->lookAt(Vector3(0,0,0), 
+		//add degree to the previously accumulated rotation, and calculate new position of sun.
+		m_previousRotation += degrees;
+		int _newX = InternalUtilities::round(m_nDistance*(Math::Sin(m_previousRotation, false)));
+		int _newY = InternalUtilities::round(m_nDistance*(Math::Cos(m_previousRotation, false)));
+		int _newZ = InternalUtilities::round(_newY*(Math::Sin(m_cyclePitch, false))); 
+		m_pMainNode->setPosition(Vector3(_newX, _newY, _newZ));
+		m_pMainNode->lookAt(Vector3(0,0,0), 
 			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-		if (mainNode->getPosition().y > 0 && !sunLight->getVisible()) {
-			sunLight->setVisible(true);
+		if (m_pMainNode->getPosition().y > -m_nYSize/2 && !m_pSunLight->getVisible()) {
+			//if the sun's new y-value is higher than half the y-size of the sun plane mesh,
+			//and the light is invisible, make it visible and set mLightChanged flag to true.
+			m_pSunLight->setVisible(true);
 			flipLightChanged();
-		} else if (mainNode->getPosition().y < 0 && sunLight->getVisible()) {
-			sunLight->setVisible(false);
+		} else if (m_pMainNode->getPosition().y < -m_nYSize/2 && m_pSunLight->getVisible()) {
+			//if the sun's new y-value is lower than half the y-size of the sun plane mesh,
+			//and the light is visible, make it invisible and set mLightChanged flag to true.
+			m_pSunLight->setVisible(false);
 			flipLightChanged();
 		}
-		sunLight->setVisible((mainNode->getPosition().y > 0));
-	}
-
-	SceneNode *Sun::getNode()
-	{
-		return mainNode;
-	}
-
-	Face* Sun::getFace()
-	{
-		return sunFace;
 	}
 
 	Light* Sun::getLight()
 	{
-		return sunLight;
+		return m_pSunLight;
 	}
 
 	bool Sun::isLightChanged()
 	{
-		return lightChanged;
+		return m_fLightChanged;
 	}
 
 	void Sun::flipLightChanged()
 	{
-		lightChanged = !lightChanged;
-	}
-
-	void Sun:: createSun(String materialName)
-	{
-		Plane plane(Vector3(0,-1,0), 0);
-		MeshManager::getSingleton().createPlane("sun"+uniqueSuffix,
-           ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-           sunXSize,sunYSize,1,1,true,1,1,1,Vector3::UNIT_Z);
-		sunEntity = cSceneMgr->createEntity("SunEntity"+uniqueSuffix, "sun"+uniqueSuffix);
-		sunNode = mainNode->createChildSceneNode("SunNode"+uniqueSuffix);
-		sunNode->attachObject(sunEntity);
-		sunEntity->setMaterialName(materialName);
-		sunEntity->setCastShadows(false);
-		mainNode->setPosition(Vector3(0,sunDistance,0));
+		//flip the value of the mLightChanged flag.
+		m_fLightChanged = !m_fLightChanged;
 	}
 
 	void Sun::createLight()
 	{
-		sunLight = cSceneMgr->createLight("SunLight"+uniqueSuffix);
-		sunLight->setType(Light::LT_POINT);
-		lightNode = sunNode->createChildSceneNode("LightNode"+uniqueSuffix);
-		lightNode->attachObject(sunLight);
-		sunLight->setPosition(Vector3(0, -1, 0));
-		sunLight->setDiffuseColour(1.0, 1.0, 1.0);
-		sunLight->setSpecularColour(1.0, 1.0, 1.0);
-		sunLight->setCastShadows(true);
+		//create light object and scene node, and set colour values.
+		m_pSunLight = m_pSceneMgr->createLight("SunLight"+m_strUniqueSuffix);
+		m_pSunLight->setType(Light::LT_POINT);
+		m_pLightNode = m_pMainNode->createChildSceneNode("LightNode"+m_strUniqueSuffix);
+		m_pLightNode->attachObject(m_pSunLight);
+		m_pSunLight->setPosition(Vector3(0, -1, 0));
+		m_pSunLight->setDiffuseColour(1.0, 1.0, 1.0);
+		m_pSunLight->setSpecularColour(1.0, 1.0, 1.0);
+		m_pSunLight->setCastShadows(true);
 	}
 
 }

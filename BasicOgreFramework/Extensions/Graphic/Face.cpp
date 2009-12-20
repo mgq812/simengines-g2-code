@@ -6,75 +6,41 @@ namespace CartoonCaelum {
 
 	Face::Face
 	(
-		SceneManager *sceneMgr,
-		Camera *camera,
-		SceneNode *node,
-		int xSize,
-		int ySize,
-		int distance
+		SceneManager *pSceneMgr,
+		Camera *pCamera,
+		SceneNode *pNode,
+		String strMaterialName,
+		int nXSize,
+		int nYSize,
+		int nDistance
 	):
-		cSceneMgr (sceneMgr),
-		cCamera (camera),
-		faceNode (node),
-		faceXSize (xSize),
-		faceYSize (ySize),
-		faceDistance (distance)
+		SkyObject(pSceneMgr, pCamera, pNode, strMaterialName, 
+			nXSize, nYSize, nDistance)
 	{
-		uniqueSuffix = InternalUtilities::pointerToString(this);
-		currentFace = "";
-		createFace();
+		//position the face object away from the origin.
+		m_pMainNode->setPosition(0, -m_nDistance, 0);
 	}
 
 	Face::~Face()
 	{
-		cSceneMgr->destroyEntity(faceEntity);
-		faceNode->getParentSceneNode()->removeChild(faceNode->getName());
-	}
-
-	void Face::setFace(String materialName) 
-	{
-		currentFace = materialName;
-		faceEntity->setMaterialName(materialName);
-		faceEntity->setVisible(true);
+		
 	}
 
 	void Face::directFace()
 	{
-		SceneNode* temp = cSceneMgr->getRootSceneNode()->createChildSceneNode("temp");
-		temp->setPosition(cCamera->getPosition()+(cCamera->getDirection()*2500));
-		temp->setOrientation(faceNode->getOrientation());
-		temp->lookAt(cCamera->getPosition(), 
+		SceneNode* _pTemp = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("temp");
+		_pTemp->setPosition(m_pCamera->getPosition()+(m_pCamera->getDirection()*2500));
+		_pTemp->setOrientation(m_pMainNode->getOrientation());
+		_pTemp->lookAt(m_pCamera->getPosition(), 
 			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-		Radian diffAngle = temp->getOrientation().zAxis().angleBetween(cCamera->getUp());
-		temp->yaw(diffAngle);
-		if ((temp->getOrientation().zAxis().angleBetween(cCamera->getUp())) > Radian(0)) {
-			faceNode->yaw(-diffAngle);
+		Radian _diffAngle = _pTemp->getOrientation().zAxis().angleBetween(m_pCamera->getUp());
+		_pTemp->yaw(_diffAngle);
+		if ((_pTemp->getOrientation().zAxis().angleBetween(m_pCamera->getUp())) > Radian(0)) {
+			m_pMainNode->yaw(-_diffAngle);
 		} else {
-			faceNode->yaw(diffAngle);
+			m_pMainNode->yaw(_diffAngle);
 		}
-		cSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
-	}
-
-	SceneNode* Face::getNode()
-	{
-		return faceNode;
-	}
-
-	String Face::getCurrentFace()
-	{
-		return currentFace;
-	}
-
-	void Face::createFace()
-	{
-		Plane plane(Vector3(0,-1,0), faceDistance);
-		MeshManager::getSingleton().createPlane("face"+uniqueSuffix,
-		   ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, faceXSize,faceYSize,
-		   1,1,true,1,1,1,Vector3::UNIT_Z);
-		faceEntity = cSceneMgr->createEntity("FaceEntity"+uniqueSuffix, "face"+uniqueSuffix);
-		faceNode->attachObject(faceEntity);
-		faceEntity->setCastShadows(false);
-		faceEntity->setVisible(false);
+		m_pSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
 	}
 
 }

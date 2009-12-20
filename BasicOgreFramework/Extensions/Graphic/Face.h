@@ -4,46 +4,32 @@
 #include <ogre.h>
 
 #include "InternalUtilities.h"
+#include "SkyObject.h"
 
 namespace CartoonCaelum {
-
-	class Face
+	
+	/**
+	 * Class representing a smiley face on a plane mesh.
+	 */
+	class Face : public SkyObject
 	{
-
+	
 	public:
-		Face(Ogre::SceneManager *sceneMgr, Ogre::Camera *camera,
-			Ogre::SceneNode *node, int xSize, int ySize, int distance);
-
-		~Face();
-
-		void setFace(Ogre::String materialName);
-
+		/**
+		 * Constructor.
+		 */
+		Face(Ogre::SceneManager *pSceneMgr, Ogre::Camera *pCamera, Ogre::SceneNode *pNode,
+			 Ogre::String strMaterialName, int nXSize, int nYSize, int nDistance);
+		
+		/**
+		 * Destructor.
+		 */
+		virtual ~Face();
+		
+		/**
+		 * Rotate the face so that its up vector corresponds to the up vector of the camera.
+		 */
 		void directFace();
-
-		Ogre::SceneNode* getNode();
-
-		Ogre::String getCurrentFace();
-
-	private:
-		Ogre::SceneManager *cSceneMgr;
-
-		Ogre::Camera *cCamera;
-
-		Ogre::SceneNode *faceNode;
-
-		Ogre::Entity *faceEntity;
-
-		int faceDistance;
-
-		int faceXSize;
-
-		int faceYSize;
-
-		Ogre::String uniqueSuffix;
-
-		Ogre::String currentFace;
-
-		void createFace();
 
 	};
 

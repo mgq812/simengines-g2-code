@@ -67,7 +67,7 @@ void DemoApp::setupDemoScene()
 	sceneMgr->setShadowColour( ColourValue(0.5, 0.5, 0.5));
 	sceneMgr->setAmbientLight( ColourValue(0.2, 0.2, 0.2));
 	Ogre::Light* light = sceneMgr->createLight("Light");
-	light->setPosition(5,20,5);
+	light->setPosition(30,20,5);
 	light->setType(Light::LT_POINT);
 	light->setDiffuseColour(1.0, 1.0, 1.0);
 	light->setSpecularColour(1.0, 1.0, 1.0);
@@ -347,7 +347,7 @@ void DemoApp::initPhysics()
 		gCube->setAngularDamping(0.5);
 		}
 	}
-	cannon = new ProjectileCannon(mRenderSystem, camera->getDirection(), camera->getPosition());
+	cannon = new ProjectileCannon(mRenderSystem);
 	ID = cannon->addLauncher(camera->getDirection(), camera->getPosition());
 	//default cannon values, for launching
 	gren = true;
@@ -369,9 +369,9 @@ void DemoApp::handlePhysics()
 	//Fire projectile
 	if(keyboard->isKeyDown(OIS::KC_SPACE) && timeSinceLastAction > 200 || mouse->getMouseState().buttonDown(OIS::MB_Left) && timeSinceLastAction > 200)
 	{
-		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*3;
+		moveTo.x = mCharacter->getGlobalPosition().x + (camera->getDirection().x / camera->getDirection().normalise())*10;
 		moveTo.y = mCharacter->getGlobalPosition().y;
-		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*3;
+		moveTo.z = mCharacter->getGlobalPosition().z + (camera->getDirection().z / camera->getDirection().normalise())*10;
 		cannon->aimCannon(camera->getDirection(), ID);
 		cannon->moveCannon(moveTo, ID);
 		if(shell)
@@ -473,7 +473,7 @@ void DemoApp::initAstar(){
 	
 	mNode = m_pCubeNode;
 	mEntity = m_pCubeEntity;
-	mWalkSpeed = 3.0f;
+	mWalkSpeed = 2.0f;
 	mAnimationState = mEntity->getAnimationState("Walk");
 				mAnimationState->setLoop(true);
 				mAnimationState->setEnabled(true);

@@ -9,8 +9,6 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 vector<vector<AstarNode*>> DemoApp::graphMapTemp;
-int ID;
-ProjectileCannon* cannon; 
 
 DemoApp::DemoApp()
 {
@@ -51,7 +49,6 @@ void DemoApp::setupDemoScene()
 	mouse = OgreFramework::getSingletonPtr()->m_pMouse;
 
 	//Create the basic physic components
-	
 	initPhysics();
 	
 	
@@ -236,7 +233,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 			density = 0;
 		}
 	}
-	if(keyboard->isKeyDown(OIS::KC_U))
+	/*if(keyboard->isKeyDown(OIS::KC_U))
 	{
 		static int face = 0;
 		
@@ -250,7 +247,7 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 			cartoon->getSun()->getFace()->setCurrentMaterial("Cartoon/HappyFace");
 			face = 0;
 		}
-	}
+	}*/
 
 	return true;
 }

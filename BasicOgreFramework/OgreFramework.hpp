@@ -1,9 +1,6 @@
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 #ifndef OGRE_FRAMEWORK_HPP
 #define OGRE_FRAMEWORK_HPP
 
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include <OgreCamera.h>
 #include <OgreEntity.h>
@@ -39,22 +36,63 @@ using namespace Ogre;
 class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener
 {
 public:
+	/** Default constructor. Sets some default values.
+        */
 	OgreFramework();
+	/** Default destructor.
+        */
 	~OgreFramework();
 
+	/** Initialize everything about Ogre.
+        @param wndTitle - String for the window name
+		@param pKeyListener - KeyListerner
+		@param pMouseListener - MouseListerner
+        */
 	void initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MouseListener *pMouseListener = 0);
+	/** Update everything about the Ogre.
+        @param timeSinceLastFrame - The time since the last frame
+        */
 	void updateOgre(double timeSinceLastFrame);
+	/** Update the Ogre statistics.
+        */
 	void updateStats();
+	/** Change camera position, if shift is hold move it tenfold.
+        */
 	void moveCamera();
+	/** Check keyboard input and translate accordingly.
+        */
 	void getInput();
-
+	
+	/** Check if Ogre should be shut down
+		@return True if application should be shut down
+        */
 	bool isOgreToBeShutDown()const{return m_bShutDownOgre;}  
-
+/** Checks if a key is pressed.
+        @param keyEventRef - KeyEvent for pressed key
+        @return true
+        */
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);
+	/** Checks if a key is released.
+        @param keyEventRef - KeyEvent for released key
+        @return true
+        */
 	bool keyReleased(const OIS::KeyEvent &keyEventRef);
-
+	/** Checks if mouse has moved and adjust camera.
+        @param evt - MouseEvent
+        @return true
+        */
 	bool mouseMoved(const OIS::MouseEvent &evt);
-	bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id); 
+	/** Checks if a mouse button has been clicked and which.
+        @param evt - MouseEvent
+		@param id - the ID of the pressed button
+        @return true
+        */
+	bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+	/** Checks if a mouse button has been released and which.
+        @param evt - MouseEvent
+		@param id - the ID of the pressed button
+        @return true
+        */
 	bool mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 	
 	Ogre::Root*					m_pRoot;

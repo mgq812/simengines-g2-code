@@ -237,7 +237,6 @@ void OgreFramework::updateOgre(double timeSinceLastFrame)
 	
 	updateStats();
 }
-
 //Update the status window
 void OgreFramework::updateStats() 
 { 

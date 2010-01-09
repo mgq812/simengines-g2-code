@@ -1,8 +1,8 @@
 #include "Soundplayer.h"
 #include "windows.h"
 
-//Soundplayer constructor for setting default listener, orientation values and scales
-
+/** The default constructor which sets default values.
+	*/
 Soundplayer::Soundplayer()
 {
 	//Default scales
@@ -83,20 +83,6 @@ void Soundplayer::setListenerVelocity(float x, float y, float z)
 
 	//Update the listener velocity
 	alListenerfv(AL_VELOCITY, listenerVel);
-}
-//A method for updating the listeners orientation. The input is six floats for the orientation. 
-void Soundplayer::setListenerOrientation(float a, float b, float c, float d, float e, float f)
-{
-	//Change the listener orientation
-	listenerOri[0] = a;
-	listenerOri[1] = b;
-	listenerOri[2] = c;
-	listenerOri[3] = d;
-	listenerOri[4] = e;
-	listenerOri[5] = f;
-
-	//Update the listener orientation
-	alListenerfv(AL_ORIENTATION, listenerOri);
 }
 
 //A method for moving a sound source's position in the room. The input is the index of the sound, and it's new room coordinates.

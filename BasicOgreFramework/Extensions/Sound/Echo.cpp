@@ -1,35 +1,28 @@
 #include "Echo.h"
 #include "math.h"
 
-//A method for generating an echo that depends on the surroundings
+/** The calculateEcho method for calculating the echo's properties.
+	*/
 EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector<vector<float>> boxPositions , float soundPosition[3], float distanceScale, float reflectionScale)
 {
-	//--Variables--
 
-	//Does the sound return too quickly?
-	bool playEcho = true;
+	bool playEcho = true; /**< A boolean to tell if the echo should be played at all. */
 
-	//The delay of the echo
-	int delay = 0;
+	int delay = 0;/**< The delay before the echo should return. */
 
-	//The total reflecting value
-	float tRV = 0;
+	float tRV = 0;/**< A variable keeping the total reflecting value (The sum of reflection values) */
 
-	//Distance vector between sound source and boxes for calculations and the actual distance
-	float distanceVector[3];
-	float distance = 0;
+	float distanceVector[3];/**< A distance vector used to calculate the distance between the sound source and different objects. */
+	float distance = 0;/**< A distance variable used to calculate what objects to keep in the calculations and which to ignore. */
 
-	//List of distances, the mean distance and the amount of boxes for calculating the delay
-	vector<float> distances;
-	float aRD = 0;
+	vector<float> distances;/**< A list of all the distances from the sound source to the objects */
+	float aRD = 0;/** The approximate reflection distance. An approximation of where the sound has bounced to reduce the volume and set the delay appropriately.  */
 
-	//Procentual weight for the box values, used to see how much they should affect the approximate reflection distance
-	vector<float> pWeight;
+	vector<float> pWeight;/**< The weights for each reflecting object used to calculate the aRD */
 
-	//The starting volume
-	float sVolume = volume;
+	float sVolume = volume;/**< Save the start volume in sVolume variable */
 
-	//--Remove objects that are too far away to consider--
+	//Remove objects that are too far away to consider--
 	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
@@ -49,25 +42,25 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 		}
 	}
 
-	//--Calculate the total reflecting value--
+	//Calculate the total reflecting value
 	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		tRV += boxValues[i];
 	}
 
-	//--Calculate the percentually reflection from each box--
+	//Calculate the percentually reflection from each box
 	for(int u = 0; u < boxValues.size(); u++)
 	{
 		pWeight.push_back(((float)boxValues[u]/tRV));
 	}
 
-	//--Scale volume after how much reflection there is--
+	//Scale volume after how much reflection there is
 	if(tRV > reflectionScale)
 		tRV = reflectionScale;
 	float reduce = (1.0f -((float)tRV/reflectionScale));
 	volume -= reduce;
 
-	//--Calculate the delay of the sound--
+	//Calculate the delay of the sound
 	for(unsigned int i = 0; i < boxValues.size(); i++)
 	{
 		//Calculate the distance and the distance vector
@@ -87,10 +80,10 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 		aRD += (pWeight[u]*distances[u]);
 	}
 	
-	//--Scale the delay after the distance--
+	//Scale the delay after the distance
 	delay = (int)(aRD*distanceScale);
 
-	//--Simulate soundloss due to distance--
+	//Simulate soundloss due to distance
 	reduce = (float)(aRD*0.0007);
 	volume -= reduce;
 	//If distance too far and volume negative, make it zero
@@ -102,7 +95,7 @@ EchoProperties Echo::calculateEcho(float volume, vector<float> boxValues, vector
 	{
 		playEcho = false;
 	}
-	//--Create and return an EchoProperties object--
+	//Create and return an EchoProperties object
 	EchoProperties eP = EchoProperties(volume, delay, playEcho);
 	return eP;
 }

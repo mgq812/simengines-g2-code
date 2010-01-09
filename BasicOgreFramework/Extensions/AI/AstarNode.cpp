@@ -1,5 +1,6 @@
 #include "AstarNode.h"
 AstarNode::AstarNode(){
+	//Sets default values to the variables that always needs to be set.
 	parent = NULL;
 	closed = false;
 	open = false;

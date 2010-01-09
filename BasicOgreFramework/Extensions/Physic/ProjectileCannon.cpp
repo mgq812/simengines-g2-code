@@ -4,61 +4,65 @@
 #include <iostream>
 #include "NxPhysics.h"
 #include "NxCooking.h"
-
+//defines for different projectiles 
 #define SHELL 1
 #define GRENADE 2
 #define BULLET 3 
 #define FASTSHELL 4
 #define OBLITERATE 5
-
+//projectile struct, required for each grenade and shell.
 struct projectile {
-	short type;
-	//unused atm
-	OGRE3DBody*	mCube;
-	bool purge;
-	Ogre::Real lifeTime;
-	NxVec3 location;
+	short type; //type of the projectile. 
+	OGRE3DBody*	mCube; //body assigned to the projectile.
+	bool purge; // should the projectile be purged?
+	Ogre::Real lifeTime; //How long has it been in existence -> required for grenades.
+	NxVec3 location; //location of the projectile. 
 };
 
+//variable required for adding new shots to the list.
 projectile shot;
+//Vector that stores projectiles.
 std::vector<projectile> pList;
 
+//Cannon struct
 struct cannon {
 	int ID;
 	NxOgre::Vec3 dir;
 	NxOgre::Vec3 pos;
 };
 
+//variable for adding for new cannons.
 cannon newCannon;
+//Launcher list, list of all launchers.
 std::vector<cannon> lList;
+//ID for new launchers.
 int IDGen = 1;
 
 class myContactReport : public NxUserContactReport {
 	void onContactNotify(NxContactPair& pair, NxU32 events) {
 		//Stream iterator is away of getting what pairs collided and were
 		NxContactStreamIterator i(pair.stream);
-		// Read the Physx Doc about this, its pretty logical
 		while(i.goNextPair()) {
-			//pair.actors[0]->
 			for(unsigned int j = 0; j < pList.size(); j++) {
+				//we look for collisions for any projectiles that are in action.
 				if(pair.actors[0] == pList.at(j).mCube->getNxActor()) {
+					//we set the location, to the location of the collision. 
 					pList.at(j).location = pair.actors[0]->getGlobalPosition();
-					//pair.actors[0]->setGlobalPosition(pair.actors[0]->getGlobalPosition()+ NxVec3(10000));
+					//We set purge to true. This means that next time the purge method 
+					//will be executed, the explosion will spawn.
 					pList.at(j).purge = true;
 				}
 			}
 		}
 	}
 };
-ProjectileCannon::ProjectileCannon(OGRE3DRenderSystem* extRenderSystem, NxOgre::Vec3 direction, NxOgre::Vec3 position) {
-	dir = direction;
-	pos = position;
-	pSize = 1;
-	projectileLife = 5; 
-	std::vector<projectile> pList(16);
-	exploSpawned = false;
-	mRenderSystem = extRenderSystem;
-	//create kinenmatic actor to bind the explosion too
+//constructor.
+ProjectileCannon::ProjectileCannon(OGRE3DRenderSystem* extRenderSystem) {
+	projectileLife = 5; // default grenade life.
+	std::vector<projectile> pList(16); // Default amount of projectiles in action*.
+	exploSpawned = false; // no explosions are spawned.
+	mRenderSystem = extRenderSystem; //set the render system. 
+	//create kinenmatic actor to bind the explosion, also create the descriptor for the forcefield.
 	NxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
 	bodyDesc.flags |= NX_BF_KINEMATIC;
@@ -67,16 +71,20 @@ ProjectileCannon::ProjectileCannon(OGRE3DRenderSystem* extRenderSystem, NxOgre::
 	actorDesc.body = &bodyDesc;
 	nScene = mRenderSystem->getScene()->getScene();
 	explosionHolder = nScene->createActor(actorDesc);
+	
 	cnt = 0;
 	explosionLife = 0;
 	grenadeLife = 3;
 	launcherForce = 1000;
 	exploForce = 250;
+	//set the default contact report function.
 	mRenderSystem->getScene()->getScene()->setUserContactReport(new myContactReport());
 	defaultFfRadius = 10;
+	//create the explosion. 
 	explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
 	obliterated = false;
 }
+//see header file comments for descriptions.
 void ProjectileCannon::setGrenadeLife(int tLife) {
 	grenadeLife = tLife;
 }
@@ -86,39 +94,46 @@ void ProjectileCannon::aimCannon(NxOgre::Vec3 direction, int ID) {
 void ProjectileCannon::moveCannon(NxOgre::Vec3 position, int ID) {
 	lList.at(getLauncherIndex(ID)).pos = position;
 }
+
 NxOgre::RaycastHit ProjectileCannon::fireBullet(int ID) {
 	NxOgre::Ray ray;
 	ray.mDirection = getLauncherDir(ID);
 	ray.mOrigin = getLauncherPos(ID);
 	//todo: bullet drop --> time = speed/distance
 	//raycast again, with the height coordinate dropped by a value of d = -(1/2)g*t^2 
-	//if(abs(oldDistance - newDistance) > 0.5) raycast again. 
+	//if(abs(oldDistance - newDistance) > epsilon) raycast again. 
 	return mRenderSystem->getScene()->raycastClosestShape(ray, NxOgre::Enums::ShapesType_All);
 }
 void ProjectileCannon::fireFastShell(int ID) { 
+	//we calculate the location of the raycast
 	NxOgre::Ray ray;
+	//grab the position of the starting launcher.
 	ray.mDirection = getLauncherDir(ID);
 	ray.mOrigin = getLauncherPos(ID);
+	//shoot the ray.
 	NxOgre::RaycastHit rayHit = mRenderSystem->getScene()->raycastClosestShape(ray, NxOgre::Enums::ShapesType_All);
-	pList.reserve(1);
-	shot.purge = true;
-	shot.type = FASTSHELL;
-	shot.mCube = NULL;
 	NxOgre::Vec3 loc = rayHit.mWorldImpact;
-	shot.location = NxVec3(loc.x, loc.y, loc.z);
-	pList.insert(pList.end(), shot);
+	//move the exlosion to the location, and change the radius. 
+	gForceField->addShapeGroup(*m_inclusionGroup);
+	NxMat34 pose;
+	pose.id();
+	pose.t = NxVec3(loc.x, loc.y, loc.z);
+	explosionHolder->setGlobalPose(pose); 
+	m_inclusionShape->setPose(pose);
+	m_inclusionShape->isSphere()->setRadius(defaultFfRadius);
+	exploSpawned = true;
 }
 void ProjectileCannon::fireShell(int ID) {
-	pList.reserve(1);
+	//create a new projectile and add it to the list of projectiles.
+	pList.reserve(1); // we reserve a spot.
 	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(0.2, 0.2, 0.2), getLauncherPos(ID), "cube.1m.mesh"); 
 	shot.mCube->getEntity()->getParentNode()->scale(0.2, 0.2, 0.2);
 	shot.mCube->setMass(0.1f);
 	NxOgre::Matrix44 m44pose = Matrix44_Identity;
-	
-	//shot.mCube->setGlobalPose();
+	//we add the force and set the appropriate contact flags. 
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-
+	//we set the other variables and add it to the end of the list.
 	shot.purge = false;
 	shot.lifeTime = 0;
 	shot.type = SHELL;
@@ -126,8 +141,10 @@ void ProjectileCannon::fireShell(int ID) {
 
 }
 void ProjectileCannon::obliterate(int ID) {
+	//huge force and radius.
 	exploForce = 10000;
 	defaultFfRadius = 1000;
+	//create a new explosion. 
 	explosion(mRenderSystem->getScene()->getScene(), explosionHolder);
 	pList.reserve(1);
 	shot.purge = true;
@@ -138,17 +155,20 @@ void ProjectileCannon::obliterate(int ID) {
 	pList.insert(pList.end(), shot);
 }
 void ProjectileCannon::fireGrenade(int ID){ 
-
+	//we create the objects.
 	pList.reserve(1);
+	//we create the grenade (cube.002.mesh) and set the variables for it.
 	shot.mCube = mRenderSystem->createBody(new NxOgre::Box(0.82, 1.6, 0.6f), getLauncherPos(ID), "cube.002.mesh"); 
 	NxOgre::Vec3 vector = getLauncherPos(ID);
 	shot.mCube->getEntity()->getParentNode()->scale(0.2, 0.2, 0.2);
  	shot.mCube->setMass(0.5f);
 	shot.mCube->addForce(getLauncherDir(ID) * launcherForce ,NxOgre::Enums::ForceMode_Force, true);
+	//we still need contact reports, so we can update the life time of grenades. 
 	shot.mCube->getNxActor()->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
+	//other variables.
 	shot.purge = false;
-	shot.lifeTime = 0;
+	shot.lifeTime = 0; //start life time.
 	shot.type = GRENADE;
 	pList.insert(pList.end(), shot);
 }	
@@ -196,17 +216,7 @@ void ProjectileCannon::explosion(NxScene* scene, NxActor* actor) {
 	s.pose.t = NxVec3(0, 0, 0);
 	m_inclusionShape = m_inclusionGroup->createShape(s);
 
-	// exclude group\q
-	//NxForceFieldShapeGroupDesc sgExclDesc;
-	//sgExclDesc.flags = NX_FFSG_EXCLUDE_GROUP;
-	//m_excludeGroup = scene->createForceFieldShapeGroup(sgExclDesc);
-	//NxSphereForceFieldShapeDesc exclude;
-	//exclude.radius = 0.2f;
-	//exclude.pose.t = NxVec3(0, 0, 0);
-	//m_excludeShape = m_excludeGroup->createShape(exclude);
-
-	//gForceField->addShapeGroup(*m_excludeGroup);
-}
+	}
 void ProjectileCannon::explode(int i) {
 	NxMat34 pose;
 	pose.id();
@@ -219,29 +229,22 @@ void ProjectileCannon::explode(int i) {
 	pList.erase(pList.begin() + i);
 	exploSpawned = true;
 }
-void ProjectileCannon::purge(Ogre::Real evtTime) {
-
+void ProjectileCannon::purge(Ogre::Real evtTime) {	
+	//remove all explosions that have been in existence for more than 50 ms.
 	if(exploSpawned) {
 		explosionLife += evtTime;
-		if(explosionLife > 100) {
+		if(explosionLife > 50) {
 			gForceField->removeShapeGroup(*m_inclusionGroup);
-			//m_inclusionShape->isSphere()->setRadius(0.1f);
-			//m_excludeShape->isSphere()->setRadius(0.2f);
 			exploSpawned = false;
-			//explosion(mRenderSystem->getScene()->getScene(), explosionHolder );
 			explosionLife = 0;
-			if(obliterated) {
-				obliterated = false;
-				exploForce = 250;
-				defaultFfRadius = 10;
-				explosion(mRenderSystem->getScene()->getScene(), explosionHolder);
-			}
 		}
 	}
 
+	// we go through all projectiles in the list, and detonate any that have the flag set.
 	for(unsigned int i = 0; i < pList.size(); i++) {
 		pList.at(i).lifeTime += evtTime;
 		if(pList.at(i).type == GRENADE) {
+			//for grenades we also check if they've existed for more than grenadeLife seconds.
 			if(pList.at(i).lifeTime > grenadeLife) {
 				mRenderSystem->destroyBody(pList.at(i).mCube);
 				gForceField->addShapeGroup(*m_inclusionGroup);
@@ -250,16 +253,12 @@ void ProjectileCannon::purge(Ogre::Real evtTime) {
 			//	pList.erase(pList.begin() + i);
 			}
 		}
+		//we remove them, we also remove projectiles that have been in existence to long
+		//this is done so we don't get insane amounts of projectiles.
 		else if(pList.at(i).purge || pList.at(i).lifeTime > projectileLife){
 			mRenderSystem->destroyBody(pList.at(i).mCube);
 			gForceField->addShapeGroup(*m_inclusionGroup);				
 			explode(i);
-		}
-		else if(pList.at(i).type == OBLITERATE) {
-			gForceField->addShapeGroup(*m_inclusionGroup);		
-			explode(i);
-			obliterated = true;
-			//pList.erase(pList.begin() + i);
 		}
 	}
 }
@@ -283,6 +282,7 @@ int ProjectileCannon::removeLauncher(int ID) {
 	//return 0 if error, wrong ID
 	return 0;
 }
+//helper function. 
 int ProjectileCannon::getLauncherIndex(int ID) {
 	for(unsigned int i = 0; i < lList.size(); i++) {
 		if(lList.at(i).ID == ID) {
@@ -290,6 +290,7 @@ int ProjectileCannon::getLauncherIndex(int ID) {
 		}
 	}
 	//return 0 if error, wrong ID
+	//there should be no IDs with the value of 0.
 	return 0;
 }
 

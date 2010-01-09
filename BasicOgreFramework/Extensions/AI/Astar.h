@@ -1,5 +1,8 @@
 #ifndef ASTAR_H
 #define ASTAR_H
+/** @brief The class that contains all the calculations for the A* extension.
+    @author Jonathan Johansson
+ */
 #include "AstarNode.h"
 
 class Astar{

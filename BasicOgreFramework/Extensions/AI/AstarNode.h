@@ -1,5 +1,9 @@
 #ifndef ANODE_H
 #define ANODE_H
+
+/** @brief Class to symbolize node objects for the A* algorithm
+    @author Jonathan Johansson
+ */
 #include <iostream>
 #include <vector>
 #include <string>

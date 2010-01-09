@@ -242,12 +242,12 @@ bool DemoApp::keyPressed(const OIS::KeyEvent &keyEventRef)
 		
 		if(face == 0)
 		{
-			cartoon->getSun()->getFace()->setFace("Cartoon/SleepyFace");
+			cartoon->getSun()->getFace()->setCurrentMaterial("Cartoon/SleepyFace");
 			face = 1;
 		}
 		else if(face == 1)
 		{
-			cartoon->getSun()->getFace()->setFace("Cartoon/HappyFace");
+			cartoon->getSun()->getFace()->setCurrentMaterial("Cartoon/HappyFace");
 			face = 0;
 		}
 	}

@@ -59,7 +59,7 @@ vector<vector<AstarNode*>> Astar::GenerateGraphMap(int size){
 	}
 	return graphMap;
 }
-
+//Two methods to convert back and forth between ogre and astar coords
 COORD Astar::convertAstarToOgreCoords(COORD coord, int ogreSize, int astarSize){
 	COORD ogreCoords;
 	ogreCoords.X = -ogreSize + 2*coord.X*ogreSize/astarSize;

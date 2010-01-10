@@ -6,6 +6,7 @@
 #include "CartoonSkyObject.h"
 #include "SkyObject.h"
 #include "Sun.h"
+#include "Moon.h"
 
 namespace CartoonCaelum {
 	
@@ -30,8 +31,6 @@ namespace CartoonCaelum {
 		 * Destructor.
 		 */
 		virtual ~CartoonSystem();
-
-		void configure();
 		
 		/**
 		 * Method that loads all needed resources into the resource manager.
@@ -134,6 +133,24 @@ namespace CartoonCaelum {
 		 * @return the current sun object.
 		 */
 		Sun* getSun();
+		
+		/**
+		 * Returns the current Moon object of the CartoonSystem.
+		 * @return the current moon object.
+		 */
+		Moon* getMoon();
+		
+		/**
+		 * Returns the time in seconds between updates to sky objects.
+		 * @return the time between updates.
+		 */
+		Ogre::Real getUpdateTime();
+		
+		/**
+		 * Sets the time in seconds between updates to sky objects.
+		 * @param updateTime The time in seconds to be set.
+		 */
+		void setUpdateTime(Ogre::Real updateTime);
 
 	protected:
 		/** Pointer to the main root object.*/
@@ -151,8 +168,17 @@ namespace CartoonCaelum {
 		/** Pointer to the object representing the sun.*/
 		Sun *m_pSun;
 		
+		/** Pointer to the object representing the moon.*/
+		Moon *m_pMoon;
+		
+		/** Flag which determines whether it is daytime or not.*/
+		bool m_fIsDay;
+		
 		/** Timer that keeps track on time, limiting updates per frame to updates per time unit instead.*/
 		Ogre::Real m_fpTimer;
+		
+		/** The time in seconds between updates on sky objects.*/
+		Ogre::Real m_fpUpdateTime;
 
 		/** Pointer to the scene node containing the current rain particle system.*/
 		Ogre::SceneNode *m_pRainNode;
@@ -160,17 +186,11 @@ namespace CartoonCaelum {
 		/** Pointer to the scene node containing the current snow particle system.*/
 		Ogre::SceneNode *m_pSnowNode;
 		
-		/** Array of pointers to scene nodes containing wind particle systems for the wind cloud.*/
-		Ogre::SceneNode *m_paWindNode[5];
-		
 		/** Pointer to the current rain particle system.*/
 		Ogre::ParticleSystem *m_pRainPS;
 		
 		/** Pointer to the current snow particle system.*/
 		Ogre::ParticleSystem *m_pSnowPS;
-
-		/** Array of pointers to the current wind particle systems.*/
-		Ogre::ParticleSystem *m_paWindPS[5];
 		
 		/** Pointer to the current wind vector, representing wind direction.*/
 		Ogre::Vector3 *m_pvWindVector;
@@ -184,6 +204,11 @@ namespace CartoonCaelum {
 		 * Creates the sun object for the CartoonSystem.
 		 */
 		void makeSun();
+		
+		/**
+		 * Creates the moon object for the CartoonSystem.
+		 */
+		void makeMoon();
 		
 		/**
 		 * Creates the wind cloud object for the CartoonSystem,
@@ -219,6 +244,11 @@ namespace CartoonCaelum {
 		 * Updates the movement of the sun and its face.
 		 */
 		void updateSun();
+		
+		/**
+		 * Updates the movement of the moon and its face.
+		 */
+		void updateMoon();
 		
 		/**
 		 * Updates the movement of the wind cloud and its face.

@@ -31,11 +31,11 @@ namespace CartoonCaelum {
 		 * Return the face object for this cartoon sky object.
 		 * @return the face object for this cartoon sky object.
 		 */
-		Face* getFace();
+		SkyObject* getFace();
 
 	protected:
 		/** Pointer to the face object.*/
-		Face *m_pFace;
+		SkyObject *m_pFace;
 
 	};
 

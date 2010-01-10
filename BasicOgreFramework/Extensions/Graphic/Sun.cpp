@@ -14,11 +14,9 @@ namespace CartoonCaelum {
 		int nDistance,
 		Radian pitch
 	):
-		CartoonSkyObject(pSceneMgr, pCamera, pNode, "Cartoon/Sun", "Cartoon/HappyFace", nXSize, 
+		CartoonSkyObject(pSceneMgr, pCamera, pNode, "Cartoon/Sun", "", nXSize, 
 			nYSize, nDistance, Real(0.9), Real(0.9)),
-		m_previousRotation(Radian(0)),
-		m_cyclePitch (pitch),
-		m_fLightChanged(false)
+		RotatingSkyObject(pNode, nDistance, pitch)
 	{
 		createLight();
 	}
@@ -28,43 +26,16 @@ namespace CartoonCaelum {
 		m_pSceneMgr->destroyLight(m_pSunLight);
 	}
 
-	void Sun::moveSun(Radian degrees)
+	void Sun::updateLight()
 	{
-		//add degree to the previously accumulated rotation, and calculate new position of sun.
-		m_previousRotation += degrees;
-		int _newX = InternalUtilities::round(m_nDistance*(Math::Sin(m_previousRotation, false)));
-		int _newY = InternalUtilities::round(m_nDistance*(Math::Cos(m_previousRotation, false)));
-		int _newZ = InternalUtilities::round(_newY*(Math::Sin(m_cyclePitch, false))); 
-		m_pMainNode->setPosition(Vector3(_newX, _newY, _newZ));
-		m_pMainNode->lookAt(Vector3(0,0,0), 
-			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
-		if (m_pMainNode->getPosition().y > -m_nYSize/2 && !m_pSunLight->getVisible()) {
-			//if the sun's new y-value is higher than half the y-size of the sun plane mesh,
-			//and the light is invisible, make it visible and set mLightChanged flag to true.
-			m_pSunLight->setVisible(true);
-			flipLightChanged();
-		} else if (m_pMainNode->getPosition().y < -m_nYSize/2 && m_pSunLight->getVisible()) {
-			//if the sun's new y-value is lower than half the y-size of the sun plane mesh,
-			//and the light is visible, make it invisible and set mLightChanged flag to true.
-			m_pSunLight->setVisible(false);
-			flipLightChanged();
-		}
+		//if the sun's new y-value is higher than half the y-size of the sun plane mesh,
+		//and the light is invisible, make it visible, otherwise make it invisible.
+		m_pSunLight->setVisible(m_pMainNode->getPosition().y > -m_nYSize/2);
 	}
 
 	Light* Sun::getLight()
 	{
 		return m_pSunLight;
-	}
-
-	bool Sun::isLightChanged()
-	{
-		return m_fLightChanged;
-	}
-
-	void Sun::flipLightChanged()
-	{
-		//flip the value of the mLightChanged flag.
-		m_fLightChanged = !m_fLightChanged;
 	}
 
 	void Sun::createLight()

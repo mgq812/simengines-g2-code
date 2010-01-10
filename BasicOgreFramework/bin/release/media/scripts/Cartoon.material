@@ -127,6 +127,175 @@ material Cartoon/Sun
 	}
 }
 
+material Cartoon/Moon_Full
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture moon_full.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WaxG
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture moon_waxg.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WaxC
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture moon_waxc.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WanC
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture moon_wanc.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WanG
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture moon_wang.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_Full_Face
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture sleepy_face.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WaxG_Face
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture sleepy_face.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WaxC_Face
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture sleepy_face.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WanC_Face
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{sleepy_face.png
+			}
+		}
+	}
+}
+
+material Cartoon/Moon_WanG_Face
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			depth_write off
+			emissive 1 1 1
+			texture_unit
+			{
+				texture sleepy_face.png
+			}
+		}
+	}
+}
+
 material Cartoon/Cloud1
 {
 	technique

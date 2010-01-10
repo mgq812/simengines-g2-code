@@ -75,6 +75,48 @@ namespace CartoonCaelum {
 		}
 	}
 
+	int SkyObject::getDistance()
+	{
+		return m_nDistance;
+	}
+
+	int SkyObject::getXSize()
+	{
+		return m_nXSize;
+	}
+
+	int SkyObject::getYSize()
+	{
+		return m_nYSize;
+	}
+
+	void SkyObject::directEntity()
+	{
+		directNode(m_pEntityNode);
+	}
+
+	void SkyObject::directObject()
+	{
+		directNode(m_pMainNode);
+	}
+
+	void SkyObject::directNode(SceneNode *node)
+	{
+		SceneNode* _pTemp = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("temp");
+		_pTemp->setPosition(m_pCamera->getPosition()+(m_pCamera->getDirection()*2500));
+		_pTemp->setOrientation(node->getOrientation());
+		_pTemp->lookAt(m_pCamera->getPosition(), 
+			Node::TransformSpace::TS_WORLD, Vector3::NEGATIVE_UNIT_Y);
+		Radian _diffAngle = _pTemp->getOrientation().zAxis().angleBetween(m_pCamera->getUp());
+		_pTemp->yaw(_diffAngle);
+		if ((_pTemp->getOrientation().zAxis().angleBetween(m_pCamera->getUp())) > Radian(0)) {
+			node->yaw(-_diffAngle);
+		} else {
+			node->yaw(_diffAngle);
+		}
+		m_pSceneMgr->getRootSceneNode()->removeAndDestroyChild("temp");
+	}
+
 	void SkyObject::createBody()
 	{
 		//create the plane mesh.

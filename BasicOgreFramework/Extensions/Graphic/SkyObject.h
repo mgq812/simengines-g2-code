@@ -50,6 +50,34 @@ namespace CartoonCaelum {
 		 * @param materialName string with material name.
 		 */
 		void setCurrentMaterial(Ogre::String strMaterialName);
+		
+		/**
+		 * Return the distance to the origin.
+		 * @return The distance to the origin.
+		 */
+		int getDistance();
+		
+		/**
+		 * Return the size of the object x-wise.
+		 * @return The x-size of the origin.
+		 */
+		int getXSize();
+		
+		/**
+		 * Return the size of the object y-wise.
+		 * @return The y-size of the origin.
+		 */
+		int getYSize();
+		
+		/**
+		 * Rotate the entity node so that its up vector corresponds to the up vector of the camera.
+		 */
+		void directEntity();
+		
+		/**
+		 * Rotate the main node so that its up vector corresponds to the up vector of the camera.
+		 */
+		void directObject();
 
 	protected:
 		/** Pointer to the main scene manager object.*/
@@ -81,6 +109,11 @@ namespace CartoonCaelum {
 		
 		/** The currently used material name; "" will render the object invisible.*/
 		Ogre::String m_strMaterialName;
+
+		/**
+		 *	Rotate the node so that its up vector corresponds to the up vector of the camera.
+		 */
+		void directNode(Ogre::SceneNode *node);
 		
 		/**
 		 * Method that creates the plane mesh, and sets up its entity and scene node.

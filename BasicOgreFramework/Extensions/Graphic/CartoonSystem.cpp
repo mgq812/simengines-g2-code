@@ -15,7 +15,10 @@ namespace CartoonCaelum {
 		m_pCamera (pCamera),
 		m_pWindCloud(0),
 		m_pSun(0),
+		m_pMoon(0),
+		m_fIsDay(true),
 		m_fpTimer(Real(0)),
+		m_fpUpdateTime(Real(0.2)),
 		m_pRainNode(0),
 		m_pSnowNode(0),
 		m_pRainPS(0),
@@ -26,16 +29,20 @@ namespace CartoonCaelum {
 		loadResources();
 		makeSky();
 		makeSun();
+		makeMoon();
 	}
 
 	CartoonSystem::~CartoonSystem()
 	{
-
-	}
-
-	void CartoonSystem::configure()
-	{
-
+		removeRain();
+		removeSnow();
+		removeWindCloud();
+		if (m_pSun!=0) {
+			delete m_pSun;
+		}
+		if (m_pMoon!=0) {
+			delete m_pMoon;
+		}
 	}
 
 	void CartoonSystem::setupResources()
@@ -209,17 +216,9 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::removeWindCloud()
 	{
-		//if cWindCloud does not point to null, delete the cWindCloud object, and remove any
-		//wind particle systems from the scene manager.
+		//if cWindCloud does not point to null, delete the WindCloud object.
 		if (m_pWindCloud!=0) {
 			delete m_pWindCloud;
-			/*for (int ixi=0; ixi<sizeof(mWindNode); ixi++) {
-				m_pSceneMgr->destroyParticleSystem("windSystem"+StringConverter::toString(ixi));
-				m_pSceneMgr->getRootSceneNode()->removeAndDestroyChild("WindNode"+
-					StringConverter::toString(ixi));
-				m_paWindPS[ixi] = 0;
-				m_paWindNode[ixi] = 0;
-			}*/
 		}
 		m_pWindCloud = 0;
 	}
@@ -227,6 +226,21 @@ namespace CartoonCaelum {
 	Sun* CartoonSystem::getSun()
 	{
 		return m_pSun;
+	}
+
+	Moon* CartoonSystem::getMoon()
+	{
+		return m_pMoon;
+	}
+
+	Real CartoonSystem::getUpdateTime()
+	{
+		return m_fpUpdateTime;
+	}
+
+	void CartoonSystem::setUpdateTime(Real updateTime)
+	{
+		m_fpUpdateTime = updateTime;
 	}
 
 	void CartoonSystem::makeSky()
@@ -239,8 +253,15 @@ namespace CartoonCaelum {
 	{
 		//create a sun, and set its current face.
 		m_pSun = new Sun(m_pSceneMgr, m_pCamera, m_pSceneMgr->getRootSceneNode()->createChildSceneNode(),
-			512, 512, 5600, Degree(0));
+			512, 512, 6600, Degree(45));
 		m_pSun->getFace()->setCurrentMaterial("Cartoon/HappyFace");
+	}
+
+	void CartoonSystem::makeMoon()
+	{
+		//create a moon, and set its current face.
+		m_pMoon = new Moon(m_pSceneMgr, m_pCamera, m_pSceneMgr->getRootSceneNode()->createChildSceneNode(),
+			512, 512, 6300, Degree(45), FULL);
 	}
 
 	void CartoonSystem::makeWindCloud()
@@ -248,26 +269,7 @@ namespace CartoonCaelum {
 		//remove any old wind cloud and create a new one.
 		removeWindCloud();
 		m_pWindCloud = new CartoonSkyObject(m_pSceneMgr, m_pCamera, m_pSceneMgr->getRootSceneNode()->createChildSceneNode(),
-			"Cartoon/Cloud1", "Cartoon/BlowingFace", 2000, 2000, 5500, Real(0.25), Real(0.25));
-		/*for (int ixi=0; ixi<4; ixi++) {
-			//m_paWindNode[ixi] = m_pWindCloud->getFace()->getNode()->createChildSceneNode("windNode"+
-				StringConverter::toString(ixi));
-			m_paWindNode[ixi] = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("windNode"+
-				StringConverter::toString(ixi));
-			m_paWindNode[ixi]->setOrientation(cWindCloud->getFace()->getNode()->getOrientation());
-			m_paWindPS[ixi] = m_pSceneMgr->createParticleSystem("windSystem"+
-				StringConverter::toString(ixi), "Cartoon/WindFlow");
-			m_paWindNode[ixi]->attachObject(windPS[ixi]);
-			m_paWindNode[0]->translate(Vector3(0,0,-20));
-		}
-		m_paWindNode[0]->translate(Vector3(0,0,5));
-		m_paWindNode[1]->translate(Vector3(5,0,0));
-		m_paWindNode[2]->translate(Vector3(-5,0,0));
-		m_paWindNode[3]->translate(Vector3(0,0,-5));
-		m_paWindNode[2]->yaw(-Degree(45));
-		m_paWindNode[1]->yaw(Degree(90));
-		m_paWindNode[3]->yaw(Degree(135));
-		//m_paWindNode[4]->translate(Vector3(20,0,0));*/
+			"Cartoon/Cloud1", "Cartoon/BlowingFace", 2000, 2000, 6000, Real(0.25), Real(0.25));
 	}
 
 	bool CartoonSystem::frameStarted(const FrameEvent &e) 
@@ -285,6 +287,7 @@ namespace CartoonCaelum {
 		if (m_fpTimer > 0.02) {
 			m_fpTimer -= 0.02;
 			updateSun();
+			updateMoon();
 			updateSky();
 			updateWindCloud();
 		}
@@ -313,23 +316,26 @@ namespace CartoonCaelum {
 
 	void CartoonSystem::updateSky()
 	{
-		//if the light settings have changed, update the sky dome.
-		if (m_pSun->isLightChanged()) {
-			//if the sun is up set daytime sky, else set nighttime sky.
-			if (m_pSun->getNode()->getPosition().y > 0) {
+		//if the sun is up set daytime sky, else set nighttime sky.
+		if (m_pSun->getNode()->getPosition().y > -(m_pSun->getYSize()/2)) {
+			if (!m_fIsDay) {
 				m_pSceneMgr->setSkyDome(true, "Cartoon/WeirdSky2", 5, 8, 10000);
-			} else {
-				m_pSceneMgr->setSkyDome(true, "Cartoon/NightSky", 5, 8, 10000);
+				m_fIsDay = true;
 			}
-			m_pSun->flipLightChanged();
+		} else {
+			if (m_fIsDay) {
+				m_pSceneMgr->setSkyDome(true, "Cartoon/NightSky", 5, 8, 10000);
+				m_fIsDay = false;
+			}
 		}
 	}
 
 	void CartoonSystem::updateSun()
 	{
 		//move the sun a certain degree and update the direction of its face.
-		m_pSun->moveSun(Radian(Degree(0.1)));
-		m_pSun->getFace()->directFace();
+		m_pSun->moveObject(Radian(Degree(0.1)));
+		m_pSun->updateLight();
+		m_pSun->directObject();
 		if (m_pSun->getNode()->getPosition().y < 1000) {
 			//if the sun is close to going down set a sleepy face on it.
 			if (m_pSun->getFace()->getCurrentMaterial()=="Cartoon/HappyFace") {
@@ -343,11 +349,19 @@ namespace CartoonCaelum {
 		}
 	}
 
+	void CartoonSystem::updateMoon()
+	{
+		//move the moon a certain degree and update the direction of its face.
+		m_pMoon->moveObject(Radian(Degree(0.1)));
+		m_pMoon->updateLight();
+		m_pMoon->directObject();
+	}
+
 	void CartoonSystem::updateWindCloud()
 	{
 		//if cWindCloud does not point to null, update the direction of its face.
 		if (m_pWindCloud!=0) {
-			m_pWindCloud->getFace()->directFace();
+			m_pWindCloud->getFace()->directEntity();
 		}
 	}
 

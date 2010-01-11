@@ -181,6 +181,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Extensions\Graphic\CartoonSkyObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DemoApp.cpp"
 				>
 			</File>
@@ -190,6 +194,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreFramework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Extensions\Graphic\SkyObject.cpp"
 				>
 			</File>
 			<Filter
@@ -212,7 +220,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Extensions\AI\Node.cpp"
+					RelativePath=".\Extensions\AI\AstarNode.cpp"
 					>
 				</File>
 			</Filter>
@@ -232,15 +240,15 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Extensions\Graphic\Cloud.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Extensions\Graphic\Face.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Extensions\Graphic\InternalUtilities.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\Moon.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\RotatingSkyObject.cpp"
 					>
 				</File>
 				<File
@@ -255,11 +263,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Extensions\Graphic\CartoonSkyObject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DemoApp.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\OgreFramework.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Extensions\Graphic\SkyObject.h"
 				>
 			</File>
 			<Filter
@@ -298,15 +314,15 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Extensions\Graphic\Cloud.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Extensions\Graphic\Face.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Extensions\Graphic\InternalUtilities.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\Moon.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Extensions\Graphic\RotatingSkyObject.h"
 					>
 				</File>
 				<File

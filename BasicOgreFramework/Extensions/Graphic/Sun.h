@@ -6,7 +6,6 @@
 #include "InternalUtilities.h"
 #include "CartoonSkyObject.h"
 #include "RotatingSkyObject.h"
-#include "Face.h"
 
 namespace CartoonCaelum {
 	

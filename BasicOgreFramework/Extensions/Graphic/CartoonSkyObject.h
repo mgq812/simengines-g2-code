@@ -4,7 +4,6 @@
 #include <ogre.h>
 
 #include "SkyObject.h"
-#include "Face.h"
 
 namespace CartoonCaelum {
 	
